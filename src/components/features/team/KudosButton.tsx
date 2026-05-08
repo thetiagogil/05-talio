@@ -1,16 +1,16 @@
-import { useMemo, useState } from "react"
-import { Button, Input, Modal, Select } from "antd"
-import { HeartOutlined, SendOutlined } from "@ant-design/icons"
-import { useCurrentUser } from "../../../services/authService"
-import { sendKudos, useTalents } from "../../../services/workspaceService"
-import type { User } from "../../../types/talents"
+import { useMemo, useState } from "react";
+import { Button, Input, Modal, Select } from "antd";
+import { HeartOutlined, SendOutlined } from "@ant-design/icons";
+import { useCurrentUser } from "../../../services/authService";
+import { sendKudos, useTalents } from "../../../services/workspaceService";
+import type { User } from "../../../types/talents";
 
 type KudosButtonProps = {
-  to: User
-}
+  to: User;
+};
 
 export function KudosButton({ to }: KudosButtonProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -19,7 +19,7 @@ export function KudosButton({ to }: KudosButtonProps) {
       </Button>
       <KudosModal open={open} to={to} onClose={() => setOpen(false)} />
     </>
-  )
+  );
 }
 
 function KudosModal({
@@ -27,34 +27,36 @@ function KudosModal({
   to,
   onClose,
 }: {
-  open: boolean
-  to: User
-  onClose: () => void
+  open: boolean;
+  to: User;
+  onClose: () => void;
 }) {
-  const currentUser = useCurrentUser()
-  const talents = useTalents()
-  const [message, setMessage] = useState("")
+  const currentUser = useCurrentUser();
+  const talents = useTalents();
+  const [message, setMessage] = useState("");
   const theirTalents = useMemo(
     () =>
       to.talents
         .map((id) => talents.find((talent) => talent.id === id))
         .filter((talent) => Boolean(talent)),
     [talents, to.talents],
-  )
-  const [talentId, setTalentId] = useState<number | null>(theirTalents[0]?.id ?? null)
+  );
+  const [talentId, setTalentId] = useState<number | null>(
+    theirTalents[0]?.id ?? null,
+  );
 
   function submit() {
-    if (!currentUser || !talentId || !message.trim()) return
+    if (!currentUser || !talentId || !message.trim()) return;
 
     sendKudos({
       fromId: currentUser.id,
       toId: to.id,
       talentId,
       message: message.trim(),
-    })
+    });
 
-    setMessage("")
-    onClose()
+    setMessage("");
+    onClose();
   }
 
   return (
@@ -101,5 +103,5 @@ function KudosModal({
         </label>
       </div>
     </Modal>
-  )
+  );
 }

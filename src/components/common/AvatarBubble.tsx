@@ -1,13 +1,13 @@
-import type { CSSProperties } from "react"
-import { Avatar } from "antd"
-import { DEFAULT_AVATAR } from "../../data/avatars"
+import type { CSSProperties } from "react";
+import { Avatar } from "antd";
+import { DEFAULT_AVATAR } from "../../data/avatars";
 
 type AvatarBubbleProps = {
-  value?: string | null
-  size?: number
-  className?: string
-  style?: CSSProperties
-}
+  value?: string | null;
+  size?: number;
+  className?: string;
+  style?: CSSProperties;
+};
 
 export function AvatarBubble({
   value,
@@ -23,5 +23,5 @@ export function AvatarBubble({
     >
       <span className="app-avatar-symbol">{value ?? DEFAULT_AVATAR}</span>
     </Avatar>
-  )
+  );
 }

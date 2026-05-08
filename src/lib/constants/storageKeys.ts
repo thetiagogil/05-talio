@@ -8,4 +8,4 @@ export const STORAGE_KEYS = {
   notificationsReadAt: "talio.notificationsReadAt.v1",
   theme: "talio.theme.v1",
   sidebarCollapsed: "talio.sidebarCollapsed",
-} as const
+} as const;

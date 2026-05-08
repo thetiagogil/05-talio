@@ -1,14 +1,14 @@
-import type { Domain } from "../../types/talents"
-import { domainStyle } from "../../lib/utils/styleUtils"
+import type { Domain } from "../../types/talents";
+import { domainStyle } from "../../lib/utils/styleUtils";
 
 type DomainTagProps = {
-  domain: Domain
-  label?: string
-  compact?: boolean
-}
+  domain: Domain;
+  label?: string;
+  compact?: boolean;
+};
 
 export function DomainTag({ domain, label = domain, compact }: DomainTagProps) {
-  const style = domainStyle(domain)
+  const style = domainStyle(domain);
 
   return (
     <span
@@ -18,5 +18,5 @@ export function DomainTag({ domain, label = domain, compact }: DomainTagProps) {
       <span className="domain-dot" style={{ background: style.base }} />
       {label}
     </span>
-  )
+  );
 }

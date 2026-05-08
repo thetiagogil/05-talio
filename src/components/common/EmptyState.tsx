@@ -1,11 +1,11 @@
-import type { ReactNode } from "react"
-import { Empty } from "antd"
+import type { ReactNode } from "react";
+import { Empty } from "antd";
 
 type EmptyStateProps = {
-  title?: string
-  description: ReactNode
-  className?: string
-}
+  title?: string;
+  description: ReactNode;
+  className?: string;
+};
 
 export function EmptyState({ title, description, className }: EmptyStateProps) {
   return (
@@ -20,5 +20,5 @@ export function EmptyState({ title, description, className }: EmptyStateProps) {
         }
       />
     </div>
-  )
+  );
 }

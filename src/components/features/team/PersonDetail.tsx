@@ -1,33 +1,33 @@
-import { useMemo, useState } from "react"
-import { Button, Card, Tabs } from "antd"
-import { ArrowLeftOutlined } from "@ant-design/icons"
-import { AvatarBubble } from "../../common/AvatarBubble"
-import { TalentRow } from "../../common/TalentRow"
-import { useCurrentUser } from "../../../services/authService"
-import { useTalents } from "../../../services/workspaceService"
-import type { Talent, User } from "../../../types/talents"
-import { ManualEditor } from "../personal/ManualEditor"
-import { KudosButton } from "./KudosButton"
+import { useMemo, useState } from "react";
+import { Button, Card, Tabs } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { AvatarBubble } from "../../common/AvatarBubble";
+import { TalentRow } from "../../common/TalentRow";
+import { useCurrentUser } from "../../../services/authService";
+import { useTalents } from "../../../services/workspaceService";
+import type { Talent, User } from "../../../types/talents";
+import { ManualEditor } from "../personal/ManualEditor";
+import { KudosButton } from "./KudosButton";
 
 type PersonDetailProps = {
-  user: User
-  onBack: () => void
-}
+  user: User;
+  onBack: () => void;
+};
 
-type PersonTab = "profile" | "manual"
+type PersonTab = "profile" | "manual";
 
 export function PersonDetail({ user, onBack }: PersonDetailProps) {
-  const currentUser = useCurrentUser()
-  const talents = useTalents()
-  const [tab, setTab] = useState<PersonTab>("profile")
+  const currentUser = useCurrentUser();
+  const talents = useTalents();
+  const [tab, setTab] = useState<PersonTab>("profile");
   const userTalents = useMemo(
     () =>
       user.talents
         .map((id) => talents.find((talent) => talent.id === id))
         .filter((talent): talent is Talent => Boolean(talent)),
     [talents, user.talents],
-  )
-  const hasManual = Object.values(user.manual).some((value) => value.trim())
+  );
+  const hasManual = Object.values(user.manual).some((value) => value.trim());
 
   return (
     <div className="person-detail">
@@ -79,11 +79,7 @@ export function PersonDetail({ user, onBack }: PersonDetailProps) {
           {tab === "profile" ? (
             <div className="talent-stack">
               {userTalents.map((talent, index) => (
-                <TalentRow
-                  key={talent.id}
-                  rank={index + 1}
-                  talent={talent}
-                />
+                <TalentRow key={talent.id} rank={index + 1} talent={talent} />
               ))}
             </div>
           ) : (
@@ -92,5 +88,5 @@ export function PersonDetail({ user, onBack }: PersonDetailProps) {
         </div>
       </Card>
     </div>
-  )
+  );
 }

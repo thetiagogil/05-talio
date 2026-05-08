@@ -1,31 +1,31 @@
-import { useMemo, useState, type ReactNode } from "react"
-import { Card, Progress } from "antd"
 import {
+  AimOutlined,
   ClockCircleOutlined,
   EditOutlined,
   HeartOutlined,
   TrophyOutlined,
-  AimOutlined,
-} from "@ant-design/icons"
-import { AvatarBubble } from "../../common/AvatarBubble"
-import { TalentRow } from "../../common/TalentRow"
-import { DOMAINS } from "../../../lib/constants/talentConstants"
-import { domainStyle } from "../../../lib/utils/styleUtils"
-import { useCurrentUser } from "../../../services/authService"
+} from "@ant-design/icons";
+import { Card, Progress } from "antd";
+import { useMemo, useState, type ReactNode } from "react";
+import { DOMAINS } from "../../../lib/constants/talentConstants";
+import { domainStyle } from "../../../lib/utils/styleUtils";
+import { useCurrentUser } from "../../../services/authService";
 import {
   useGoals,
   useKudos,
   useTalents,
-} from "../../../services/workspaceService"
-import type { Talent } from "../../../types/talents"
-import { EditProfileModal } from "./EditProfileModal"
+} from "../../../services/workspaceService";
+import type { Talent } from "../../../types/talents";
+import { AvatarBubble } from "../../common/AvatarBubble";
+import { TalentRow } from "../../common/TalentRow";
+import { EditProfileModal } from "./EditProfileModal";
 
 export function ProfileTab() {
-  const user = useCurrentUser()
-  const talents = useTalents()
-  const goals = useGoals()
-  const kudos = useKudos()
-  const [editing, setEditing] = useState(false)
+  const user = useCurrentUser();
+  const talents = useTalents();
+  const goals = useGoals();
+  const kudos = useKudos();
+  const [editing, setEditing] = useState(false);
 
   const userTalents = useMemo(
     () =>
@@ -33,18 +33,18 @@ export function ProfileTab() {
         .map((id) => talents.find((talent) => talent.id === id))
         .filter((talent): talent is Talent => Boolean(talent)),
     [talents, user?.talents],
-  )
+  );
 
-  if (!user) return null
+  if (!user) return null;
 
-  const myGoals = goals.filter((goal) => goal.userId === user.id)
-  const myKudos = kudos.filter((item) => item.toId === user.id)
-  const todoGoals = myGoals.filter((goal) => goal.progress === "To do")
-  const activeGoals = myGoals.filter((goal) => goal.progress === "Doing")
+  const myGoals = goals.filter((goal) => goal.userId === user.id);
+  const myKudos = kudos.filter((item) => item.toId === user.id);
+  const todoGoals = myGoals.filter((goal) => goal.progress === "To do");
+  const activeGoals = myGoals.filter((goal) => goal.progress === "Doing");
   const dominantDomain = DOMAINS.map((domain) => ({
     domain,
     count: userTalents.filter((talent) => talent?.category === domain).length,
-  })).sort((a, b) => b.count - a.count)[0]?.domain
+  })).sort((a, b) => b.count - a.count)[0]?.domain;
 
   return (
     <div className="profile-page-grid">
@@ -90,9 +90,9 @@ export function ProfileTab() {
               {DOMAINS.map((domain) => {
                 const count = userTalents.filter(
                   (talent) => talent?.category === domain,
-                ).length
-                const percent = (count / Math.max(userTalents.length, 1)) * 100
-                const style = domainStyle(domain)
+                ).length;
+                const percent = (count / Math.max(userTalents.length, 1)) * 100;
+                const style = domainStyle(domain);
 
                 return (
                   <div className="domain-breakdown-row" key={domain}>
@@ -113,7 +113,7 @@ export function ProfileTab() {
                       strokeColor={style.base}
                     />
                   </div>
-                )
+                );
               })}
             </div>
           </Card>
@@ -134,7 +134,9 @@ export function ProfileTab() {
               <AtGlanceRow
                 icon={<TrophyOutlined />}
                 label="Completed tasks"
-                value={myGoals.filter((goal) => goal.progress === "Done").length}
+                value={
+                  myGoals.filter((goal) => goal.progress === "Done").length
+                }
               />
               <AtGlanceRow
                 icon={<HeartOutlined />}
@@ -148,7 +150,6 @@ export function ProfileTab() {
         <section>
           <div className="section-title-row">
             <h2>Top 10 talents</h2>
-            <span>Tap to expand</span>
           </div>
           <div className="talent-stack">
             {userTalents.map((talent, index) =>
@@ -167,7 +168,7 @@ export function ProfileTab() {
 
       {editing && <EditProfileModal open onClose={() => setEditing(false)} />}
     </div>
-  )
+  );
 }
 
 function ProfileStat({ value, label }: { value: number; label: string }) {
@@ -176,7 +177,7 @@ function ProfileStat({ value, label }: { value: number; label: string }) {
       <strong>{value}</strong>
       <span>{label}</span>
     </div>
-  )
+  );
 }
 
 function AtGlanceRow({
@@ -184,9 +185,9 @@ function AtGlanceRow({
   label,
   value,
 }: {
-  icon: ReactNode
-  label: string
-  value: number
+  icon: ReactNode;
+  label: string;
+  value: number;
 }) {
   return (
     <div className="at-glance-row">
@@ -196,5 +197,5 @@ function AtGlanceRow({
       </span>
       <strong>{value}</strong>
     </div>
-  )
+  );
 }

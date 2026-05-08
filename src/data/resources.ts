@@ -1,4 +1,4 @@
-import type { LearningResource } from "../types/talents"
+import type { LearningResource } from "../types/talents";
 
 export const LEARNING_RESOURCES: LearningResource[] = [
   {
@@ -109,4 +109,4 @@ export const LEARNING_RESOURCES: LearningResource[] = [
     domain: "Strategic Thinking",
     tags: ["Learner", "Input", "Ideation"],
   },
-]
+];

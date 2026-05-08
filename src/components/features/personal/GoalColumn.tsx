@@ -1,18 +1,18 @@
-import { Switch } from "antd"
-import { useDroppable } from "@dnd-kit/core"
-import { EmptyState } from "../../common/EmptyState"
-import { progressStyle } from "../../../lib/utils/styleUtils"
-import type { Goal, Progress } from "../../../types/talents"
-import { DraggableGoalCard } from "./DraggableGoalCard"
+import { Switch } from "antd";
+import { useDroppable } from "@dnd-kit/core";
+import { EmptyState } from "../../common/EmptyState";
+import { progressStyle } from "../../../lib/utils/styleUtils";
+import type { Goal, Progress } from "../../../types/talents";
+import { DraggableGoalCard } from "./DraggableGoalCard";
 
 type GoalColumnProps = {
-  column: Progress
-  count: number
-  goals: Goal[]
-  showApproved: boolean
-  onEdit: (goal: Goal) => void
-  onShowApprovedChange: (checked: boolean) => void
-}
+  column: Progress;
+  count: number;
+  goals: Goal[];
+  showApproved: boolean;
+  onEdit: (goal: Goal) => void;
+  onShowApprovedChange: (checked: boolean) => void;
+};
 
 export function GoalColumn({
   column,
@@ -22,11 +22,11 @@ export function GoalColumn({
   onEdit,
   onShowApprovedChange,
 }: GoalColumnProps) {
-  const style = progressStyle(column)
+  const style = progressStyle(column);
   const { isOver, setNodeRef } = useDroppable({
     id: `column-${column}`,
     data: { progress: column },
-  })
+  });
 
   return (
     <section
@@ -56,7 +56,7 @@ export function GoalColumn({
           <EmptyState description="Nothing here yet" />
         ) : (
           goals.map((goal) => {
-            const locked = goal.progress === "Done" && goal.approved
+            const locked = goal.progress === "Done" && goal.approved;
 
             return (
               <DraggableGoalCard
@@ -65,10 +65,10 @@ export function GoalColumn({
                 locked={locked}
                 onEdit={() => onEdit(goal)}
               />
-            )
+            );
           })
         )}
       </div>
     </section>
-  )
+  );
 }

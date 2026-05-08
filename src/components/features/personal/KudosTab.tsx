@@ -1,33 +1,33 @@
-import { useMemo } from "react"
-import { Card } from "antd"
-import { HeartOutlined } from "@ant-design/icons"
-import { AvatarBubble } from "../../common/AvatarBubble"
-import { DomainTag } from "../../common/DomainTag"
-import { EmptyState } from "../../common/EmptyState"
-import { timeAgo } from "../../../lib/utils/format"
-import { useCurrentUser } from "../../../services/authService"
+import { useMemo } from "react";
+import { Card } from "antd";
+import { HeartOutlined } from "@ant-design/icons";
+import { AvatarBubble } from "../../common/AvatarBubble";
+import { DomainTag } from "../../common/DomainTag";
+import { EmptyState } from "../../common/EmptyState";
+import { timeAgo } from "../../../lib/utils/format";
+import { useCurrentUser } from "../../../services/authService";
 import {
   useKudos,
   useTalents,
   useUsers,
-} from "../../../services/workspaceService"
-import { ActivityFeed } from "../activity/ActivityFeed"
+} from "../../../services/workspaceService";
+import { ActivityFeed } from "../activity/ActivityFeed";
 
 export function KudosTab() {
-  const user = useCurrentUser()
-  const kudos = useKudos()
-  const users = useUsers()
-  const talents = useTalents()
+  const user = useCurrentUser();
+  const kudos = useKudos();
+  const users = useUsers();
+  const talents = useTalents();
 
   const myKudos = useMemo(() => {
-    if (!user) return []
+    if (!user) return [];
 
     return kudos
       .filter((item) => item.toId === user.id)
-      .sort((a, b) => b.createdAt - a.createdAt)
-  }, [kudos, user])
+      .sort((a, b) => b.createdAt - a.createdAt);
+  }, [kudos, user]);
 
-  if (!user) return null
+  if (!user) return null;
 
   if (myKudos.length === 0) {
     return (
@@ -36,7 +36,7 @@ export function KudosTab() {
         title="No kudos yet"
         description="When teammates send you appreciation, it'll show up here."
       />
-    )
+    );
   }
 
   return (
@@ -48,10 +48,10 @@ export function KudosTab() {
 
       <div className="kudos-grid">
         {myKudos.map((item) => {
-          const from = users.find((candidate) => candidate.id === item.fromId)
+          const from = users.find((candidate) => candidate.id === item.fromId);
           const talent = talents.find(
             (candidate) => candidate.id === item.talentId,
-          )
+          );
 
           return (
             <Card className="kudos-card" key={item.id}>
@@ -63,10 +63,16 @@ export function KudosTab() {
                   <strong>{from?.name}</strong>
                   <span>{timeAgo(item.createdAt)}</span>
                 </div>
-                {talent && <DomainTag compact domain={talent.category} label={talent.label} />}
+                {talent && (
+                  <DomainTag
+                    compact
+                    domain={talent.category}
+                    label={talent.label}
+                  />
+                )}
               </div>
             </Card>
-          )
+          );
         })}
       </div>
 
@@ -79,5 +85,5 @@ export function KudosTab() {
         />
       </section>
     </div>
-  )
+  );
 }

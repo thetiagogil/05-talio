@@ -1,42 +1,42 @@
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { Alert, Button, Form, Input } from "antd"
-import { ArrowRightOutlined, StarOutlined } from "@ant-design/icons"
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Alert, Button, Form, Input } from "antd";
+import { ArrowRightOutlined, StarOutlined } from "@ant-design/icons";
 import {
   continueWithTestUser,
   loginByEmail,
   useCurrentUser,
-} from "../services/authService"
-import { useEnsureWorkspaceSeed } from "../services/testDataService"
-import type { User } from "../types/talents"
+} from "../services/authService";
+import { useEnsureWorkspaceSeed } from "../services/testDataService";
+import type { User } from "../types/talents";
 
 export function LoginPage() {
-  useEnsureWorkspaceSeed()
+  useEnsureWorkspaceSeed();
 
-  const user = useCurrentUser()
-  const navigate = useNavigate()
-  const [error, setError] = useState<string | null>(null)
+  const user = useCurrentUser();
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (user) navigate(nextRoute(user), { replace: true })
-  }, [navigate, user])
+    if (user) navigate(nextRoute(user), { replace: true });
+  }, [navigate, user]);
 
   function handleEmailLogin(values: { email: string }) {
-    setError(null)
+    setError(null);
 
-    const nextUser = loginByEmail(values.email)
+    const nextUser = loginByEmail(values.email);
 
     if (!nextUser) {
-      setError("We couldn't find that email. Try the test user below.")
-      return
+      setError("We couldn't find that email. Try the test user below.");
+      return;
     }
 
-    navigate(nextRoute(nextUser), { replace: true })
+    navigate(nextRoute(nextUser), { replace: true });
   }
 
   function handleTestLogin() {
-    const nextUser = continueWithTestUser()
-    navigate(nextRoute(nextUser), { replace: true })
+    const nextUser = continueWithTestUser();
+    navigate(nextRoute(nextUser), { replace: true });
   }
 
   return (
@@ -103,12 +103,7 @@ export function LoginPage() {
               />
             )}
 
-            <Button
-              block
-              htmlType="submit"
-              size="large"
-              type="primary"
-            >
+            <Button block htmlType="submit" size="large" type="primary">
               Continue <ArrowRightOutlined />
             </Button>
           </Form>
@@ -119,7 +114,12 @@ export function LoginPage() {
             <span />
           </div>
 
-          <Button block size="large" className="test-user-button" onClick={handleTestLogin}>
+          <Button
+            block
+            size="large"
+            className="test-user-button"
+            onClick={handleTestLogin}
+          >
             Continue with test user
           </Button>
 
@@ -130,9 +130,9 @@ export function LoginPage() {
         </div>
       </section>
     </main>
-  )
+  );
 }
 
 function nextRoute(user: User) {
-  return user.role && user.avatar ? "/personal/profile" : "/setup"
+  return user.role && user.avatar ? "/personal/profile" : "/setup";
 }

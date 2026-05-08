@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react"
-import { Navigate } from "react-router-dom"
-import { useCurrentUser } from "../services/authService"
-import { useEnsureWorkspaceSeed } from "../services/testDataService"
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { useCurrentUser } from "../services/authService";
+import { useEnsureWorkspaceSeed } from "../services/testDataService";
 
 export function IndexRedirect() {
-  useEnsureWorkspaceSeed()
+  useEnsureWorkspaceSeed();
 
-  const user = useCurrentUser()
-  const [ready, setReady] = useState(false)
+  const user = useCurrentUser();
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setReady(true), 700)
-    return () => window.clearTimeout(timeout)
-  }, [])
+    const timeout = window.setTimeout(() => setReady(true), 700);
+    return () => window.clearTimeout(timeout);
+  }, []);
 
-  if (!ready) return <SplashScreen />
-  if (!user) return <Navigate replace to="/login" />
-  if (!user.role || !user.avatar) return <Navigate replace to="/setup" />
+  if (!ready) return <SplashScreen />;
+  if (!user) return <Navigate replace to="/login" />;
+  if (!user.role || !user.avatar) return <Navigate replace to="/setup" />;
 
-  return <Navigate replace to="/personal/profile" />
+  return <Navigate replace to="/personal/profile" />;
 }
 
 function SplashScreen() {
@@ -32,5 +32,5 @@ function SplashScreen() {
         <p>Loading your workspace...</p>
       </div>
     </main>
-  )
+  );
 }

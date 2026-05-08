@@ -1,4 +1,4 @@
-import type { User } from "../../types/talents"
+import type { User } from "../../types/talents";
 
 export const TEST_USER: User = {
   id: "u-test",
@@ -14,7 +14,8 @@ export const TEST_USER: User = {
       "Direct and specific. Tell me what worked, what didn't, and what you'd try next.",
     happiness:
       "When I'm shaping ambiguous problems into a roadmap the team can rally behind.",
-    passions: "Trail running, indie sci-fi, and learning to play the piano badly.",
+    passions:
+      "Trail running, indie sci-fi, and learning to play the piano badly.",
   },
   talents: [19, 21, 7, 24, 16, 18, 1, 22, 13, 8],
-}
+};

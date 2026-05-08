@@ -1,8 +1,8 @@
-import { SEED_TALENTS } from "./talents"
-import { TEST_USER } from "../lib/constants/testUser"
-import type { ActivityEvent, Goal, Kudos, User } from "../types/talents"
+import { SEED_TALENTS } from "./talents";
+import { TEST_USER } from "../lib/constants/testUser";
+import type { ActivityEvent, Goal, Kudos, User } from "../types/talents";
 
-const pick = (...ids: number[]) => ids
+const pick = (...ids: number[]) => ids;
 
 const avatar = {
   sofia: "\u{1F469}\u200D\u{1F3A8}",
@@ -12,19 +12,19 @@ const avatar = {
   lena: "\u{1F469}\u200D\u{1F680}",
   diego: "\u{1F9D1}\u200D\u{1F3A4}",
   ava: "\u{1F469}\u200D\u{1F3EB}",
-}
+};
 
 export type SeedState = {
-  users: User[]
-  talents: typeof SEED_TALENTS
-  goals: Goal[]
-  kudos: Kudos[]
-  activity: ActivityEvent[]
-}
+  users: User[];
+  talents: typeof SEED_TALENTS;
+  goals: Goal[];
+  kudos: Kudos[];
+  activity: ActivityEvent[];
+};
 
 export function createSeedState(): SeedState {
-  const now = Date.now()
-  const day = 86400000
+  const now = Date.now();
+  const day = 86400000;
 
   const users: User[] = [
     TEST_USER,
@@ -57,7 +57,8 @@ export function createSeedState(): SeedState {
         needs: "A real user problem and freedom to choose the tools.",
         feedback:
           "Pull requests with comments work great. Be blunt. I won't take it personally.",
-        happiness: "When latency drops and a graph quietly goes the right direction.",
+        happiness:
+          "When latency drops and a graph quietly goes the right direction.",
         passions: "Bouldering, mechanical keyboards, and bad puns.",
       },
       talents: pick(3, 23, 1, 4, 19, 2, 20, 6, 22, 10),
@@ -128,7 +129,7 @@ export function createSeedState(): SeedState {
       },
       talents: pick(14, 15, 13, 16, 18, 17, 4, 2, 22, 7),
     },
-  ]
+  ];
 
   const goals: Goal[] = [
     {
@@ -206,7 +207,7 @@ export function createSeedState(): SeedState {
       approved: false,
       createdAt: now - 8 * day,
     },
-  ]
+  ];
 
   const kudos: Kudos[] = [
     {
@@ -233,7 +234,7 @@ export function createSeedState(): SeedState {
       message: "Thanks for hearing me out on the redesign. It really helped.",
       createdAt: now - day,
     },
-  ]
+  ];
 
   const activity: ActivityEvent[] = [
     {
@@ -288,7 +289,7 @@ export function createSeedState(): SeedState {
       actorId: "u-7",
       createdAt: now - 30 * day,
     },
-  ]
+  ];
 
   return {
     users,
@@ -296,7 +297,7 @@ export function createSeedState(): SeedState {
     goals,
     kudos,
     activity,
-  }
+  };
 }
 
 function emptyManual() {
@@ -306,5 +307,5 @@ function emptyManual() {
     feedback: "",
     happiness: "",
     passions: "",
-  }
+  };
 }

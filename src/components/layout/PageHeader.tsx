@@ -1,21 +1,21 @@
-import type { ReactNode } from "react"
-import { Tabs } from "antd"
+import type { ReactNode } from "react";
+import { Tabs } from "antd";
 
 export type PageTab = {
-  id: string
-  label: string
-  disabled?: boolean
-}
+  id: string;
+  label: string;
+  disabled?: boolean;
+};
 
 type PageHeaderProps = {
-  eyebrow?: string
-  title: string
-  description?: string
-  tabs?: PageTab[]
-  activeTab?: string
-  onTabChange?: (tabId: string) => void
-  right?: ReactNode
-}
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  tabs?: PageTab[];
+  activeTab?: string;
+  onTabChange?: (tabId: string) => void;
+  right?: ReactNode;
+};
 
 export function PageHeader({
   eyebrow,
@@ -52,5 +52,5 @@ export function PageHeader({
         )}
       </div>
     </header>
-  )
+  );
 }

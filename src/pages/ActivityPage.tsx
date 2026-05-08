@@ -1,20 +1,20 @@
-import { useMemo, type ReactNode } from "react"
-import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { useMemo, type ReactNode } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import {
   BookOutlined,
   HeartOutlined,
   StarOutlined,
   TrophyOutlined,
-} from "@ant-design/icons"
-import { Card } from "antd"
-import { ActivityFeed } from "../components/features/activity/ActivityFeed"
-import { AppShell } from "../components/layout/AppShell"
-import { PageHeader } from "../components/layout/PageHeader"
-import { useCurrentUser } from "../services/authService"
-import { useActivity, useKudos, useUsers } from "../services/workspaceService"
-import type { ActivityEvent } from "../types/talents"
+} from "@ant-design/icons";
+import { Card } from "antd";
+import { ActivityFeed } from "../components/features/activity/ActivityFeed";
+import { AppShell } from "../components/layout/AppShell";
+import { PageHeader } from "../components/layout/PageHeader";
+import { useCurrentUser } from "../services/authService";
+import { useActivity, useKudos, useUsers } from "../services/workspaceService";
+import type { ActivityEvent } from "../types/talents";
 
-type ActivityTab = "all" | "kudos" | "goals" | "manuals" | "mine"
+type ActivityTab = "all" | "kudos" | "goals" | "manuals" | "mine";
 
 const activityTabs: { id: ActivityTab; label: string }[] = [
   { id: "all", label: "All" },
@@ -22,21 +22,21 @@ const activityTabs: { id: ActivityTab; label: string }[] = [
   { id: "goals", label: "Goals" },
   { id: "manuals", label: "Manuals" },
   { id: "mine", label: "Mine" },
-]
+];
 
-const weekStart = Date.now() - 7 * 86400000
+const weekStart = Date.now() - 7 * 86400000;
 
 const isActivityTab = (tab: string | undefined): tab is ActivityTab =>
-  activityTabs.some((item) => item.id === tab)
+  activityTabs.some((item) => item.id === tab);
 
 export function ActivityPage() {
-  const { tab } = useParams()
-  const navigate = useNavigate()
-  const currentUser = useCurrentUser()
-  const events = useActivity()
-  const users = useUsers()
-  const kudos = useKudos()
-  const activeTab = isActivityTab(tab) ? tab : "all"
+  const { tab } = useParams();
+  const navigate = useNavigate();
+  const currentUser = useCurrentUser();
+  const events = useActivity();
+  const users = useUsers();
+  const kudos = useKudos();
+  const activeTab = isActivityTab(tab) ? tab : "all";
 
   const stats = useMemo(
     () => ({
@@ -57,24 +57,26 @@ export function ActivityPage() {
       ).size,
     }),
     [events, kudos],
-  )
+  );
 
   function filter(event: ActivityEvent) {
-    if (activeTab === "all") return true
+    if (activeTab === "all") return true;
     if (activeTab === "mine" && currentUser) {
-      return event.actorId === currentUser.id || event.targetId === currentUser.id
+      return (
+        event.actorId === currentUser.id || event.targetId === currentUser.id
+      );
     }
-    if (activeTab === "kudos") return event.type === "kudos_sent"
-    if (activeTab === "goals") return event.type.startsWith("goal_")
+    if (activeTab === "kudos") return event.type === "kudos_sent";
+    if (activeTab === "goals") return event.type.startsWith("goal_");
     if (activeTab === "manuals") {
-      return event.type === "manual_updated" || event.type === "joined"
+      return event.type === "manual_updated" || event.type === "joined";
     }
 
-    return true
+    return true;
   }
 
   if (!isActivityTab(tab)) {
-    return <Navigate replace to="/activity/all" />
+    return <Navigate replace to="/activity/all" />;
   }
 
   return (
@@ -120,7 +122,7 @@ export function ActivityPage() {
         </div>
       </div>
     </AppShell>
-  )
+  );
 }
 
 function ActivityStat({
@@ -129,10 +131,10 @@ function ActivityStat({
   value,
   className,
 }: {
-  icon: ReactNode
-  label: string
-  value: string | number
-  className: string
+  icon: ReactNode;
+  label: string;
+  value: string | number;
+  className: string;
 }) {
   return (
     <Card className="activity-stat">
@@ -142,5 +144,5 @@ function ActivityStat({
         <small>{label}</small>
       </span>
     </Card>
-  )
+  );
 }

@@ -1,29 +1,29 @@
-import { useState } from "react"
-import { Button, Input, Modal } from "antd"
-import { AVATAR_OPTIONS } from "../../../data/avatars"
-import { useCurrentUser } from "../../../services/authService"
-import { updateUser } from "../../../services/workspaceService"
+import { useState } from "react";
+import { Button, Input, Modal } from "antd";
+import { AVATAR_OPTIONS } from "../../../data/avatars";
+import { useCurrentUser } from "../../../services/authService";
+import { updateUser } from "../../../services/workspaceService";
 
 type EditProfileModalProps = {
-  open: boolean
-  onClose: () => void
-}
+  open: boolean;
+  onClose: () => void;
+};
 
 export function EditProfileModal({ open, onClose }: EditProfileModalProps) {
-  const user = useCurrentUser()
-  const [name, setName] = useState(user?.name ?? "")
-  const [avatar, setAvatar] = useState(user?.avatar ?? "")
+  const user = useCurrentUser();
+  const [name, setName] = useState(user?.name ?? "");
+  const [avatar, setAvatar] = useState(user?.avatar ?? "");
 
-  if (!user) return null
+  if (!user) return null;
 
-  const currentUser = user
+  const currentUser = user;
 
   function save() {
     updateUser(currentUser.id, {
       name: name.trim() || currentUser.name,
       avatar,
-    })
-    onClose()
+    });
+    onClose();
   }
 
   return (
@@ -44,7 +44,10 @@ export function EditProfileModal({ open, onClose }: EditProfileModalProps) {
       <div className="edit-profile-form">
         <label>
           <span>Display name</span>
-          <Input value={name} onChange={(event) => setName(event.target.value)} />
+          <Input
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+          />
         </label>
 
         <div>
@@ -52,7 +55,9 @@ export function EditProfileModal({ open, onClose }: EditProfileModalProps) {
           <div className="avatar-grid compact">
             {AVATAR_OPTIONS.map((option) => (
               <button
-                className={avatar === option ? "avatar-option active" : "avatar-option"}
+                className={
+                  avatar === option ? "avatar-option active" : "avatar-option"
+                }
                 key={option}
                 type="button"
                 onClick={() => setAvatar(option)}
@@ -64,5 +69,5 @@ export function EditProfileModal({ open, onClose }: EditProfileModalProps) {
         </div>
       </div>
     </Modal>
-  )
+  );
 }

@@ -1,21 +1,21 @@
-import { useState } from "react"
-import { Button, Input, Modal, Select } from "antd"
-import { DeleteOutlined } from "@ant-design/icons"
-import { PROGRESS_COLUMNS } from "../../../lib/constants/talentConstants"
-import { useCurrentUser } from "../../../services/authService"
+import { useState } from "react";
+import { Button, Input, Modal, Select } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+import { PROGRESS_COLUMNS } from "../../../lib/constants/talentConstants";
+import { useCurrentUser } from "../../../services/authService";
 import {
   addGoal,
   deleteGoal,
   updateGoal,
-} from "../../../services/workspaceService"
-import type { Goal, Progress, Talent } from "../../../types/talents"
+} from "../../../services/workspaceService";
+import type { Goal, Progress, Talent } from "../../../types/talents";
 
 type GoalFormModalProps = {
-  goal: Goal | null
-  myTalents: Talent[]
-  open: boolean
-  onClose: () => void
-}
+  goal: Goal | null;
+  myTalents: Talent[];
+  open: boolean;
+  onClose: () => void;
+};
 
 export function GoalFormModal({
   goal,
@@ -23,22 +23,22 @@ export function GoalFormModal({
   open,
   onClose,
 }: GoalFormModalProps) {
-  const user = useCurrentUser()
+  const user = useCurrentUser();
   const [talentId, setTalentId] = useState<number | null>(
     goal?.talentId ?? myTalents[0]?.id ?? null,
-  )
-  const [progress, setProgress] = useState<Progress>(goal?.progress ?? "To do")
-  const [description, setDescription] = useState(goal?.description ?? "")
+  );
+  const [progress, setProgress] = useState<Progress>(goal?.progress ?? "To do");
+  const [description, setDescription] = useState(goal?.description ?? "");
 
   function save() {
-    if (!user || !talentId || !description.trim()) return
+    if (!user || !talentId || !description.trim()) return;
 
     if (goal) {
       updateGoal(goal.id, {
         talentId,
         progress,
         description: description.trim(),
-      })
+      });
     } else {
       addGoal({
         userId: user.id,
@@ -46,16 +46,16 @@ export function GoalFormModal({
         progress,
         description: description.trim(),
         approved: false,
-      })
+      });
     }
 
-    onClose()
+    onClose();
   }
 
   function remove() {
-    if (!goal) return
-    deleteGoal(goal.id)
-    onClose()
+    if (!goal) return;
+    deleteGoal(goal.id);
+    onClose();
   }
 
   return (
@@ -130,5 +130,5 @@ export function GoalFormModal({
         </label>
       </div>
     </Modal>
-  )
+  );
 }

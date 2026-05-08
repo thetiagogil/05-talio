@@ -286,7 +286,10 @@
   border: 2px solid var(--border);
   color: var(--foreground);
   background: var(--card);
-  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
 }
 
 .role-card {
@@ -385,4 +388,3 @@
   justify-content: space-between;
   margin-top: 2.5rem;
 }
-

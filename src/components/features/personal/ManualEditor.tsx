@@ -1,14 +1,14 @@
-import { useState } from "react"
-import { Button, Card, Input } from "antd"
-import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons"
-import { useCurrentUser } from "../../../services/authService"
-import { updateManual } from "../../../services/workspaceService"
-import type { Manual } from "../../../types/talents"
+import { useState } from "react";
+import { Button, Card, Input } from "antd";
+import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
+import { useCurrentUser } from "../../../services/authService";
+import { updateManual } from "../../../services/workspaceService";
+import type { Manual } from "../../../types/talents";
 
 const prompts: {
-  key: keyof Manual
-  question: string
-  placeholder: string
+  key: keyof Manual;
+  question: string;
+  placeholder: string;
 }[] = [
   {
     key: "about",
@@ -35,18 +35,21 @@ const prompts: {
     question: "Beyond work, I'm really passionate about...",
     placeholder: "Music, hiking, painting...",
   },
-]
+];
 
 type ManualEditorProps = {
-  readOnly?: boolean
-  manual?: Manual
-}
+  readOnly?: boolean;
+  manual?: Manual;
+};
 
-export function ManualEditor({ readOnly = false, manual: manualProp }: ManualEditorProps) {
-  const currentUser = useCurrentUser()
-  const manual = manualProp ?? currentUser?.manual
+export function ManualEditor({
+  readOnly = false,
+  manual: manualProp,
+}: ManualEditorProps) {
+  const currentUser = useCurrentUser();
+  const manual = manualProp ?? currentUser?.manual;
 
-  if (!manual) return null
+  if (!manual) return null;
 
   return (
     <div className="manual-stack">
@@ -61,7 +64,7 @@ export function ManualEditor({ readOnly = false, manual: manualProp }: ManualEdi
         />
       ))}
     </div>
-  )
+  );
 }
 
 function ManualCard({
@@ -71,26 +74,26 @@ function ManualCard({
   readOnly,
   value,
 }: {
-  field: keyof Manual
-  question: string
-  placeholder: string
-  readOnly: boolean
-  value: string
+  field: keyof Manual;
+  question: string;
+  placeholder: string;
+  readOnly: boolean;
+  value: string;
 }) {
-  const currentUser = useCurrentUser()
-  const [editing, setEditing] = useState(!value && !readOnly)
-  const [draft, setDraft] = useState(value)
-  const empty = !value.trim()
+  const currentUser = useCurrentUser();
+  const [editing, setEditing] = useState(!value && !readOnly);
+  const [draft, setDraft] = useState(value);
+  const empty = !value.trim();
 
   function save() {
-    if (!currentUser) return
-    updateManual(currentUser.id, { [field]: draft.trim() })
-    setEditing(false)
+    if (!currentUser) return;
+    updateManual(currentUser.id, { [field]: draft.trim() });
+    setEditing(false);
   }
 
   function cancel() {
-    setDraft(value)
-    setEditing(false)
+    setDraft(value);
+    setEditing(false);
   }
 
   return (
@@ -103,8 +106,8 @@ function ManualCard({
             size="small"
             type="text"
             onClick={() => {
-              setDraft(value)
-              setEditing(true)
+              setDraft(value);
+              setEditing(true);
             }}
           >
             {empty ? "Add" : "Edit"}
@@ -135,5 +138,5 @@ function ManualCard({
         </p>
       )}
     </Card>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import type { Talent } from "../types/talents"
+import type { Talent } from "../types/talents";
 
 export const SEED_TALENTS: Talent[] = [
   {
@@ -280,4 +280,4 @@ export const SEED_TALENTS: Talent[] = [
       motivate: "Designing the future",
     },
   },
-]
+];

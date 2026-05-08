@@ -1,20 +1,20 @@
-import { Input } from "antd"
-import { CheckOutlined, SearchOutlined } from "@ant-design/icons"
-import { AvatarBubble } from "../../common/AvatarBubble"
-import type { User } from "../../../types/talents"
+import { Input } from "antd";
+import { CheckOutlined, SearchOutlined } from "@ant-design/icons";
+import { AvatarBubble } from "../../common/AvatarBubble";
+import type { User } from "../../../types/talents";
 
 type SearchPanelProps = {
-  users: User[]
-  query: string
-  mode: "overview" | "compare"
-  selectedUserId: string | null
-  compareIds: string[]
-  warning: string | null
-  currentUserId?: string
-  onQueryChange: (query: string) => void
-  onPick: (id: string) => void
-  onToggleCompare: (id: string) => void
-}
+  users: User[];
+  query: string;
+  mode: "overview" | "compare";
+  selectedUserId: string | null;
+  compareIds: string[];
+  warning: string | null;
+  currentUserId?: string;
+  onQueryChange: (query: string) => void;
+  onPick: (id: string) => void;
+  onToggleCompare: (id: string) => void;
+};
 
 export function SearchPanel({
   users,
@@ -28,7 +28,7 @@ export function SearchPanel({
   onPick,
   onToggleCompare,
 }: SearchPanelProps) {
-  const compareMode = mode === "compare"
+  const compareMode = mode === "compare";
 
   return (
     <aside className="team-search-panel">
@@ -42,7 +42,9 @@ export function SearchPanel({
 
       <div className="team-panel-mode">
         <div>
-          <strong>{compareMode ? "Compare teammates" : "Browse teammates"}</strong>
+          <strong>
+            {compareMode ? "Compare teammates" : "Browse teammates"}
+          </strong>
           <span>
             {compareMode
               ? `${compareIds.length}/5 selected`
@@ -57,7 +59,7 @@ export function SearchPanel({
         {users.map((user) => {
           const active = compareMode
             ? compareIds.includes(user.id)
-            : selectedUserId === user.id
+            : selectedUserId === user.id;
 
           return (
             <button
@@ -77,14 +79,16 @@ export function SearchPanel({
                 <em>{user.role}</em>
               </span>
               {compareMode && (
-                <span className={active ? "person-check active" : "person-check"}>
+                <span
+                  className={active ? "person-check active" : "person-check"}
+                >
                   {active && <CheckOutlined />}
                 </span>
               )}
             </button>
-          )
+          );
         })}
       </div>
     </aside>
-  )
+  );
 }

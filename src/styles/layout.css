@@ -4,7 +4,11 @@
   flex-direction: column;
   overflow: hidden;
   background-color: var(--background);
-  background-image: linear-gradient(180deg, var(--surface) 0, var(--background) 18rem);
+  background-image: linear-gradient(
+    180deg,
+    var(--surface) 0,
+    var(--background) 18rem
+  );
 }
 
 .topbar {
@@ -131,7 +135,9 @@
   --sidebar-nav-gutter: 0.625rem;
   --sidebar-item-size: 2.75rem;
   --sidebar-icon-size: 1.25rem;
-  --sidebar-icon-padding: calc((var(--sidebar-item-size) - var(--sidebar-icon-size)) / 2);
+  --sidebar-icon-padding: calc(
+    (var(--sidebar-item-size) - var(--sidebar-icon-size)) / 2
+  );
   --sidebar-border-width: 1px;
 }
 
@@ -146,7 +152,8 @@
 
 .desktop-sidebar.collapsed {
   width: calc(
-    var(--sidebar-item-size) + (var(--sidebar-nav-gutter) * 2) + var(--sidebar-border-width)
+    var(--sidebar-item-size) + (var(--sidebar-nav-gutter) * 2) +
+      var(--sidebar-border-width)
   );
 }
 
@@ -223,7 +230,9 @@
   overflow: hidden;
   opacity: 1;
   text-overflow: ellipsis;
-  transition: max-width 220ms ease, opacity 160ms ease;
+  transition:
+    max-width 220ms ease,
+    opacity 160ms ease;
   white-space: nowrap;
 }
 
@@ -314,4 +323,3 @@
   width: min(100%, 72rem);
   margin: 0 auto;
 }
-

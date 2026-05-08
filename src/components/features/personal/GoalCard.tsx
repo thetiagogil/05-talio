@@ -1,33 +1,36 @@
-import { Button, Card } from "antd"
+import { Button, Card } from "antd";
 import {
   CheckCircleOutlined,
   EditOutlined,
   LockOutlined,
   StarOutlined,
-} from "@ant-design/icons"
-import { domainStyle } from "../../../lib/utils/styleUtils"
-import { useTalents } from "../../../services/workspaceService"
-import type { Goal } from "../../../types/talents"
-import { ApprovalRequestPopover } from "./ApprovalRequestPopover"
+} from "@ant-design/icons";
+import { domainStyle } from "../../../lib/utils/styleUtils";
+import { useTalents } from "../../../services/workspaceService";
+import type { Goal } from "../../../types/talents";
+import { ApprovalRequestPopover } from "./ApprovalRequestPopover";
 
 type GoalCardProps = {
-  goal: Goal
-  onEdit: () => void
-}
+  goal: Goal;
+  onEdit: () => void;
+};
 
 export function GoalCard({ goal, onEdit }: GoalCardProps) {
-  const talents = useTalents()
-  const talent = talents.find((candidate) => candidate.id === goal.talentId)
+  const talents = useTalents();
+  const talent = talents.find((candidate) => candidate.id === goal.talentId);
 
-  if (!talent) return null
+  if (!talent) return null;
 
-  const style = domainStyle(talent.category)
-  const locked = goal.progress === "Done" && goal.approved
+  const style = domainStyle(talent.category);
+  const locked = goal.progress === "Done" && goal.approved;
 
   return (
     <Card className="goal-card">
       <div className="goal-card-head">
-        <span className="goal-talent" style={{ background: style.soft, color: style.text }}>
+        <span
+          className="goal-talent"
+          style={{ background: style.soft, color: style.text }}
+        >
           <span className="domain-dot" style={{ background: style.base }} />
           {talent.label}
         </span>
@@ -63,5 +66,5 @@ export function GoalCard({ goal, onEdit }: GoalCardProps) {
         </div>
       )}
     </Card>
-  )
+  );
 }

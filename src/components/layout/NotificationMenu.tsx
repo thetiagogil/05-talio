@@ -1,10 +1,10 @@
-import { useMemo } from "react"
-import { Badge, Button, Popover } from "antd"
+import { useMemo } from "react";
+import { Badge, Button, Popover } from "antd";
 import {
   BellOutlined,
   CheckCircleOutlined,
   CheckOutlined,
-} from "@ant-design/icons"
+} from "@ant-design/icons";
 import {
   approveGoal,
   markNotificationsRead,
@@ -13,22 +13,22 @@ import {
   useNotificationsReadAt,
   useTalents,
   useUsers,
-} from "../../services/workspaceService"
-import { timeAgo } from "../../lib/utils/format"
-import { useCurrentUser } from "../../services/authService"
-import type { ActivityEvent } from "../../types/talents"
-import { AvatarBubble } from "../common/AvatarBubble"
+} from "../../services/workspaceService";
+import { timeAgo } from "../../lib/utils/format";
+import { useCurrentUser } from "../../services/authService";
+import type { ActivityEvent } from "../../types/talents";
+import { AvatarBubble } from "../common/AvatarBubble";
 
 export function NotificationMenu() {
-  const me = useCurrentUser()
-  const events = useActivity()
-  const goals = useGoals()
-  const users = useUsers()
-  const talents = useTalents()
-  const readAt = useNotificationsReadAt()
+  const me = useCurrentUser();
+  const events = useActivity();
+  const goals = useGoals();
+  const users = useUsers();
+  const talents = useTalents();
+  const readAt = useNotificationsReadAt();
 
   const notifications = useMemo(() => {
-    if (!me) return []
+    if (!me) return [];
 
     return events
       .filter(
@@ -37,25 +37,25 @@ export function NotificationMenu() {
           (event.type === "joined" && event.actorId !== me.id),
       )
       .sort((a, b) => b.createdAt - a.createdAt)
-      .slice(0, 30)
-  }, [events, me])
+      .slice(0, 30);
+  }, [events, me]);
 
   const approvalRequests = useMemo(() => {
-    if (!me) return []
+    if (!me) return [];
 
     return goals.filter(
       (goal) =>
         goal.progress === "Done" &&
         !goal.approved &&
         (goal.approvalRequests ?? []).includes(me.id),
-    )
-  }, [goals, me])
+    );
+  }, [goals, me]);
 
-  if (!me) return null
+  if (!me) return null;
 
   const unread =
     notifications.filter((event) => event.createdAt > readAt).length +
-    approvalRequests.length
+    approvalRequests.length;
 
   return (
     <Popover
@@ -64,7 +64,7 @@ export function NotificationMenu() {
       trigger="click"
       overlayClassName="notification-popover"
       onOpenChange={(open) => {
-        if (open) markNotificationsRead()
+        if (open) markNotificationsRead();
       }}
       content={
         <div className="notifications-panel">
@@ -85,20 +85,22 @@ export function NotificationMenu() {
             )}
 
             {approvalRequests.map((goal) => {
-              const owner = users.find((user) => user.id === goal.userId)
+              const owner = users.find((user) => user.id === goal.userId);
               const talent = talents.find(
                 (candidate) => candidate.id === goal.talentId,
-              )
+              );
 
               return (
-                <div key={`request-${goal.id}`} className="notification-request">
+                <div
+                  key={`request-${goal.id}`}
+                  className="notification-request"
+                >
                   <p>
                     <strong>{owner?.name}</strong> asked you to approve a goal
                     {talent && (
                       <>
                         {" "}
-                        for{" "}
-                        <em className="display-italic">{talent.label}</em>
+                        for <em className="display-italic">{talent.label}</em>
                       </>
                     )}
                     .
@@ -113,7 +115,7 @@ export function NotificationMenu() {
                     Approve goal
                   </Button>
                 </div>
-              )
+              );
             })}
 
             {notifications.map((event) => (
@@ -133,12 +135,12 @@ export function NotificationMenu() {
         />
       </Badge>
     </Popover>
-  )
+  );
 }
 
 function NotificationRow({ event }: { event: ActivityEvent }) {
-  const users = useUsers()
-  const actor = users.find((user) => user.id === event.actorId)
+  const users = useUsers();
+  const actor = users.find((user) => user.id === event.actorId);
 
   return (
     <div className="notification-row">
@@ -153,18 +155,18 @@ function NotificationRow({ event }: { event: ActivityEvent }) {
         <time>{timeAgo(event.createdAt)}</time>
       </div>
     </div>
-  )
+  );
 }
 
 function notificationBrief(event: ActivityEvent) {
   switch (event.type) {
     case "kudos_sent":
-      return "sent you kudos"
+      return "sent you kudos";
     case "goal_approved":
-      return "approved your goal"
+      return "approved your goal";
     case "joined":
-      return "joined the team"
+      return "joined the team";
     default:
-      return "shared an update"
+      return "shared an update";
   }
 }

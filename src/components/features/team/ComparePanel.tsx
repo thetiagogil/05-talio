@@ -1,27 +1,27 @@
-import { useMemo } from "react"
-import { Button, Card, Table } from "antd"
-import { CloseOutlined, DeleteOutlined } from "@ant-design/icons"
-import { AvatarBubble } from "../../common/AvatarBubble"
-import { DomainTag } from "../../common/DomainTag"
-import { EmptyState } from "../../common/EmptyState"
-import { DOMAINS } from "../../../lib/constants/talentConstants"
-import { shortDomain } from "../../../lib/utils/styleUtils"
-import type { Domain, Talent, User } from "../../../types/talents"
+import { useMemo } from "react";
+import { Button, Card, Table } from "antd";
+import { CloseOutlined, DeleteOutlined } from "@ant-design/icons";
+import { AvatarBubble } from "../../common/AvatarBubble";
+import { DomainTag } from "../../common/DomainTag";
+import { EmptyState } from "../../common/EmptyState";
+import { DOMAINS } from "../../../lib/constants/talentConstants";
+import { shortDomain } from "../../../lib/utils/styleUtils";
+import type { Domain, Talent, User } from "../../../types/talents";
 
-const palette = ["#5b6cf6", "#ef8a4a", "#3eb6a3", "#c45cb0", "#f5b454"]
+const palette = ["#5b6cf6", "#ef8a4a", "#3eb6a3", "#c45cb0", "#f5b454"];
 
 type ComparePanelProps = {
-  selected: User[]
-  talents: Talent[]
-  onRemove: (id: string) => void
-  onClear: () => void
-}
+  selected: User[];
+  talents: Talent[];
+  onRemove: (id: string) => void;
+  onClear: () => void;
+};
 
 type CombinedTalentRow = {
-  key: number
-  talent: Talent
-  count: number
-}
+  key: number;
+  talent: Talent;
+  count: number;
+};
 
 export function ComparePanel({
   selected,
@@ -38,33 +38,35 @@ export function ComparePanel({
           userId: user.id,
           userName: user.name,
           score: user.talents.reduce((sum, talentId, index) => {
-            const talent = talents.find((candidate) => candidate.id === talentId)
-            if (!talent || talent.category !== domain) return sum
-            return sum + (10 - index)
+            const talent = talents.find(
+              (candidate) => candidate.id === talentId,
+            );
+            if (!talent || talent.category !== domain) return sum;
+            return sum + (10 - index);
           }, 0),
         })),
       })),
     [selected, talents],
-  )
+  );
 
   const combinedTalents = useMemo<CombinedTalentRow[]>(() => {
-    const counts = new Map<number, number>()
+    const counts = new Map<number, number>();
 
     selected.forEach((user) => {
       user.talents.forEach((talentId) => {
-        counts.set(talentId, (counts.get(talentId) ?? 0) + 1)
-      })
-    })
+        counts.set(talentId, (counts.get(talentId) ?? 0) + 1);
+      });
+    });
 
     return Array.from(counts.entries())
       .sort((a, b) => b[1] - a[1] || a[0] - b[0])
       .slice(0, 5)
       .map(([id, count]) => {
-        const talent = talents.find((candidate) => candidate.id === id)
-        return talent ? { key: talent.id, talent, count } : null
+        const talent = talents.find((candidate) => candidate.id === id);
+        return talent ? { key: talent.id, talent, count } : null;
       })
-      .filter((item): item is CombinedTalentRow => Boolean(item))
-  }, [selected, talents])
+      .filter((item): item is CombinedTalentRow => Boolean(item));
+  }, [selected, talents]);
 
   if (selected.length === 0) {
     return (
@@ -73,7 +75,7 @@ export function ComparePanel({
         title="No one selected yet"
         description="Pick up to 5 teammates to compare strengths and overlaps."
       />
-    )
+    );
   }
 
   return (
@@ -127,7 +129,11 @@ export function ComparePanel({
               dataIndex: "talent",
               render: (talent: Talent, row: CombinedTalentRow) => (
                 <div className="combined-talent-cell">
-                  <DomainTag compact domain={talent.category} label={talent.label} />
+                  <DomainTag
+                    compact
+                    domain={talent.category}
+                    label={talent.label}
+                  />
                   <span>
                     {row.count} of {selected.length}
                   </span>
@@ -150,7 +156,7 @@ export function ComparePanel({
         />
       </Card>
     </div>
-  )
+  );
 }
 
 function RadarPlot({
@@ -158,37 +164,37 @@ function RadarPlot({
   users,
 }: {
   data: {
-    domain: Domain
-    label: string
-    values: { userId: string; userName: string; score: number }[]
-  }[]
-  users: User[]
+    domain: Domain;
+    label: string;
+    values: { userId: string; userName: string; score: number }[];
+  }[];
+  users: User[];
 }) {
-  const size = 320
-  const center = size / 2
-  const radius = 108
+  const size = 320;
+  const center = size / 2;
+  const radius = 108;
   const maxScore = Math.max(
     1,
     ...data.flatMap((row) => row.values.map((value) => value.score)),
-  )
+  );
 
   function point(index: number, score: number, scale = 1) {
-    const angle = (Math.PI * 2 * index) / data.length - Math.PI / 2
-    const distance = radius * scale * (score / maxScore)
+    const angle = (Math.PI * 2 * index) / data.length - Math.PI / 2;
+    const distance = radius * scale * (score / maxScore);
 
     return {
       x: center + Math.cos(angle) * distance,
       y: center + Math.sin(angle) * distance,
-    }
+    };
   }
 
   function labelPoint(index: number) {
-    const angle = (Math.PI * 2 * index) / data.length - Math.PI / 2
+    const angle = (Math.PI * 2 * index) / data.length - Math.PI / 2;
 
     return {
       x: center + Math.cos(angle) * (radius + 16),
       y: center + Math.sin(angle) * (radius + 16),
-    }
+    };
   }
 
   return (
@@ -197,37 +203,44 @@ function RadarPlot({
         {[0.25, 0.5, 0.75, 1].map((scale) => {
           const points = data
             .map((_, index) => {
-              const next = point(index, maxScore, scale)
-              return `${next.x},${next.y}`
+              const next = point(index, maxScore, scale);
+              return `${next.x},${next.y}`;
             })
-            .join(" ")
+            .join(" ");
 
-          return <polygon className="radar-grid" key={scale} points={points} />
+          return <polygon className="radar-grid" key={scale} points={points} />;
         })}
 
         {data.map((row, index) => {
-          const axis = point(index, maxScore)
-          const label = labelPoint(index)
+          const axis = point(index, maxScore);
+          const label = labelPoint(index);
 
           return (
             <g key={row.domain}>
-              <line className="radar-axis" x1={center} y1={center} x2={axis.x} y2={axis.y} />
+              <line
+                className="radar-axis"
+                x1={center}
+                y1={center}
+                x2={axis.x}
+                y2={axis.y}
+              />
               <text className="radar-label" x={label.x} y={label.y}>
                 {row.label}
               </text>
             </g>
-          )
+          );
         })}
 
         {users.map((user, userIndex) => {
           const points = data
             .map((row, index) => {
               const score =
-                row.values.find((value) => value.userId === user.id)?.score ?? 0
-              const next = point(index, score)
-              return `${next.x},${next.y}`
+                row.values.find((value) => value.userId === user.id)?.score ??
+                0;
+              const next = point(index, score);
+              return `${next.x},${next.y}`;
             })
-            .join(" ")
+            .join(" ");
 
           return (
             <polygon
@@ -239,7 +252,7 @@ function RadarPlot({
                 stroke: palette[userIndex],
               }}
             />
-          )
+          );
         })}
       </svg>
 
@@ -252,5 +265,5 @@ function RadarPlot({
         ))}
       </div>
     </div>
-  )
+  );
 }

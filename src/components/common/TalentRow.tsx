@@ -1,18 +1,18 @@
-import { useState } from "react"
-import { Card } from "antd"
-import { DownOutlined } from "@ant-design/icons"
-import type { Talent } from "../../types/talents"
-import { domainStyle } from "../../lib/utils/styleUtils"
+import { useState } from "react";
+import { Card } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+import type { Talent } from "../../types/talents";
+import { domainStyle } from "../../lib/utils/styleUtils";
 
 type TalentRowProps = {
-  rank: number
-  talent: Talent
-  defaultOpen?: boolean
-}
+  rank: number;
+  talent: Talent;
+  defaultOpen?: boolean;
+};
 
 export function TalentRow({ rank, talent, defaultOpen }: TalentRowProps) {
-  const [open, setOpen] = useState(Boolean(defaultOpen))
-  const style = domainStyle(talent.category)
+  const [open, setOpen] = useState(Boolean(defaultOpen));
+  const style = domainStyle(talent.category);
 
   return (
     <Card className={open ? "talent-row talent-row-open" : "talent-row"}>
@@ -29,7 +29,9 @@ export function TalentRow({ rank, talent, defaultOpen }: TalentRowProps) {
           </span>
           <span className="talent-row-domain">{talent.category}</span>
         </span>
-        <DownOutlined className={open ? "talent-chevron open" : "talent-chevron"} />
+        <DownOutlined
+          className={open ? "talent-chevron open" : "talent-chevron"}
+        />
       </button>
 
       {open && (
@@ -38,12 +40,15 @@ export function TalentRow({ rank, talent, defaultOpen }: TalentRowProps) {
           <div className="talent-details-grid">
             <TalentDetail label="Brings" value={talent.details.bring} />
             <TalentDetail label="Needs" value={talent.details.need} />
-            <TalentDetail label="Motivated by" value={talent.details.motivate} />
+            <TalentDetail
+              label="Motivated by"
+              value={talent.details.motivate}
+            />
           </div>
         </div>
       )}
     </Card>
-  )
+  );
 }
 
 function TalentDetail({ label, value }: { label: string; value: string }) {
@@ -52,5 +57,5 @@ function TalentDetail({ label, value }: { label: string; value: string }) {
       <p>{label}</p>
       <span>{value}</span>
     </div>
-  )
+  );
 }
