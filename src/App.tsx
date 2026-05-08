@@ -1,12 +1,12 @@
 import { ConfigProvider, theme as antdTheme } from "antd";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ActivityPage } from "./pages/ActivityPage";
-import { IndexRedirect } from "./pages/IndexRedirect";
 import { LoginPage } from "./pages/LoginPage";
 import { SetupPage } from "./pages/SetupPage";
 import { LearnPage } from "./pages/LearnPage";
 import { PersonalPage } from "./pages/PersonalPage";
 import { TeamPage } from "./pages/TeamPage";
+import { useCurrentUser } from "./services/authService";
 import { useEnsureWorkspaceSeed } from "./services/testDataService";
 import { useAppTheme } from "./services/workspaceService";
 
@@ -14,7 +14,13 @@ export default function App() {
   useEnsureWorkspaceSeed();
 
   const appTheme = useAppTheme();
+  const user = useCurrentUser();
   const darkMode = appTheme === "dark";
+  const rootRoute = user
+    ? user.role && user.avatar
+      ? "/personal/profile"
+      : "/setup"
+    : "/login";
 
   return (
     <ConfigProvider
@@ -50,7 +56,7 @@ export default function App() {
     >
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<IndexRedirect />} />
+          <Route path="/" element={<Navigate replace to={rootRoute} />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/setup" element={<SetupPage />} />
           <Route
