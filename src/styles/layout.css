@@ -126,6 +126,15 @@
   flex: 1;
 }
 
+.desktop-sidebar,
+.sidebar-nav {
+  --sidebar-nav-gutter: 0.625rem;
+  --sidebar-item-size: 2.75rem;
+  --sidebar-icon-size: 1.25rem;
+  --sidebar-icon-padding: calc((var(--sidebar-item-size) - var(--sidebar-icon-size)) / 2);
+  --sidebar-border-width: 1px;
+}
+
 .desktop-sidebar {
   width: 15rem;
   flex-shrink: 0;
@@ -136,17 +145,19 @@
 }
 
 .desktop-sidebar.collapsed {
-  width: 4rem;
+  width: calc(
+    var(--sidebar-item-size) + (var(--sidebar-nav-gutter) * 2) + var(--sidebar-border-width)
+  );
 }
 
 .sidebar-nav {
   display: grid;
   gap: 0.25rem;
-  padding: 0.75rem;
+  padding: 0.75rem var(--sidebar-nav-gutter);
 }
 
 .sidebar-nav.collapsed {
-  padding-inline: 0.5rem;
+  padding-inline: var(--sidebar-nav-gutter);
 }
 
 .sidebar-label {
@@ -160,22 +171,32 @@
 
 .sidebar-link {
   position: relative;
-  display: flex;
+  display: grid;
+  width: 100%;
+  height: var(--sidebar-item-size);
+  min-height: var(--sidebar-item-size);
+  box-sizing: border-box;
+  grid-template-columns: var(--sidebar-icon-size) minmax(0, 1fr);
   align-items: center;
-  gap: 0.75rem;
-  min-height: 2.5rem;
+  column-gap: 0.75rem;
   border-radius: 0.75rem;
-  padding: 0.625rem 0.75rem;
+  padding: 0 var(--sidebar-icon-padding);
   color: var(--sidebar-foreground);
   font-size: 0.875rem;
   font-weight: 600;
   overflow: hidden;
-  transition: background 160ms ease, color 160ms ease, padding 220ms ease;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    column-gap 220ms ease,
+    grid-template-columns 220ms ease,
+    padding 220ms ease;
 }
 
 .sidebar-nav.collapsed .sidebar-link {
-  justify-content: center;
-  padding-inline: 0.5rem;
+  grid-template-columns: var(--sidebar-icon-size) minmax(0, 0fr);
+  column-gap: 0;
+  padding: 0 var(--sidebar-icon-padding);
 }
 
 .sidebar-link:hover {
@@ -190,7 +211,7 @@
 
 .sidebar-icon {
   display: grid;
-  width: 1.25rem;
+  width: var(--sidebar-icon-size);
   flex: none;
   place-items: center;
   font-size: 1rem;
@@ -212,22 +233,23 @@
 }
 
 .sidebar-active-star {
-  width: 0;
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  width: 0.75rem;
   overflow: hidden;
-  margin-left: auto;
   color: var(--accent2);
   font-size: 0.75rem;
   opacity: 0;
-  transition: width 220ms ease, opacity 160ms ease;
+  transform: translateY(-50%);
+  transition: opacity 160ms ease;
 }
 
 .sidebar-link.active .sidebar-active-star {
-  width: 0.75rem;
   opacity: 1;
 }
 
 .sidebar-nav.collapsed .sidebar-active-star {
-  width: 0;
   opacity: 0;
 }
 
