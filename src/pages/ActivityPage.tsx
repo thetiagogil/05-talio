@@ -1,4 +1,5 @@
-import { useMemo, useState, type ReactNode } from "react"
+import { useMemo, type ReactNode } from "react"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 import {
   BookOutlined,
   HeartOutlined,
@@ -15,69 +16,75 @@ import type { ActivityEvent } from "../types/talents"
 
 type ActivityTab = "all" | "kudos" | "goals" | "manuals" | "mine"
 
+const activityTabs: { id: ActivityTab; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "kudos", label: "Kudos" },
+  { id: "goals", label: "Goals" },
+  { id: "manuals", label: "Manuals" },
+  { id: "mine", label: "Mine" },
+]
+
+const weekStart = Date.now() - 7 * 86400000
+
+const isActivityTab = (tab: string | undefined): tab is ActivityTab =>
+  activityTabs.some((item) => item.id === tab)
+
 export function ActivityPage() {
+  const { tab } = useParams()
+  const navigate = useNavigate()
   const currentUser = useCurrentUser()
   const events = useActivity()
   const users = useUsers()
   const kudos = useKudos()
-  const [tab, setTab] = useState<ActivityTab>("all")
+  const activeTab = isActivityTab(tab) ? tab : "all"
 
-  const stats = useMemo(() => {
-    const latestTimestamp = Math.max(
-      0,
-      ...events.map((event) => event.createdAt),
-      ...kudos.map((item) => item.createdAt),
-    )
-    const week = latestTimestamp - 7 * 86400000
-
-    return {
-      kudos: kudos.filter((item) => item.createdAt > week).length,
+  const stats = useMemo(
+    () => ({
+      kudos: kudos.filter((item) => item.createdAt > weekStart).length,
       goalsCompleted: events.filter(
         (event) =>
-          event.type === "goal_completed" && event.createdAt > week,
+          event.type === "goal_completed" && event.createdAt > weekStart,
       ).length,
       manuals: events.filter(
         (event) =>
           (event.type === "manual_updated" || event.type === "joined") &&
-          event.createdAt > week,
+          event.createdAt > weekStart,
       ).length,
       active: new Set(
         events
-          .filter((event) => event.createdAt > week)
+          .filter((event) => event.createdAt > weekStart)
           .map((event) => event.actorId),
       ).size,
-    }
-  }, [events, kudos])
+    }),
+    [events, kudos],
+  )
 
   function filter(event: ActivityEvent) {
-    if (tab === "all") return true
-    if (tab === "mine" && currentUser) {
+    if (activeTab === "all") return true
+    if (activeTab === "mine" && currentUser) {
       return event.actorId === currentUser.id || event.targetId === currentUser.id
     }
-    if (tab === "kudos") return event.type === "kudos_sent"
-    if (tab === "goals") return event.type.startsWith("goal_")
-    if (tab === "manuals") {
+    if (activeTab === "kudos") return event.type === "kudos_sent"
+    if (activeTab === "goals") return event.type.startsWith("goal_")
+    if (activeTab === "manuals") {
       return event.type === "manual_updated" || event.type === "joined"
     }
 
     return true
   }
 
+  if (!isActivityTab(tab)) {
+    return <Navigate replace to="/activity/all" />
+  }
+
   return (
     <AppShell>
       <PageHeader
-        eyebrow="Pulse"
         title="Activity"
         description="A living feed of what your team is working on, sharing, and celebrating."
-        tabs={[
-          { id: "all", label: "All" },
-          { id: "kudos", label: "Kudos" },
-          { id: "goals", label: "Goals" },
-          { id: "manuals", label: "Manuals" },
-          { id: "mine", label: "Mine" },
-        ]}
-        activeTab={tab}
-        onTabChange={(nextTab) => setTab(nextTab as ActivityTab)}
+        tabs={activityTabs}
+        activeTab={activeTab}
+        onTabChange={(nextTab) => navigate(`/activity/${nextTab}`)}
       />
 
       <div className="page-content">
@@ -129,9 +136,11 @@ function ActivityStat({
 }) {
   return (
     <Card className="activity-stat">
-      <span className={className}>{icon}</span>
-      <strong>{value}</strong>
-      <small>{label}</small>
+      <span className={`activity-stat-icon ${className}`}>{icon}</span>
+      <span className="activity-stat-copy">
+        <strong>{value}</strong>
+        <small>{label}</small>
+      </span>
     </Card>
   )
 }

@@ -1,15 +1,15 @@
-﻿.ant-card {
+.ant-card {
   color: var(--foreground);
   background: var(--card);
   border-color: var(--border);
-}
-
-.ant-card .ant-card-body {
-  padding: 0;
+  box-shadow: var(--shadow-soft);
 }
 
 .panel-card .ant-card-body,
+.compare-chips-card .ant-card-body,
+.person-card .ant-card-body,
 .domain-stat-card .ant-card-body,
+.chemistry-domain-card .ant-card-body,
 .activity-stat .ant-card-body,
 .resource-card .ant-card-body,
 .kudos-card .ant-card-body,
@@ -20,7 +20,7 @@
 }
 
 .ant-btn {
-  border-radius: 0.75rem;
+  border-radius: 0.625rem;
   font-weight: 500;
 }
 
@@ -45,7 +45,7 @@
   color: var(--foreground) !important;
   background: var(--surface) !important;
   border-color: var(--input) !important;
-  border-radius: 0.75rem !important;
+  border-radius: 0.625rem !important;
 }
 
 .ant-modal-content,
@@ -75,9 +75,9 @@
 }
 
 .ant-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: var(--foreground);
+  color: var(--primary);
 }
 
 .ant-tabs .ant-tabs-ink-bar {
-  background: var(--foreground);
+  background: var(--primary);
 }

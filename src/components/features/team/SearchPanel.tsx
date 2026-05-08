@@ -1,4 +1,4 @@
-import { Input, Switch } from "antd"
+import { Input } from "antd"
 import { CheckOutlined, SearchOutlined } from "@ant-design/icons"
 import { AvatarBubble } from "../../common/AvatarBubble"
 import type { User } from "../../../types/talents"
@@ -6,13 +6,12 @@ import type { User } from "../../../types/talents"
 type SearchPanelProps = {
   users: User[]
   query: string
-  compareMode: boolean
+  mode: "overview" | "compare"
   selectedUserId: string | null
   compareIds: string[]
   warning: string | null
   currentUserId?: string
   onQueryChange: (query: string) => void
-  onCompareModeChange: () => void
   onPick: (id: string) => void
   onToggleCompare: (id: string) => void
 }
@@ -20,16 +19,17 @@ type SearchPanelProps = {
 export function SearchPanel({
   users,
   query,
-  compareMode,
+  mode,
   selectedUserId,
   compareIds,
   warning,
   currentUserId,
   onQueryChange,
-  onCompareModeChange,
   onPick,
   onToggleCompare,
 }: SearchPanelProps) {
+  const compareMode = mode === "compare"
+
   return (
     <aside className="team-search-panel">
       <Input
@@ -40,12 +40,15 @@ export function SearchPanel({
         onChange={(event) => onQueryChange(event.target.value)}
       />
 
-      <div className="compare-toggle-row">
+      <div className="team-panel-mode">
         <div>
-          <strong>Compare mode</strong>
-          <span>Pick up to 5 people</span>
+          <strong>{compareMode ? "Compare teammates" : "Browse teammates"}</strong>
+          <span>
+            {compareMode
+              ? `${compareIds.length}/5 selected`
+              : "Open a profile to learn how they work"}
+          </span>
         </div>
-        <Switch checked={compareMode} onChange={onCompareModeChange} />
       </div>
 
       {warning && <p className="team-warning">{warning}</p>}

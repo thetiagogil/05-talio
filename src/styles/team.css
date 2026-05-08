@@ -19,27 +19,27 @@
   display: grid;
   gap: 1rem;
   border: 1px solid var(--border);
-  border-radius: 1rem;
+  border-radius: 0.875rem;
   padding: 1rem;
   background: var(--card);
 }
 
-.compare-toggle-row {
+.team-panel-mode {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border-radius: 0.75rem;
+  border-radius: 0.625rem;
   padding: 0.75rem;
   background: color-mix(in oklch, var(--muted) 50%, transparent);
 }
 
-.compare-toggle-row div {
+.team-panel-mode div {
   display: grid;
   gap: 0.15rem;
 }
 
-.compare-toggle-row span {
+.team-panel-mode span {
   color: var(--muted-foreground);
   font-size: 0.75rem;
 }
@@ -57,7 +57,8 @@
   max-height: 60vh;
   gap: 0.25rem;
   overflow-y: auto;
-  padding-right: 0.25rem;
+  margin: -0.25rem;
+  padding: 0.25rem;
 }
 
 .team-person {
@@ -65,7 +66,7 @@
   justify-content: flex-start;
   gap: 0.75rem;
   border: 0;
-  border-radius: 0.75rem;
+  border-radius: 0.625rem;
   padding: 0.5rem;
   color: var(--foreground);
   background: transparent;
@@ -77,9 +78,14 @@
   background: var(--muted);
 }
 
+.team-person:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary) 70%, transparent);
+  outline-offset: 2px;
+}
+
 .team-person.active {
-  background: color-mix(in oklch, var(--primary) 10%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in oklch, var(--primary) 30%, transparent);
+  background: var(--accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 30%, transparent);
 }
 
 .team-person > span:not(.ant-avatar):not(.person-check) {
@@ -130,7 +136,7 @@
 
 .domain-stat-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.75rem;
   margin-top: 0.75rem;
 }
@@ -138,75 +144,178 @@
 .domain-stat-card {
   position: relative;
   overflow: hidden;
-  padding: 1.25rem;
-  border-radius: 1rem;
+  padding: 0;
+  border-radius: 0.875rem;
+}
+
+.domain-stat-card .ant-card-body {
+  display: flex;
+  min-height: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding: 1.25rem !important;
+}
+
+.domain-stat-card-head {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.55rem;
 }
 
 .domain-stat-card h3 {
-  margin-top: 0.5rem;
-  font-size: 1rem;
+  min-width: 0;
+  font-size: 0.95rem;
   font-weight: 800;
+  line-height: 1.25;
 }
 
-.domain-stat-card .ant-card-body > div {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-  margin-top: 1rem;
+.domain-stat-metrics {
+  display: flex;
+  flex: none;
+  margin-left: auto;
 }
 
-.domain-stat-card span span {
+.domain-stat-metrics span {
   display: block;
   color: var(--muted-foreground);
-  font-size: 0.75rem;
+  font-size: 0.625rem;
+  line-height: 1.15;
 }
 
-.domain-stat-card strong {
+.domain-stat-metrics strong {
   display: block;
   font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
 }
 
 .team-talents-collapse {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.75rem;
   margin-top: 0.75rem;
   background: transparent;
 }
 
 .team-talents-collapse .ant-collapse-item {
+  overflow: hidden;
   border: 1px solid var(--border) !important;
-  border-radius: 1rem !important;
+  border-radius: 0.875rem !important;
   background: var(--card);
 }
 
-.team-talent-label {
+.team-talents-collapse .ant-collapse-header {
+  align-items: center !important;
+  padding: 1rem !important;
+}
+
+.team-talents-collapse .ant-collapse-header-text {
+  min-width: 0;
+}
+
+.team-talents-collapse .ant-collapse-content-box {
+  padding: 0 1rem 1rem 3.75rem !important;
+}
+
+.team-talent-accordion-label {
+  display: grid;
   width: 100%;
-  justify-content: space-between;
-  gap: 1rem;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.9rem;
 }
 
-.team-talent-people {
+.team-talent-rank {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 0.625rem;
+  color: var(--primary);
+  background: var(--accent);
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
+.team-talent-summary {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  min-width: 0;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-.team-talent-people > span {
+.team-talent-summary p {
+  max-width: 38rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.team-talent-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.team-talent-count {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  border-radius: 999px;
-  padding: 0.3rem 0.75rem;
-  background: var(--muted);
-  font-size: 0.875rem;
+  gap: 0.35rem;
+  flex: none;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  white-space: nowrap;
 }
 
-.team-talent-people small {
+.team-talent-accordion-body {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.team-talent-detail {
+  display: grid;
+  gap: 0.2rem;
+  border-radius: 0.625rem;
+  padding: 0.75rem 0.85rem;
+  background: var(--surface-2);
+}
+
+.team-talent-detail strong {
+  color: var(--muted-foreground);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.team-talent-detail span {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.team-talent-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.team-talent-members > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.55rem;
+  background: var(--muted);
+  font-size: 0.75rem;
+}
+
+.team-talent-members small {
   color: var(--muted-foreground);
 }
 
-.team-talent-people em,
+.team-talent-members em,
 .person-hero h2 em {
   border-radius: 999px;
   padding: 0.1rem 0.4rem;
@@ -215,6 +324,11 @@
   font-size: 0.625rem;
   font-style: normal;
   font-weight: 800;
+}
+
+.person-back-button {
+  justify-self: start;
+  width: auto;
 }
 
 .person-card {
@@ -229,6 +343,10 @@
 
 .person-hero > div {
   gap: 1.25rem;
+}
+
+.person-hero > .ant-btn {
+  margin-top: 1rem;
 }
 
 .person-hero h2 {
@@ -378,7 +496,7 @@
 
 .chemistry-domain-card {
   padding: 1.5rem;
-  border-radius: 1.5rem;
+  border-radius: 0.875rem;
 }
 
 .chemistry-domain-card h3 {
@@ -412,7 +530,7 @@
 .appreciation-row {
   gap: 0.75rem;
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  border-radius: 0.625rem;
   padding: 0.75rem;
   background: var(--background);
 }
@@ -448,7 +566,7 @@
 
 .pairing-card {
   border: 1px solid var(--border);
-  border-radius: 1rem;
+  border-radius: 0.875rem;
   padding: 1rem;
   background: var(--background);
 }

@@ -1,6 +1,7 @@
 import { useMemo, useState, type ReactNode } from "react"
 import { Card, Progress } from "antd"
 import {
+  ClockCircleOutlined,
   EditOutlined,
   HeartOutlined,
   TrophyOutlined,
@@ -38,6 +39,8 @@ export function ProfileTab() {
 
   const myGoals = goals.filter((goal) => goal.userId === user.id)
   const myKudos = kudos.filter((item) => item.toId === user.id)
+  const todoGoals = myGoals.filter((goal) => goal.progress === "To do")
+  const activeGoals = myGoals.filter((goal) => goal.progress === "Doing")
   const dominantDomain = DOMAINS.map((domain) => ({
     domain,
     count: userTalents.filter((talent) => talent?.category === domain).length,
@@ -45,7 +48,7 @@ export function ProfileTab() {
 
   return (
     <div className="profile-page-grid">
-      <section className="profile-hero grain">
+      <section className="profile-hero">
         <button
           aria-label="Change avatar"
           className="profile-avatar-button"
@@ -75,8 +78,6 @@ export function ProfileTab() {
         </div>
 
         <div className="profile-stats">
-          <ProfileStat value={userTalents.length} label="talents" />
-          <ProfileStat value={myGoals.length} label="goals" />
           <ProfileStat value={myKudos.length} label="kudos" />
         </div>
       </section>
@@ -122,12 +123,17 @@ export function ProfileTab() {
             <div className="at-glance-list">
               <AtGlanceRow
                 icon={<AimOutlined />}
-                label="In progress"
-                value={myGoals.filter((goal) => goal.progress === "Doing").length}
+                label="To do tasks"
+                value={todoGoals.length}
+              />
+              <AtGlanceRow
+                icon={<ClockCircleOutlined />}
+                label="In progress tasks"
+                value={activeGoals.length}
               />
               <AtGlanceRow
                 icon={<TrophyOutlined />}
-                label="Completed"
+                label="Completed tasks"
                 value={myGoals.filter((goal) => goal.progress === "Done").length}
               />
               <AtGlanceRow

@@ -18,7 +18,7 @@ export function IndexRedirect() {
   if (!user) return <Navigate replace to="/login" />
   if (!user.role || !user.avatar) return <Navigate replace to="/setup" />
 
-  return <Navigate replace to="/personal" />
+  return <Navigate replace to="/personal/profile" />
 }
 
 function SplashScreen() {

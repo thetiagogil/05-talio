@@ -12,13 +12,16 @@ import { DefaultOverview } from "./DefaultOverview"
 import { PersonDetail } from "./PersonDetail"
 import { SearchPanel } from "./SearchPanel"
 
-export function TeamOverview() {
+type TeamOverviewProps = {
+  mode: "overview" | "compare"
+}
+
+export function TeamOverview({ mode }: TeamOverviewProps) {
   const currentUser = useCurrentUser()
   const users = useUsers()
   const talents = useTalents()
   const [query, setQuery] = useState("")
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
-  const [compareMode, setCompareMode] = useState(false)
   const [compareIds, setCompareIds] = useState<string[]>([])
   const [warning, setWarning] = useState<string | null>(null)
   const [filterOpen, setFilterOpen] = useState(false)
@@ -41,13 +44,12 @@ export function TeamOverview() {
   const panel = (
     <SearchPanel
       compareIds={compareIds}
-      compareMode={compareMode}
       currentUserId={currentUser?.id}
+      mode={mode}
       query={query}
       selectedUserId={selectedUserId}
       users={filteredUsers}
-      warning={warning}
-      onCompareModeChange={toggleCompareMode}
+      warning={mode === "compare" ? warning : null}
       onPick={pickPerson}
       onQueryChange={setQuery}
       onToggleCompare={toggleCompare}
@@ -72,22 +74,11 @@ export function TeamOverview() {
 
   function pickPerson(id: string) {
     setSelectedUserId(id)
-    setCompareMode(false)
     setFilterOpen(false)
-  }
-
-  function toggleCompareMode() {
-    setCompareMode((current) => {
-      const next = !current
-      if (next) setSelectedUserId(null)
-      else setCompareIds([])
-      return next
-    })
   }
 
   function resetSelection() {
     setSelectedUserId(null)
-    setCompareMode(false)
     setCompareIds([])
     setWarning(null)
   }
@@ -96,9 +87,9 @@ export function TeamOverview() {
     <div className="team-overview-grid">
       <div className="team-mobile-toolbar">
         <Button icon={<FilterOutlined />} onClick={() => setFilterOpen(true)}>
-          Browse team
+          {mode === "compare" ? "Choose people" : "Browse team"}
         </Button>
-        {(selectedUserId || compareMode) && (
+        {(selectedUserId || compareIds.length > 0) && (
           <Button type="text" onClick={resetSelection}>
             Reset
           </Button>
@@ -111,14 +102,14 @@ export function TeamOverview() {
         className="team-filter-drawer"
         open={filterOpen}
         placement="right"
-        title="Browse team"
+        title={mode === "compare" ? "Choose people" : "Browse team"}
         onClose={() => setFilterOpen(false)}
       >
         {panel}
       </Drawer>
 
       <section className="team-main-panel">
-        {compareMode ? (
+        {mode === "compare" ? (
           <ComparePanel
             selected={compareUsers}
             talents={talents}

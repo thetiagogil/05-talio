@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { Tabs } from "antd"
 
 export type PageTab = {
   id: string
@@ -38,21 +39,16 @@ export function PageHeader({
         </div>
 
         {tabs && (
-          <div className="page-tabs" role="tablist">
-            {tabs.map((tab) => (
-              <button
-                aria-selected={activeTab === tab.id}
-                className={activeTab === tab.id ? "active" : undefined}
-                disabled={tab.disabled}
-                key={tab.id}
-                role="tab"
-                type="button"
-                onClick={() => onTabChange?.(tab.id)}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+          <Tabs
+            activeKey={activeTab}
+            className="page-tabs"
+            items={tabs.map((tab) => ({
+              key: tab.id,
+              label: tab.label,
+              disabled: tab.disabled,
+            }))}
+            onChange={onTabChange}
+          />
         )}
       </div>
     </header>

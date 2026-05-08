@@ -147,7 +147,9 @@ function NotificationRow({ event }: { event: ActivityEvent }) {
         <p>
           <strong>{actor?.name}</strong> {notificationBrief(event)}
         </p>
-        {event.message && <span>"{event.message}"</span>}
+        {event.type === "kudos_sent" && event.message && (
+          <span>"{event.message}"</span>
+        )}
         <time>{timeAgo(event.createdAt)}</time>
       </div>
     </div>

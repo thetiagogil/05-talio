@@ -186,8 +186,8 @@ function RadarPlot({
     const angle = (Math.PI * 2 * index) / data.length - Math.PI / 2
 
     return {
-      x: center + Math.cos(angle) * (radius + 28),
-      y: center + Math.sin(angle) * (radius + 28),
+      x: center + Math.cos(angle) * (radius + 16),
+      y: center + Math.sin(angle) * (radius + 16),
     }
   }
 

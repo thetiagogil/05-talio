@@ -70,7 +70,7 @@ export function KudosTab() {
         })}
       </div>
 
-      <section>
+      <section className="kudos-activity-section">
         <h3>Recent personal activity</h3>
         <ActivityFeed
           filter={(event) =>

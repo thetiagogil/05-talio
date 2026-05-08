@@ -129,6 +129,25 @@
     font-size: 1.5rem;
   }
 
+  .team-talent-accordion-label {
+    grid-template-columns: 2rem minmax(0, 1fr);
+  }
+
+  .team-talent-summary {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .team-talent-meta {
+    grid-column: 2;
+    justify-content: flex-start;
+  }
+
+  .team-talents-collapse .ant-collapse-content-box {
+    padding-left: 1rem !important;
+  }
+
   .topbar {
     padding-inline: 0.75rem;
   }

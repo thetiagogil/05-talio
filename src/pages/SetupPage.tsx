@@ -25,7 +25,7 @@ export function SetupPage() {
       return
     }
 
-    if (user.role && user.avatar) navigate("/personal", { replace: true })
+    if (user.role && user.avatar) navigate("/personal/profile", { replace: true })
   }, [navigate, user])
 
   if (!user) return null
@@ -36,7 +36,7 @@ export function SetupPage() {
     if (!role || !avatar) return
 
     updateUser(currentUser.id, { role, avatar })
-    navigate("/personal", { replace: true })
+    navigate("/personal/profile", { replace: true })
   }
 
   return (

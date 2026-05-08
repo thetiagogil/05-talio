@@ -1,6 +1,3 @@
-import { useEffect, useState, type ReactNode } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Button, Drawer, Dropdown } from "antd"
 import {
   CloseOutlined,
   LogoutOutlined,
@@ -9,58 +6,55 @@ import {
   MenuUnfoldOutlined,
   MoonOutlined,
   SunOutlined,
-} from "@ant-design/icons"
-import {
-  logout,
-  useCurrentUser,
-} from "../../services/authService"
-import {
-  toggleTheme,
-  useAppTheme,
-} from "../../services/workspaceService"
-import { STORAGE_KEYS } from "../../lib/constants/storageKeys"
-import { AvatarBubble } from "../common/AvatarBubble"
-import { NotificationMenu } from "./NotificationMenu"
-import { SidebarNav } from "./SidebarNav"
+} from "@ant-design/icons";
+import { Button, Drawer, Dropdown } from "antd";
+import { useEffect, useState, type ReactNode } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { STORAGE_KEYS } from "../../lib/constants/storageKeys";
+import { logout, useCurrentUser } from "../../services/authService";
+import { toggleTheme, useAppTheme } from "../../services/workspaceService";
+import { AvatarBubble } from "../common/AvatarBubble";
+import { NotificationMenu } from "./NotificationMenu";
+import { SidebarNav } from "./SidebarNav";
 
 type AppShellProps = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 export function AppShell({ children }: AppShellProps) {
-  const user = useCurrentUser()
-  const theme = useAppTheme()
-  const navigate = useNavigate()
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const user = useCurrentUser();
+  const theme = useAppTheme();
+  const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(() => {
-    if (typeof window === "undefined") return false
-    return localStorage.getItem(STORAGE_KEYS.sidebarCollapsed) === "1"
-  })
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem(STORAGE_KEYS.sidebarCollapsed) === "1";
+  });
 
   useEffect(() => {
     if (!user) {
-      navigate("/login", { replace: true })
-      return
+      navigate("/login", { replace: true });
+      return;
     }
 
     if (!user.role || !user.avatar) {
-      navigate("/setup", { replace: true })
+      navigate("/setup", { replace: true });
     }
-  }, [navigate, user])
+  }, [navigate, user]);
 
-  if (!user || !user.role || !user.avatar) return null
+  if (!user || !user.role || !user.avatar) return null;
 
   function handleCollapsedChange() {
     setCollapsed((current) => {
-      const next = !current
-      localStorage.setItem(STORAGE_KEYS.sidebarCollapsed, next ? "1" : "0")
-      return next
-    })
+      const next = !current;
+      localStorage.setItem(STORAGE_KEYS.sidebarCollapsed, next ? "1" : "0");
+      return next;
+    });
   }
 
   function handleLogout() {
-    logout()
-    navigate("/login", { replace: true })
+    logout();
+    navigate("/login", { replace: true });
   }
 
   return (
@@ -83,13 +77,13 @@ export function AppShell({ children }: AppShellProps) {
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={handleCollapsedChange}
           />
-          <Link className="brand-link" to="/personal">
+          <Link className="brand-link" to="/personal/profile">
             <img className="brand-mark" src="/favicon.svg" alt="Talio" />
             <span className="brand-text">
               <span>
-                Talents<span>.</span>
+                Talio<span>.</span>
               </span>
-              <small>Internal team app</small>
+              <small>People team app</small>
             </span>
           </Link>
         </div>
@@ -143,7 +137,11 @@ export function AppShell({ children }: AppShellProps) {
       </header>
 
       <div className="shell-body">
-        <aside className={collapsed ? "desktop-sidebar collapsed" : "desktop-sidebar"}>
+        <aside
+          className={
+            collapsed ? "desktop-sidebar collapsed" : "desktop-sidebar"
+          }
+        >
           <SidebarNav collapsed={collapsed} />
         </aside>
 
@@ -161,5 +159,5 @@ export function AppShell({ children }: AppShellProps) {
         <main className="shell-main">{children}</main>
       </div>
     </div>
-  )
+  );
 }

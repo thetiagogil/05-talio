@@ -43,8 +43,8 @@ export function LoginPage() {
     <main className="login-page">
       <aside className="login-hero">
         <div className="login-brand">
-          <span>T</span>
-          <strong>Talents</strong>
+          <img className="login-brand-mark" src="/favicon.svg" alt="Talio" />
+          <strong>Talio</strong>
         </div>
 
         <section className="login-hero-copy">
@@ -69,7 +69,7 @@ export function LoginPage() {
           </div>
         </section>
 
-        <p className="login-footer">&copy; Talents &middot; Internal team app</p>
+        <p className="login-footer">&copy; Talio &middot; People team app</p>
       </aside>
 
       <section className="login-panel">
@@ -134,5 +134,5 @@ export function LoginPage() {
 }
 
 function nextRoute(user: User) {
-  return user.role && user.avatar ? "/personal" : "/setup"
+  return user.role && user.avatar ? "/personal/profile" : "/setup"
 }

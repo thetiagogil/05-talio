@@ -1,4 +1,4 @@
-import { useMemo, type ReactNode } from "react"
+import { useMemo, type CSSProperties, type ReactNode } from "react"
 import {
   AimOutlined,
   CheckCircleOutlined,
@@ -66,6 +66,11 @@ function ActivityRow({ event }: { event: ActivityEvent }) {
       : null
   const icon = iconFor(event.type)
   const talentStyle = talent ? domainStyle(talent.category) : null
+  const isKudos = event.type === "kudos_sent"
+  const messageStyle = {
+    "--message-accent": talentStyle?.base ?? "var(--primary)",
+    "--message-bg": talentStyle?.soft ?? "var(--accent)",
+  } as CSSProperties
 
   return (
     <li className="activity-row">
@@ -78,16 +83,17 @@ function ActivityRow({ event }: { event: ActivityEvent }) {
           </p>
           <time>{timeAgo(event.createdAt)}</time>
         </div>
-        {event.message && (
+        {isKudos && event.message && (
           <blockquote
-            style={{
-              borderLeftColor: talentStyle?.border ?? "var(--border)",
-            }}
+            className="activity-message"
+            style={messageStyle}
           >
-            "{event.message}"
+            <span>{event.message}</span>
           </blockquote>
         )}
-        {goal && event.type !== "kudos_sent" && <span>"{goal.description}"</span>}
+        {goal && !isKudos && (
+          <span className="activity-goal-detail">{goal.description}</span>
+        )}
       </div>
     </li>
   )

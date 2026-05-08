@@ -31,12 +31,17 @@ export function PersonDetail({ user, onBack }: PersonDetailProps) {
 
   return (
     <div className="person-detail">
-      <Button icon={<ArrowLeftOutlined />} type="text" onClick={onBack}>
+      <Button
+        className="person-back-button"
+        icon={<ArrowLeftOutlined />}
+        type="text"
+        onClick={onBack}
+      >
         Back to team
       </Button>
 
       <Card className="person-card">
-        <div className="person-hero grain">
+        <div className="person-hero">
           <div>
             <AvatarBubble value={user.avatar} size={80} />
             <span>

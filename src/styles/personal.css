@@ -11,10 +11,12 @@
   overflow: hidden;
   border: 1px solid var(--border);
   color: var(--foreground);
-  background-image:
-    radial-gradient(at 15% 20%, oklch(0.55 0.25 305 / 0.4) 0px, transparent 50%),
-    radial-gradient(at 85% 70%, oklch(0.45 0.24 285 / 0.45) 0px, transparent 50%),
-    linear-gradient(135deg, oklch(0.32 0.18 295), oklch(0.28 0.2 305) 50%, oklch(0.24 0.18 280));
+  background: linear-gradient(
+    135deg,
+    var(--surface) 0,
+    var(--accent) 56%,
+    color-mix(in srgb, var(--domain-strategic-soft) 55%, var(--surface)) 100%
+  );
 }
 
 .profile-hero {
@@ -22,8 +24,8 @@
   grid-template-columns: auto 1fr auto;
   gap: 2rem;
   align-items: center;
-  border-radius: 2rem;
-  padding: 3rem;
+  border-radius: 1rem;
+  padding: 2rem;
 }
 
 .profile-avatar-button {
@@ -35,8 +37,8 @@
 
 .profile-avatar-button .ant-avatar,
 .person-hero .ant-avatar {
-  background: oklch(1 0 0 / 15%);
-  box-shadow: 0 0 0 2px oklch(1 0 0 / 40%);
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--border);
   backdrop-filter: blur(8px);
 }
 
@@ -61,7 +63,7 @@
 
 .profile-hero-copy p,
 .person-hero p {
-  color: oklch(0.22 0.05 290 / 0.72);
+  color: var(--muted-foreground);
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -80,22 +82,23 @@
   display: block;
   max-width: 28rem;
   margin-top: 0.75rem;
-  color: oklch(0.22 0.05 290 / 0.85);
+  color: var(--muted-foreground);
   line-height: 1.6;
 }
 
 .profile-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(4.75rem, 1fr));
+  display: flex;
   gap: 0.75rem;
+  justify-content: flex-end;
   text-align: center;
 }
 
 .profile-stat {
-  border-radius: 1rem;
+  min-width: 6.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
   padding: 0.8rem 1rem;
-  background: oklch(1 0 0 / 10%);
-  box-shadow: 0 0 0 1px oklch(1 0 0 / 20%);
+  background: var(--surface);
 }
 
 .profile-stat strong {
@@ -109,7 +112,7 @@
 .profile-stat span {
   display: block;
   margin-top: 0.25rem;
-  color: oklch(0.22 0.05 290 / 0.72);
+  color: var(--muted-foreground);
   font-size: 0.625rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -119,6 +122,7 @@
 .profile-lower-grid {
   display: grid;
   grid-template-columns: 18.75rem 1fr;
+  align-items: start;
   gap: 2rem;
 }
 
@@ -135,6 +139,11 @@
   gap: 1.5rem;
 }
 
+.profile-side {
+  align-content: start;
+  align-self: start;
+}
+
 .panel-card,
 .manual-card,
 .talent-row,
@@ -144,7 +153,7 @@
 .compare-chips-card,
 .resource-card,
 .activity-stat {
-  border-radius: 1.5rem;
+  border-radius: 0.875rem;
   box-shadow: none;
 }
 
@@ -425,9 +434,16 @@
 
 .goals-column {
   border: 1px solid var(--border);
-  border-radius: 1rem;
+  border-radius: 0.875rem;
   padding: 0.75rem;
-  background: color-mix(in oklch, var(--muted) 40%, transparent);
+  background: var(--surface-2);
+  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.goals-column-over {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 8%, var(--surface-2));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
 }
 
 .goals-column-head {
@@ -468,6 +484,21 @@
 
 .goal-card:hover {
   box-shadow: var(--shadow-card);
+}
+
+.goal-drag-wrapper {
+  cursor: grab;
+  touch-action: none;
+}
+
+.goal-drag-wrapper.dragging {
+  cursor: grabbing;
+  opacity: 0.82;
+  z-index: 5;
+}
+
+.goal-drag-wrapper.locked {
+  cursor: default;
 }
 
 .goal-card-head {
@@ -596,9 +627,9 @@
 
 .empty-state {
   border: 2px dashed var(--border);
-  border-radius: 1.25rem;
+  border-radius: 0.875rem;
   padding: 1.5rem;
-  background: color-mix(in oklch, var(--muted) 30%, transparent);
+  background: var(--surface-2);
   text-align: center;
 }
 
@@ -621,6 +652,12 @@
   margin: 0 auto;
 }
 
+.kudos-activity-section {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
 .kudos-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -631,7 +668,7 @@
   position: relative;
   overflow: hidden;
   padding: 1.5rem;
-  border-radius: 1.5rem;
+  border-radius: 0.875rem;
 }
 
 .kudos-heart {
