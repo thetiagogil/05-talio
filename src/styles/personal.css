@@ -44,13 +44,14 @@
 
 .profile-avatar-button > span:not(.ant-avatar) {
   position: absolute;
-  right: -0.25rem;
-  bottom: -0.25rem;
+  right: 0;
+  bottom: 0;
   display: grid;
   width: 2rem;
   height: 2rem;
   place-items: center;
   border-radius: 999px;
+  border: 1px solid var(--border);
   color: var(--foreground);
   background: var(--surface);
   box-shadow: var(--shadow-card);
@@ -437,7 +438,10 @@
   border-radius: 0.875rem;
   padding: 0.75rem;
   background: var(--surface-2);
-  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .goals-column-over {
@@ -702,4 +706,3 @@
   color: var(--muted-foreground);
   font-size: 0.75rem;
 }
-
