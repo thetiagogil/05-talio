@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { createSeedState } from "../data/seed";
 import { STORAGE_KEYS } from "../lib/constants/storageKeys";
 import type {
@@ -32,10 +31,4 @@ export const ensureWorkspaceSeed = () => {
   if (readStorage<ActivityEvent[]>(STORAGE_KEYS.activity, []).length === 0) {
     writeStorage(STORAGE_KEYS.activity, seed.activity);
   }
-};
-
-export const useEnsureWorkspaceSeed = () => {
-  useEffect(() => {
-    ensureWorkspaceSeed();
-  }, []);
 };

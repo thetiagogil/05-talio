@@ -7,12 +7,9 @@ import { LearnPage } from "./pages/LearnPage";
 import { PersonalPage } from "./pages/PersonalPage";
 import { TeamPage } from "./pages/TeamPage";
 import { useCurrentUser } from "./services/authService";
-import { useEnsureWorkspaceSeed } from "./services/testDataService";
 import { useAppTheme } from "./services/workspaceService";
 
 export default function App() {
-  useEnsureWorkspaceSeed();
-
   const appTheme = useAppTheme();
   const user = useCurrentUser();
   const darkMode = appTheme === "dark";

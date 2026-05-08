@@ -7,12 +7,9 @@ import {
   loginByEmail,
   useCurrentUser,
 } from "../services/authService";
-import { useEnsureWorkspaceSeed } from "../services/testDataService";
 import type { User } from "../types/talents";
 
 export function LoginPage() {
-  useEnsureWorkspaceSeed();
-
   const user = useCurrentUser();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
