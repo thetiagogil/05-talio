@@ -1,0 +1,101 @@
+﻿.resource-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.resource-filters .ant-btn.active {
+  color: var(--background);
+  background: var(--foreground);
+  border-color: var(--foreground);
+}
+
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.resource-card {
+  display: flex;
+  min-height: 20rem;
+  flex-direction: column;
+  padding: 1.5rem;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.resource-card .ant-card-body {
+  display: flex;
+  min-height: 100%;
+  flex: 1;
+  flex-direction: column;
+}
+
+.resource-meta {
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.resource-meta > span:not(.domain-tag) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.18rem 0.5rem;
+  color: var(--muted-foreground);
+  background: var(--muted);
+  font-weight: 700;
+}
+
+.resource-meta time {
+  margin-left: auto;
+  color: var(--muted-foreground);
+}
+
+.resource-card h3 {
+  margin-top: 1rem;
+  color: var(--foreground);
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.resource-card > .ant-card-body > p {
+  margin-top: 0.35rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+.resource-match {
+  border: 1px solid color-mix(in oklch, var(--accent2) 20%, transparent);
+  border-radius: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.6rem 0.75rem;
+  background: color-mix(in oklch, var(--accent2) 5%, transparent);
+}
+
+.resource-match span {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+}
+
+.resource-card footer {
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 1.25rem;
+}
+
+.resource-card footer span {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.resource-card footer strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+

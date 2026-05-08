@@ -1,10 +1,10 @@
 import { SEED_TALENTS } from "./talents"
+import { TEST_USER } from "../lib/constants/testUser"
 import type { ActivityEvent, Goal, Kudos, User } from "../types/talents"
 
 const pick = (...ids: number[]) => ids
 
 const avatar = {
-  test: "\u{1F9D1}\u200D\u{1F680}",
   sofia: "\u{1F469}\u200D\u{1F3A8}",
   marcus: "\u{1F468}\u200D\u{1F4BB}",
   priya: "\u{1F469}\u200D\u{1F4BC}",
@@ -27,25 +27,7 @@ export function createSeedState(): SeedState {
   const day = 86400000
 
   const users: User[] = [
-    {
-      id: "u-test",
-      name: "Alex Morgan",
-      email: "test@talents.app",
-      role: "Product",
-      avatar: avatar.test,
-      manual: {
-        about:
-          "I think out loud and I'm energized by collaborative conversations. Mornings are my deep-work time.",
-        needs: "Clear goals, room to experiment, and honest, early feedback.",
-        feedback:
-          "Direct and specific. Tell me what worked, what didn't, and what you'd try next.",
-        happiness:
-          "When I'm shaping ambiguous problems into a roadmap the team can rally behind.",
-        passions:
-          "Trail running, indie sci-fi, and learning to play the piano badly.",
-      },
-      talents: pick(19, 21, 7, 24, 16, 18, 1, 22, 13, 8),
-    },
+    TEST_USER,
     {
       id: "u-2",
       name: "Sofia Reyes",

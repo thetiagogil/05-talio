@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Card } from "antd"
 import { DownOutlined } from "@ant-design/icons"
 import type { Talent } from "../../types/talents"
-import { domainStyle } from "../../lib/styles"
+import { domainStyle } from "../../lib/utils/styleUtils"
 
 type TalentRowProps = {
   rank: number

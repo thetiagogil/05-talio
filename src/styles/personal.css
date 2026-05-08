@@ -1,0 +1,668 @@
+﻿.profile-page-grid {
+  display: grid;
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  gap: 2.5rem;
+}
+
+.profile-hero,
+.person-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  background-image:
+    radial-gradient(at 15% 20%, oklch(0.55 0.25 305 / 0.4) 0px, transparent 50%),
+    radial-gradient(at 85% 70%, oklch(0.45 0.24 285 / 0.45) 0px, transparent 50%),
+    linear-gradient(135deg, oklch(0.32 0.18 295), oklch(0.28 0.2 305) 50%, oklch(0.24 0.18 280));
+}
+
+.profile-hero {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2rem;
+  align-items: center;
+  border-radius: 2rem;
+  padding: 3rem;
+}
+
+.profile-avatar-button {
+  position: relative;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.profile-avatar-button .ant-avatar,
+.person-hero .ant-avatar {
+  background: oklch(1 0 0 / 15%);
+  box-shadow: 0 0 0 2px oklch(1 0 0 / 40%);
+  backdrop-filter: blur(8px);
+}
+
+.profile-avatar-button > span:not(.ant-avatar) {
+  position: absolute;
+  right: -0.25rem;
+  bottom: -0.25rem;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--foreground);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.profile-hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-hero-copy p,
+.person-hero p {
+  color: oklch(0.22 0.05 290 / 0.72);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.profile-hero-copy h2,
+.person-hero h2 {
+  margin-top: 0.5rem;
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.profile-hero-copy span {
+  display: block;
+  max-width: 28rem;
+  margin-top: 0.75rem;
+  color: oklch(0.22 0.05 290 / 0.85);
+  line-height: 1.6;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(4.75rem, 1fr));
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.profile-stat {
+  border-radius: 1rem;
+  padding: 0.8rem 1rem;
+  background: oklch(1 0 0 / 10%);
+  box-shadow: 0 0 0 1px oklch(1 0 0 / 20%);
+}
+
+.profile-stat strong {
+  display: block;
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-size: 1.85rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.profile-stat span {
+  display: block;
+  margin-top: 0.25rem;
+  color: oklch(0.22 0.05 290 / 0.72);
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.profile-lower-grid {
+  display: grid;
+  grid-template-columns: 18.75rem 1fr;
+  gap: 2rem;
+}
+
+.profile-side,
+.manual-stack,
+.goals-board,
+.team-default,
+.compare-panel,
+.kudos-page,
+.activity-page,
+.chemistry-page,
+.person-detail {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.panel-card,
+.manual-card,
+.talent-row,
+.goal-card,
+.kudos-card,
+.person-card,
+.compare-chips-card,
+.resource-card,
+.activity-stat {
+  border-radius: 1.5rem;
+  box-shadow: none;
+}
+
+.panel-card {
+  padding: 1.5rem;
+}
+
+.panel-card h3:not(.panel-eyebrow),
+.team-default h2,
+.kudos-page h2,
+.kudos-page h3,
+.card-title-with-icon h3 {
+  color: var(--foreground);
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.panel-card > p,
+.team-default section > p,
+.kudos-page section > p,
+.card-title-with-icon + p {
+  margin-top: 0.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+.domain-breakdown {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.domain-breakdown-row > div,
+.at-glance-row,
+.resource-card footer,
+.team-talent-label,
+.combined-talent-cell,
+.notification-row,
+.approval-person,
+.team-person,
+.person-hero > div {
+  display: flex;
+  align-items: center;
+}
+
+.domain-breakdown-row > div {
+  justify-content: space-between;
+  margin-bottom: 0.45rem;
+  font-size: 0.875rem;
+}
+
+.domain-breakdown-row span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.domain-breakdown-row small {
+  color: var(--muted-foreground);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+}
+
+.domain-dot {
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  flex: none;
+  border-radius: 999px;
+}
+
+.at-glance-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.at-glance-row {
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.at-glance-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted-foreground);
+}
+
+.at-glance-row strong {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.section-title-row {
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.section-title-row h2 {
+  color: var(--foreground);
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.section-title-row span {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.talent-stack,
+.goals-list {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.talent-row {
+  overflow: hidden;
+  transition: box-shadow 160ms ease;
+}
+
+.talent-row-open {
+  box-shadow: var(--shadow-card);
+}
+
+.talent-row-trigger {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 1rem;
+  border: 0;
+  padding: 1rem;
+  color: var(--foreground);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.talent-rank {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  place-items: center;
+  border-radius: 0.75rem;
+  color: var(--muted-foreground);
+  background: var(--muted);
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-weight: 800;
+}
+
+.talent-row-main {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 0.2rem;
+}
+
+.talent-row-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-weight: 700;
+}
+
+.talent-row-domain {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.talent-chevron {
+  color: var(--muted-foreground);
+  transition: transform 160ms ease;
+}
+
+.talent-chevron.open {
+  transform: rotate(180deg);
+}
+
+.talent-row-content {
+  border-top: 1px solid var(--border);
+  padding: 1rem 1rem 1.25rem;
+  color: color-mix(in oklch, var(--foreground) 82%, transparent);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.talent-details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.talent-detail {
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: color-mix(in oklch, var(--muted) 50%, transparent);
+}
+
+.talent-detail p {
+  color: var(--muted-foreground);
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.talent-detail span {
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.manual-card {
+  padding: 1.25rem;
+}
+
+.manual-card.editing {
+  box-shadow: var(--shadow-card);
+  outline: 1px solid color-mix(in oklch, var(--primary) 20%, transparent);
+}
+
+.manual-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.manual-card h3 {
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.manual-card p {
+  margin-top: 0.75rem;
+  color: color-mix(in oklch, var(--foreground) 88%, transparent);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.manual-card .manual-empty {
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+.manual-edit-area {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.manual-edit-area > div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.goals-toolbar {
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.goals-toolbar p {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+.goals-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.goals-column {
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 0.75rem;
+  background: color-mix(in oklch, var(--muted) 40%, transparent);
+}
+
+.goals-column-head {
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding-inline: 0.25rem;
+}
+
+.goals-column-head > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.goals-column h3 {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.goals-column small {
+  color: var(--muted-foreground);
+}
+
+.show-approved-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.goal-card {
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.goal-card:hover {
+  box-shadow: var(--shadow-card);
+}
+
+.goal-card-head {
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.goal-talent,
+.domain-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.domain-tag-compact {
+  padding: 0.18rem 0.5rem;
+  font-size: 0.68rem;
+}
+
+.goal-card > .ant-card-body > p {
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.goal-approval-row {
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.approved-pill,
+.approval-waiting {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-radius: 999px;
+  padding: 0.18rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.approved-pill {
+  color: var(--progress-done);
+  background: var(--progress-done-soft);
+}
+
+.approval-waiting {
+  color: var(--muted-foreground);
+  background: var(--muted);
+}
+
+.goal-form,
+.edit-profile-form,
+.kudos-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.goal-form label,
+.edit-profile-form label,
+.kudos-form label {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--foreground);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.goal-modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.goal-modal-footer > div {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.approval-popover {
+  display: grid;
+  width: 16rem;
+  gap: 0.5rem;
+}
+
+.approval-popover > p {
+  color: var(--muted-foreground);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.approval-popover > div {
+  display: grid;
+  max-height: 15rem;
+  gap: 0.25rem;
+  overflow-y: auto;
+}
+
+.approval-person {
+  justify-content: flex-start;
+  gap: 0.5rem;
+  border: 0;
+  border-radius: 0.6rem;
+  padding: 0.45rem;
+  color: var(--foreground);
+  background: transparent;
+  cursor: pointer;
+}
+
+.approval-person.active,
+.approval-person:hover {
+  background: color-mix(in oklch, var(--accent2) 10%, transparent);
+}
+
+.approval-person .anticon {
+  margin-left: auto;
+  color: var(--accent2);
+}
+
+.empty-state {
+  border: 2px dashed var(--border);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  background: color-mix(in oklch, var(--muted) 30%, transparent);
+  text-align: center;
+}
+
+.large-empty {
+  width: min(100%, 48rem);
+  margin: 0 auto;
+  padding: 4rem;
+}
+
+.empty-state-title {
+  margin-bottom: 0.25rem;
+  color: var(--foreground);
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.kudos-page {
+  width: min(100%, 48rem);
+  margin: 0 auto;
+}
+
+.kudos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.kudos-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+}
+
+.kudos-heart {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: var(--accent2);
+}
+
+.kudos-card blockquote {
+  margin: 0;
+  padding-right: 1.5rem;
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.kudos-author {
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.kudos-author > div {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+}
+
+.kudos-author span {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+

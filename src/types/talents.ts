@@ -90,17 +90,3 @@ export type LearningResource = {
   domain: Domain
   tags: string[]
 }
-
-export const DOMAINS: Domain[] = [
-  "Executing",
-  "Influencing",
-  "Relationship Building",
-  "Strategic Thinking",
-]
-
-export const ROLES: RoleName[] = [
-  "Developer",
-  "Designer",
-  "Operations",
-  "Product",
-]

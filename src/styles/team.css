@@ -1,0 +1,473 @@
+﻿.team-overview-grid {
+  display: grid;
+  grid-template-columns: 20rem 1fr;
+  gap: 1.5rem;
+}
+
+.team-mobile-toolbar {
+  display: none;
+  justify-content: space-between;
+}
+
+.team-desktop-panel {
+  position: sticky;
+  top: 1.5rem;
+  align-self: start;
+}
+
+.team-search-panel {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: var(--card);
+}
+
+.compare-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: color-mix(in oklch, var(--muted) 50%, transparent);
+}
+
+.compare-toggle-row div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.compare-toggle-row span {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.team-warning {
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--destructive);
+  background: color-mix(in oklch, var(--destructive) 10%, transparent);
+  font-size: 0.75rem;
+}
+
+.team-person-list {
+  display: grid;
+  max-height: 60vh;
+  gap: 0.25rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.team-person {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  border: 0;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  color: var(--foreground);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.team-person:hover {
+  background: var(--muted);
+}
+
+.team-person.active {
+  background: color-mix(in oklch, var(--primary) 10%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--primary) 30%, transparent);
+}
+
+.team-person > span:not(.ant-avatar):not(.person-check) {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+}
+
+.team-person strong {
+  overflow: hidden;
+  font-size: 0.875rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.team-person em {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-style: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.person-check {
+  display: grid;
+  width: 1.25rem;
+  height: 1.25rem;
+  place-items: center;
+  border: 2px solid var(--border);
+  border-radius: 0.35rem;
+}
+
+.person-check.active {
+  color: var(--primary-foreground);
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.team-default {
+  gap: 2rem;
+}
+
+.team-default section {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.domain-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.domain-stat-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.25rem;
+  border-radius: 1rem;
+}
+
+.domain-stat-card h3 {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.domain-stat-card .ant-card-body > div {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.domain-stat-card span span {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.domain-stat-card strong {
+  display: block;
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-size: 1.5rem;
+}
+
+.team-talents-collapse {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  background: transparent;
+}
+
+.team-talents-collapse .ant-collapse-item {
+  border: 1px solid var(--border) !important;
+  border-radius: 1rem !important;
+  background: var(--card);
+}
+
+.team-talent-label {
+  width: 100%;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.team-talent-people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.team-talent-people > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  background: var(--muted);
+  font-size: 0.875rem;
+}
+
+.team-talent-people small {
+  color: var(--muted-foreground);
+}
+
+.team-talent-people em,
+.person-hero h2 em {
+  border-radius: 999px;
+  padding: 0.1rem 0.4rem;
+  color: var(--primary);
+  background: color-mix(in oklch, var(--primary) 15%, transparent);
+  font-size: 0.625rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.person-card {
+  overflow: hidden;
+}
+
+.person-hero {
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 2rem;
+}
+
+.person-hero > div {
+  gap: 1.25rem;
+}
+
+.person-hero h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.person-tabs {
+  border-bottom: 1px solid var(--border);
+  padding-inline: 1.5rem;
+}
+
+.person-tab-content {
+  padding: 1.5rem;
+}
+
+.disabled-tab-label small {
+  margin-left: 0.4rem;
+  border-radius: 999px;
+  padding: 0.1rem 0.35rem;
+  background: var(--muted);
+  font-size: 0.6rem;
+}
+
+.compare-panel {
+  gap: 1.5rem;
+}
+
+.compare-chips-card {
+  padding: 0.75rem;
+}
+
+.compare-chips {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.compare-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.compare-chip button {
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.compare-clear {
+  margin-left: auto;
+}
+
+.compare-radar-card {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.radar-wrap {
+  display: grid;
+  justify-items: center;
+  margin-top: 1rem;
+}
+
+.radar-wrap svg {
+  width: min(100%, 22rem);
+}
+
+.radar-grid {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.radar-axis {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.radar-label {
+  fill: var(--muted-foreground);
+  font-size: 0.75rem;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.radar-user {
+  opacity: 0.32;
+  stroke-width: 2;
+}
+
+.radar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.radar-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.radar-legend i {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 999px;
+}
+
+.combined-talents-table {
+  margin-top: 1rem;
+}
+
+.combined-talent-cell {
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.combined-talent-cell > span:last-child {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.chemistry-page {
+  width: min(100%, 64rem);
+  margin: 0 auto;
+}
+
+.chemistry-hero-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.chemistry-domain-card {
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+}
+
+.chemistry-domain-card h3 {
+  margin-top: 0.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.chemistry-domain-card span {
+  display: block;
+  margin-top: 0.5rem;
+  line-height: 1.55;
+}
+
+.card-title-with-icon {
+  gap: 0.5rem;
+}
+
+.card-title-with-icon > .anticon {
+  color: var(--accent2);
+  font-size: 1.2rem;
+}
+
+.appreciation-list,
+.pairings-grid {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.appreciation-row {
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: var(--background);
+}
+
+.appreciation-row > small {
+  width: 1.25rem;
+  color: var(--muted-foreground);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.appreciation-row > span:not(.ant-avatar) {
+  display: grid;
+  flex: 1;
+}
+
+.appreciation-row small:not(:first-child) {
+  color: var(--muted-foreground);
+}
+
+.appreciation-row b {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  color: var(--accent2);
+  background: color-mix(in oklch, var(--accent2) 10%, transparent);
+}
+
+.pairings-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.pairing-card {
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: var(--background);
+}
+
+.pairing-card > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pairing-card strong {
+  display: block;
+  margin-top: 0.75rem;
+}
+
+.pairing-card p {
+  margin-top: 0.35rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+

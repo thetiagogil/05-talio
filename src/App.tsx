@@ -1,16 +1,17 @@
 import { ConfigProvider, theme as antdTheme } from "antd"
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-import { ActivityPage } from "./features/activity/ActivityPage"
-import { IndexRedirect } from "./features/auth/IndexRedirect"
-import { LoginPage } from "./features/auth/LoginPage"
-import { SetupPage } from "./features/auth/SetupPage"
-import { LearnPage } from "./features/learn/LearnPage"
-import { PersonalPage } from "./features/personal/PersonalPage"
-import { TeamPage } from "./features/team/TeamPage"
-import { useAppTheme, useEnsureSeed } from "./lib/talentsStore"
+import { ActivityPage } from "./pages/ActivityPage"
+import { IndexRedirect } from "./pages/IndexRedirect"
+import { LoginPage } from "./pages/LoginPage"
+import { SetupPage } from "./pages/SetupPage"
+import { LearnPage } from "./pages/LearnPage"
+import { PersonalPage } from "./pages/PersonalPage"
+import { TeamPage } from "./pages/TeamPage"
+import { useEnsureWorkspaceSeed } from "./services/testDataService"
+import { useAppTheme } from "./services/workspaceService"
 
 export default function App() {
-  useEnsureSeed()
+  useEnsureWorkspaceSeed()
 
   const appTheme = useAppTheme()
 

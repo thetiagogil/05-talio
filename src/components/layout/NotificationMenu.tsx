@@ -9,13 +9,13 @@ import {
   approveGoal,
   markNotificationsRead,
   useActivity,
-  useCurrentUser,
   useGoals,
   useNotificationsReadAt,
   useTalents,
   useUsers,
-} from "../../lib/talentsStore"
-import { timeAgo } from "../../lib/format"
+} from "../../services/workspaceService"
+import { timeAgo } from "../../lib/utils/format"
+import { useCurrentUser } from "../../services/authService"
 import type { ActivityEvent } from "../../types/talents"
 import { AvatarBubble } from "../common/AvatarBubble"
 

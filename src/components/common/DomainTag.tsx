@@ -1,5 +1,5 @@
 import type { Domain } from "../../types/talents"
-import { domainStyle } from "../../lib/styles"
+import { domainStyle } from "../../lib/utils/styleUtils"
 
 type DomainTagProps = {
   domain: Domain

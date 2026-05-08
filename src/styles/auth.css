@@ -1,0 +1,394 @@
+﻿.splash-screen {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  color: var(--foreground);
+  background-image:
+    radial-gradient(at 15% 20%, oklch(0.55 0.25 305 / 0.4) 0px, transparent 50%),
+    radial-gradient(at 85% 70%, oklch(0.45 0.24 285 / 0.45) 0px, transparent 50%),
+    linear-gradient(135deg, oklch(0.28 0.18 285), oklch(0.32 0.22 305) 60%, oklch(0.26 0.18 270));
+}
+
+.splash-screen > div {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+}
+
+.splash-screen span {
+  display: grid;
+  width: 4rem;
+  height: 4rem;
+  place-items: center;
+  border-radius: 1.5rem;
+  background: oklch(1 0 0 / 15%);
+  box-shadow: 0 0 0 1px oklch(1 0 0 / 30%);
+}
+
+.splash-screen strong {
+  font-size: 1.75rem;
+  font-style: italic;
+}
+
+.splash-screen h1 {
+  font-size: 1.5rem;
+}
+
+.splash-screen p {
+  color: oklch(0.22 0.05 290 / 0.75);
+}
+
+.login-page {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 1.1fr 1fr;
+}
+
+.login-hero {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 3.5rem;
+  color: var(--foreground);
+  background-image:
+    radial-gradient(at 15% 20%, oklch(0.55 0.25 305 / 0.4) 0px, transparent 50%),
+    radial-gradient(at 85% 70%, oklch(0.45 0.24 285 / 0.45) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, oklch(0.5 0.24 320 / 0.35) 0px, transparent 50%),
+    linear-gradient(135deg, oklch(0.28 0.18 285), oklch(0.32 0.22 305) 60%, oklch(0.26 0.18 270));
+}
+
+.login-brand,
+.brand-link,
+.topbar-left,
+.topbar-actions,
+.login-domains,
+.page-title-row,
+.profile-hero,
+.profile-stats,
+.section-title-row,
+.goals-toolbar,
+.goals-column-head,
+.goal-card-head,
+.goal-approval-row,
+.team-mobile-toolbar,
+.compare-chips,
+.resource-meta,
+.kudos-author,
+.card-title-with-icon,
+.appreciation-row {
+  display: flex;
+  align-items: center;
+}
+
+.login-brand {
+  gap: 0.5rem;
+}
+
+.login-brand span {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: oklch(1 0 0 / 15%);
+  box-shadow: 0 0 0 1px oklch(1 0 0 / 30%);
+  font-weight: 700;
+}
+
+.login-brand strong,
+.brand-text > span {
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-weight: 700;
+}
+
+.login-hero-copy {
+  max-width: 35rem;
+}
+
+.login-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: oklch(1 0 0 / 10%);
+  box-shadow: 0 0 0 1px oklch(1 0 0 / 20%);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.login-hero h1 {
+  max-width: 42rem;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.04;
+}
+
+.login-hero-copy > p:not(.login-pill) {
+  max-width: 27rem;
+  margin-top: 1.25rem;
+  color: oklch(0.22 0.05 290 / 0.85);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+.login-domains {
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2.5rem;
+}
+
+.login-domains span {
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  background: oklch(1 0 0 / 10%);
+  box-shadow: 0 0 0 1px oklch(1 0 0 / 15%);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.login-footer {
+  color: oklch(0.22 0.05 290 / 0.55);
+  font-size: 0.75rem;
+}
+
+.login-panel {
+  display: grid;
+  place-items: center;
+  padding: 3rem;
+  background: var(--background);
+}
+
+.login-form-wrap {
+  width: min(100%, 24rem);
+}
+
+.login-form-wrap h2 {
+  font-size: 1.875rem;
+  font-weight: 800;
+}
+
+.login-form-wrap > p {
+  margin-top: 0.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+.login-form {
+  margin-top: 2rem;
+}
+
+.login-form .ant-form-item-label > label {
+  color: var(--foreground);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.login-error {
+  margin-bottom: 0.75rem;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.login-divider span {
+  height: 1px;
+  flex: 1;
+  background: var(--border);
+}
+
+.test-user-button {
+  border-style: dashed;
+}
+
+.login-tip {
+  margin-top: 2rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.login-tip code {
+  color: var(--foreground);
+  font-size: 0.72rem;
+}
+
+.setup-page {
+  min-height: 100vh;
+  background: var(--background);
+}
+
+.setup-wrap {
+  display: flex;
+  width: min(100%, 48rem);
+  min-height: 100vh;
+  margin: 0 auto;
+  flex-direction: column;
+  padding: 2.5rem 1.5rem;
+}
+
+.setup-steps {
+  width: 12rem;
+  margin: 0 auto;
+}
+
+.setup-heading {
+  margin: 3rem 0;
+  text-align: center;
+}
+
+.setup-heading p,
+.page-eyebrow,
+.panel-eyebrow,
+.chemistry-domain-card > p,
+.resource-match strong {
+  color: var(--accent2);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.setup-heading h1 {
+  margin-top: 0.75rem;
+  color: var(--foreground);
+  font-size: 2.25rem;
+  font-weight: 800;
+}
+
+.setup-heading span {
+  display: block;
+  margin-top: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.setup-content {
+  flex: 1;
+}
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.role-card,
+.avatar-option {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--border);
+  color: var(--foreground);
+  background: var(--card);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.role-card {
+  gap: 0.5rem;
+  min-height: 9rem;
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.role-card:hover,
+.avatar-option:hover,
+.resource-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.role-card > span {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: var(--muted);
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 800;
+}
+
+.role-card.active,
+.avatar-option.active {
+  border-color: var(--primary);
+  background: color-mix(in oklch, var(--primary) 5%, var(--card));
+  box-shadow: 0 0 0 4px color-mix(in oklch, var(--primary) 15%, transparent);
+}
+
+.role-card.active > span {
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.role-card > .anticon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: grid;
+  width: 1.25rem;
+  height: 1.25rem;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--primary-foreground);
+  background: var(--primary);
+  font-size: 0.75rem;
+}
+
+.avatar-step {
+  display: grid;
+  gap: 2rem;
+  justify-items: center;
+}
+
+.avatar-preview {
+  display: grid;
+  width: 8rem;
+  height: 8rem;
+  place-items: center;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, color-mix(in oklch, var(--primary) 10%, transparent), color-mix(in oklch, var(--primary-glow) 15%, transparent));
+  box-shadow: 0 0 0 4px color-mix(in oklch, var(--primary) 10%, transparent);
+  font-size: 4rem;
+}
+
+.avatar-preview.muted {
+  opacity: 0.5;
+}
+
+.avatar-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.75rem;
+}
+
+.avatar-grid.compact {
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.avatar-option {
+  aspect-ratio: 1;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+}
+
+.setup-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+}
+

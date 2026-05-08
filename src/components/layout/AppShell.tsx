@@ -12,15 +12,16 @@ import {
 } from "@ant-design/icons"
 import {
   logout,
+  useCurrentUser,
+} from "../../services/authService"
+import {
   toggleTheme,
   useAppTheme,
-  useCurrentUser,
-} from "../../lib/talentsStore"
+} from "../../services/workspaceService"
+import { STORAGE_KEYS } from "../../lib/constants/storageKeys"
 import { AvatarBubble } from "../common/AvatarBubble"
 import { NotificationMenu } from "./NotificationMenu"
 import { SidebarNav } from "./SidebarNav"
-
-const sidebarKey = "talio.sidebarCollapsed"
 
 type AppShellProps = {
   children: ReactNode
@@ -33,7 +34,7 @@ export function AppShell({ children }: AppShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(() => {
     if (typeof window === "undefined") return false
-    return localStorage.getItem(sidebarKey) === "1"
+    return localStorage.getItem(STORAGE_KEYS.sidebarCollapsed) === "1"
   })
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export function AppShell({ children }: AppShellProps) {
   function handleCollapsedChange() {
     setCollapsed((current) => {
       const next = !current
-      localStorage.setItem(sidebarKey, next ? "1" : "0")
+      localStorage.setItem(STORAGE_KEYS.sidebarCollapsed, next ? "1" : "0")
       return next
     })
   }
@@ -83,7 +84,7 @@ export function AppShell({ children }: AppShellProps) {
             onClick={handleCollapsedChange}
           />
           <Link className="brand-link" to="/personal">
-            <span className="brand-mark">T</span>
+            <img className="brand-mark" src="/favicon.svg" alt="Talio" />
             <span className="brand-text">
               <span>
                 Talents<span>.</span>
