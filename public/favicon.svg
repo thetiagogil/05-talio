@@ -1,11 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Talio favicon concept">
-  <circle cx="32" cy="32" r="30" fill="#1a1d23"/>
-  <g id="mark" transform="translate(0 0)">
-    <g id="t-letter" transform="translate(0 -3)">
-      <path d="M19 22h26M32 22v28" fill="none" stroke="#d946ef" stroke-width="7" stroke-linecap="round"/>
-    </g>
-    <g id="star" transform="translate(2 14)">
-      <path d="M46 11l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#f9a8d4"/>
-    </g>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Talio favicon">
+  <rect width="64" height="64" rx="16" fill="#25133f"/>
+  <circle cx="30" cy="26" r="8" fill="#f5d0fe"/>
+  <path d="M17 49c2.3-8 7-12 13-12s10.7 4 13 12" fill="none" stroke="#c084fc" stroke-width="6" stroke-linecap="round"/>
+  <path d="M47 12l2.4 5.7 5.9 2.1-5.9 2.1L47 28l-2.4-6.1-5.9-2.1 5.9-2.1z" fill="#22d3ee"/>
 </svg>
