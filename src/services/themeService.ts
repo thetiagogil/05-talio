@@ -23,7 +23,7 @@ export const toggleTheme = () => {
   setTheme(getTheme() === "light" ? "dark" : "light");
 };
 
-export const useAppTheme = () =>
+export const useAppTheme = (): "light" | "dark" =>
   useSyncExternalStore(
     subscribeStorage,
     () => readWorkspaceSnapshot<"light" | "dark">(STORAGE_KEYS.theme, "light"),

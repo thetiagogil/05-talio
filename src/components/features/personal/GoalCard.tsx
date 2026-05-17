@@ -1,10 +1,10 @@
-import { Button, Card } from "antd";
 import {
-  CheckCircleOutlined,
-  EditOutlined,
-  LockOutlined,
-  StarOutlined,
-} from "@ant-design/icons";
+  CheckCircleRounded,
+  EditRounded,
+  LockRounded,
+  StarBorderRounded,
+} from "@mui/icons-material";
+import { Box, Card, IconButton, Typography } from "@mui/material";
 import { domainStyle } from "../../../lib/utils/styleUtils";
 import { useTalents } from "../../../services/workspaceService";
 import type { Goal } from "../../../types/talents";
@@ -25,45 +25,121 @@ export function GoalCard({ goal, onEdit }: GoalCardProps) {
   const locked = goal.progress === "Done" && goal.approved;
 
   return (
-    <Card className="goal-card">
-      <div className="goal-card-head">
-        <span
-          className="goal-talent"
-          style={{ background: style.soft, color: style.text }}
+    <Card
+      sx={{
+        p: "0.75rem",
+        borderRadius: "0.75rem",
+        boxShadow: "var(--shadow-soft)",
+        "&:hover": { boxShadow: "var(--shadow-card)" },
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          gap: "0.5rem",
+        }}
+      >
+        <Box
+          component="span"
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.4rem",
+            borderRadius: 999,
+            px: "0.55rem",
+            py: "0.2rem",
+            color: style.text,
+            bgcolor: style.soft,
+            fontSize: "0.7rem",
+            fontWeight: 700,
+          }}
         >
-          <span className="domain-dot" style={{ background: style.base }} />
+          <Box
+            component="span"
+            sx={{
+              width: "0.625rem",
+              height: "0.625rem",
+              flex: "none",
+              borderRadius: 999,
+              bgcolor: style.base,
+            }}
+          />
           {talent.label}
-        </span>
-        <Button
+        </Box>
+        <IconButton
           aria-label={locked ? "Approved goals are locked" : "Edit goal"}
           disabled={locked}
-          icon={locked ? <LockOutlined /> : <EditOutlined />}
           size="small"
-          type="text"
           onClick={onEdit}
-        />
-      </div>
-      <p>{goal.description}</p>
+        >
+          {locked ? (
+            <LockRounded fontSize="small" />
+          ) : (
+            <EditRounded fontSize="small" />
+          )}
+        </IconButton>
+      </Box>
+      <Typography sx={{ mt: "0.6rem", fontSize: "0.875rem", lineHeight: 1.55 }}>
+        {goal.description}
+      </Typography>
 
       {goal.progress === "Done" && (
-        <div className="goal-approval-row">
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "0.5rem",
+            mt: "0.75rem",
+          }}
+        >
           {goal.approved ? (
-            <span className="approved-pill">
-              <CheckCircleOutlined />
+            <Box
+              component="span"
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.3rem",
+                borderRadius: 999,
+                px: "0.55rem",
+                py: "0.18rem",
+                color: "var(--progress-done)",
+                bgcolor: "var(--progress-done-soft)",
+                fontSize: "0.72rem",
+                fontWeight: 700,
+              }}
+            >
+              <CheckCircleRounded fontSize="inherit" />
               Approved
-            </span>
+            </Box>
           ) : (
             <>
-              <span className="approval-waiting">
-                <StarOutlined />
+              <Box
+                component="span"
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.3rem",
+                  borderRadius: 999,
+                  px: "0.55rem",
+                  py: "0.18rem",
+                  color: "var(--muted-foreground)",
+                  bgcolor: "var(--muted)",
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                }}
+              >
+                <StarBorderRounded fontSize="inherit" />
                 {(goal.approvalRequests?.length ?? 0) > 0
                   ? `Asked ${goal.approvalRequests?.length}`
                   : "Awaiting approval"}
-              </span>
+              </Box>
               <ApprovalRequestPopover goal={goal} />
             </>
           )}
-        </div>
+        </Box>
       )}
     </Card>
   );

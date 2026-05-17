@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { TeamChemistry } from "../components/features/team/TeamChemistry";
 import { TeamOverview } from "../components/features/team/TeamOverview";
@@ -33,13 +34,13 @@ export function TeamPage() {
         onTabChange={(nextTab) => navigate(`/team/${nextTab}`)}
       />
 
-      <div className="page-content">
+      <Box sx={{ p: { xs: "2rem 1rem", md: "2rem" } }}>
         {tab === "chemistry" ? (
           <TeamChemistry />
         ) : (
           <TeamOverview mode={tab === "compare" ? "compare" : "overview"} />
         )}
-      </div>
+      </Box>
     </AppShell>
   );
 }

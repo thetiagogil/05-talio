@@ -1,11 +1,11 @@
 import {
-  AimOutlined,
-  ClockCircleOutlined,
-  EditOutlined,
-  HeartOutlined,
-  TrophyOutlined,
-} from "@ant-design/icons";
-import { Card, Progress } from "antd";
+  AccessTimeRounded,
+  EditRounded,
+  EmojiEventsRounded,
+  FavoriteBorderRounded,
+  TrackChangesRounded,
+} from "@mui/icons-material";
+import { Box, Card, LinearProgress, Typography } from "@mui/material";
 import { useMemo, useState, type ReactNode } from "react";
 import { DOMAINS } from "../../../lib/constants/talentConstants";
 import { domainStyle } from "../../../lib/utils/styleUtils";
@@ -47,26 +47,107 @@ export function ProfileTab() {
   })).sort((a, b) => b.count - a.count)[0]?.domain;
 
   return (
-    <div className="profile-page-grid">
-      <section className="profile-hero">
-        <button
+    <Box
+      sx={{
+        display: "grid",
+        width: "min(100%, 72rem)",
+        mx: "auto",
+        gap: "2.5rem",
+      }}
+    >
+      <Box
+        component="section"
+        sx={{
+          position: "relative",
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", md: "auto 1fr auto" },
+          alignItems: "center",
+          gap: "2rem",
+          overflow: "hidden",
+          border: "1px solid var(--border)",
+          borderRadius: "1rem",
+          p: { xs: "2rem 1.25rem", sm: "2rem" },
+          color: "var(--foreground)",
+          bgcolor: "var(--surface)",
+          background:
+            "linear-gradient(135deg, var(--surface) 0, var(--accent) 56%, color-mix(in srgb, var(--domain-strategic-soft) 55%, var(--surface)) 100%)",
+          textAlign: { xs: "center", md: "left" },
+        }}
+      >
+        <Box
+          component="button"
           aria-label="Change avatar"
-          className="profile-avatar-button"
           type="button"
           onClick={() => setEditing(true)}
+          sx={{
+            position: "relative",
+            justifySelf: { xs: "center", md: "auto" },
+            border: 0,
+            bgcolor: "transparent",
+            cursor: "pointer",
+            p: 0,
+          }}
         >
           <AvatarBubble value={user.avatar} size={128} />
-          <span>
-            <EditOutlined />
-          </span>
-        </button>
+          <Box
+            component="span"
+            sx={{
+              position: "absolute",
+              right: 0,
+              bottom: 0,
+              display: "grid",
+              width: "2rem",
+              height: "2rem",
+              placeItems: "center",
+              border: "1px solid var(--border)",
+              borderRadius: 999,
+              color: "var(--foreground)",
+              bgcolor: "var(--surface)",
+              boxShadow: "var(--shadow-card)",
+            }}
+          >
+            <EditRounded fontSize="small" />
+          </Box>
+        </Box>
 
-        <div className="profile-hero-copy">
-          <p>{user.role}</p>
-          <h2>{user.name}</h2>
-          <span>
+        <Box sx={{ position: "relative", zIndex: 1 }}>
+          <Typography
+            sx={{
+              color: "var(--muted-foreground)",
+              fontSize: "0.75rem",
+              fontWeight: 800,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+            }}
+          >
+            {user.role}
+          </Typography>
+          <Typography
+            component="h2"
+            sx={{
+              mt: "0.5rem",
+              fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+              fontSize: "clamp(2.2rem, 5vw, 3rem)",
+              fontWeight: 500,
+              lineHeight: 1,
+            }}
+          >
+            {user.name}
+          </Typography>
+          <Typography
+            component="span"
+            sx={{
+              display: "block",
+              maxWidth: "28rem",
+              mt: "0.75rem",
+              color: "var(--muted-foreground)",
+              lineHeight: 1.6,
+            }}
+          >
             You lead with{" "}
-            <strong className="display-italic">{userTalents[0]?.label}</strong>
+            <Box component="strong" sx={{ fontStyle: "italic" }}>
+              {userTalents[0]?.label}
+            </Box>
             {dominantDomain && (
               <>
                 {" "}
@@ -74,19 +155,42 @@ export function ProfileTab() {
                 <strong>{dominantDomain}</strong>.
               </>
             )}
-          </span>
-        </div>
+          </Typography>
+        </Box>
 
-        <div className="profile-stats">
+        <Box
+          sx={{
+            display: "flex",
+            width: { xs: "100%", md: "auto" },
+            gap: "0.75rem",
+            justifyContent: "flex-end",
+            textAlign: "center",
+          }}
+        >
           <ProfileStat value={myKudos.length} label="kudos" />
-        </div>
-      </section>
+        </Box>
+      </Box>
 
-      <div className="profile-lower-grid">
-        <aside className="profile-side">
-          <Card className="panel-card">
-            <h3 className="panel-eyebrow">Domain breakdown</h3>
-            <div className="domain-breakdown">
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", lg: "18.75rem 1fr" },
+          alignItems: "start",
+          gap: "2rem",
+        }}
+      >
+        <Box
+          component="aside"
+          sx={{
+            display: "grid",
+            alignContent: "start",
+            alignSelf: "start",
+            gap: "1.5rem",
+          }}
+        >
+          <Card sx={{ p: "1.5rem", boxShadow: "none" }}>
+            <PanelEyebrow>Domain breakdown</PanelEyebrow>
+            <Box sx={{ display: "grid", gap: "1rem", mt: "1.25rem" }}>
               {DOMAINS.map((domain) => {
                 const count = userTalents.filter(
                   (talent) => talent?.category === domain,
@@ -95,63 +199,117 @@ export function ProfileTab() {
                 const style = domainStyle(domain);
 
                 return (
-                  <div className="domain-breakdown-row" key={domain}>
-                    <div>
-                      <span>
-                        <span
-                          className="domain-dot"
-                          style={{ background: style.base }}
+                  <Box key={domain}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        mb: "0.45rem",
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      <Box
+                        component="span"
+                        sx={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.5rem",
+                          fontWeight: 600,
+                        }}
+                      >
+                        <Box
+                          component="span"
+                          sx={{
+                            width: "0.625rem",
+                            height: "0.625rem",
+                            flex: "none",
+                            borderRadius: 999,
+                            bgcolor: style.base,
+                          }}
                         />
                         {domain}
-                      </span>
-                      <small>{count}</small>
-                    </div>
-                    <Progress
-                      percent={percent}
-                      railColor="var(--muted)"
-                      showInfo={false}
-                      strokeColor={style.base}
+                      </Box>
+                      <Typography
+                        component="small"
+                        sx={{
+                          color: "var(--muted-foreground)",
+                          fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                          fontSize: "0.75rem",
+                        }}
+                      >
+                        {count}
+                      </Typography>
+                    </Box>
+                    <LinearProgress
+                      variant="determinate"
+                      value={percent}
+                      sx={{
+                        height: 8,
+                        borderRadius: 999,
+                        bgcolor: "var(--muted)",
+                        "& .MuiLinearProgress-bar": {
+                          bgcolor: style.base,
+                          borderRadius: 999,
+                        },
+                      }}
                     />
-                  </div>
+                  </Box>
                 );
               })}
-            </div>
+            </Box>
           </Card>
 
-          <Card className="panel-card">
-            <h3 className="panel-eyebrow">At a glance</h3>
-            <div className="at-glance-list">
+          <Card sx={{ p: "1.5rem", boxShadow: "none" }}>
+            <PanelEyebrow>At a glance</PanelEyebrow>
+            <Box sx={{ display: "grid", gap: "0.75rem", mt: "1rem" }}>
               <AtGlanceRow
-                icon={<AimOutlined />}
+                icon={<TrackChangesRounded />}
                 label="To do tasks"
                 value={todoGoals.length}
               />
               <AtGlanceRow
-                icon={<ClockCircleOutlined />}
+                icon={<AccessTimeRounded />}
                 label="In progress tasks"
                 value={activeGoals.length}
               />
               <AtGlanceRow
-                icon={<TrophyOutlined />}
+                icon={<EmojiEventsRounded />}
                 label="Completed tasks"
                 value={
                   myGoals.filter((goal) => goal.progress === "Done").length
                 }
               />
               <AtGlanceRow
-                icon={<HeartOutlined />}
+                icon={<FavoriteBorderRounded />}
                 label="Kudos received"
                 value={myKudos.length}
               />
-            </div>
+            </Box>
           </Card>
-        </aside>
+        </Box>
 
-        <section>
-          <div className="section-title-row">
-            <h2>Top 10 talents</h2>
-          </div>
-          <div className="talent-stack">
+        <Box component="section">
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              mb: "1rem",
+            }}
+          >
+            <Typography
+              component="h2"
+              sx={{
+                color: "var(--foreground)",
+                fontSize: "1.5rem",
+                fontWeight: 500,
+              }}
+            >
+              Top 10 talents
+            </Typography>
+          </Box>
+          <Box sx={{ display: "grid", gap: "0.5rem" }}>
             {userTalents.map((talent, index) =>
               talent ? (
                 <TalentRow
@@ -162,21 +320,54 @@ export function ProfileTab() {
                 />
               ) : null,
             )}
-          </div>
-        </section>
-      </div>
+          </Box>
+        </Box>
+      </Box>
 
       {editing && <EditProfileModal open onClose={() => setEditing(false)} />}
-    </div>
+    </Box>
   );
 }
 
 function ProfileStat({ value, label }: { value: number; label: string }) {
   return (
-    <div className="profile-stat">
-      <strong>{value}</strong>
-      <span>{label}</span>
-    </div>
+    <Box
+      sx={{
+        minWidth: "6.5rem",
+        border: "1px solid var(--border)",
+        borderRadius: "0.75rem",
+        px: { xs: "0.5rem", sm: "1rem" },
+        py: "0.8rem",
+        bgcolor: "var(--surface)",
+      }}
+    >
+      <Typography
+        component="strong"
+        sx={{
+          display: "block",
+          fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+          fontSize: { xs: "1.5rem", sm: "1.85rem" },
+          fontWeight: 600,
+          lineHeight: 1,
+        }}
+      >
+        {value}
+      </Typography>
+      <Typography
+        component="span"
+        sx={{
+          display: "block",
+          mt: "0.25rem",
+          color: "var(--muted-foreground)",
+          fontSize: "0.625rem",
+          fontWeight: 800,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+        }}
+      >
+        {label}
+      </Typography>
+    </Box>
   );
 }
 
@@ -190,12 +381,49 @@ function AtGlanceRow({
   value: number;
 }) {
   return (
-    <div className="at-glance-row">
-      <span>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        fontSize: "0.875rem",
+      }}
+    >
+      <Box
+        component="span"
+        sx={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          color: "var(--muted-foreground)",
+        }}
+      >
         {icon}
         {label}
-      </span>
-      <strong>{value}</strong>
-    </div>
+      </Box>
+      <Box
+        component="strong"
+        sx={{ fontFamily: "JetBrains Mono, ui-monospace, monospace" }}
+      >
+        {value}
+      </Box>
+    </Box>
+  );
+}
+
+function PanelEyebrow({ children }: { children: ReactNode }) {
+  return (
+    <Typography
+      component="h3"
+      sx={{
+        color: "var(--accent2)",
+        fontSize: "0.75rem",
+        fontWeight: 800,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+      }}
+    >
+      {children}
+    </Typography>
   );
 }

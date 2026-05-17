@@ -1,13 +1,14 @@
-import { useMemo, type CSSProperties, type ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 import {
-  AimOutlined,
-  CheckCircleOutlined,
-  HeartOutlined,
-  ReadOutlined,
-  StarOutlined,
-  TrophyOutlined,
-  UserAddOutlined,
-} from "@ant-design/icons";
+  CheckCircleRounded,
+  EmojiEventsRounded,
+  FavoriteBorderRounded,
+  MenuBookRounded,
+  PersonAddAltRounded,
+  StarBorderRounded,
+  TrackChangesRounded,
+} from "@mui/icons-material";
+import { Box, Typography } from "@mui/material";
 import { EmptyState } from "../../common/EmptyState";
 import { timeAgo } from "../../../lib/utils/format";
 import { domainStyle } from "../../../lib/utils/styleUtils";
@@ -40,11 +41,30 @@ export function ActivityFeed({
   }
 
   return (
-    <ol className="activity-feed">
+    <Box
+      component="ol"
+      sx={{
+        position: "relative",
+        display: "grid",
+        gap: "0.75rem",
+        m: 0,
+        p: 0,
+        listStyle: "none",
+        "&::before": {
+          position: "absolute",
+          top: "1rem",
+          bottom: "1rem",
+          left: "1.12rem",
+          width: "1px",
+          content: '""',
+          bgcolor: "var(--border)",
+        },
+      }}
+    >
       {list.map((event) => (
         <ActivityRow event={event} key={event.id} />
       ))}
-    </ol>
+    </Box>
   );
 }
 
@@ -67,54 +87,173 @@ function ActivityRow({ event }: { event: ActivityEvent }) {
   const icon = iconFor(event.type);
   const talentStyle = talent ? domainStyle(talent.category) : null;
   const isKudos = event.type === "kudos_sent";
-  const messageStyle = {
-    "--message-accent": talentStyle?.base ?? "var(--primary)",
-    "--message-bg": talentStyle?.soft ?? "var(--accent)",
-  } as CSSProperties;
+  const messageAccent = talentStyle?.base ?? "var(--primary)";
+  const messageBg = talentStyle?.soft ?? "var(--accent)";
 
   return (
-    <li className="activity-row">
-      <span className={`activity-icon ${icon.className}`}>{icon.node}</span>
-      <div className="activity-card">
-        <div>
-          <p>
+    <Box
+      component="li"
+      sx={{
+        position: "relative",
+        display: "flex",
+        alignItems: "flex-start",
+        gap: "1rem",
+      }}
+    >
+      <Box
+        component="span"
+        sx={{
+          zIndex: 1,
+          display: "grid",
+          width: "2.25rem",
+          height: "2.25rem",
+          flex: "none",
+          placeItems: "center",
+          border: "1px solid",
+          borderColor: icon.border,
+          borderRadius: 999,
+          color: icon.color,
+          bgcolor: icon.bg,
+        }}
+      >
+        {icon.node}
+      </Box>
+      <Box
+        sx={{
+          flex: 1,
+          border: "1px solid var(--border)",
+          borderRadius: "0.875rem",
+          p: "1rem",
+          bgcolor: "var(--card)",
+          boxShadow: "var(--shadow-soft)",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: { xs: "flex-start", sm: "center" },
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            gap: "1rem",
+          }}
+        >
+          <Typography sx={{ fontSize: "0.875rem", lineHeight: 1.6 }}>
             <strong>{actor?.name ?? "Someone"}</strong>{" "}
             {phrase(event, target?.name, talent?.label)}
-          </p>
-          <time>{timeAgo(event.createdAt)}</time>
-        </div>
+          </Typography>
+          <Typography
+            component="time"
+            sx={{
+              flex: "none",
+              color: "var(--muted-foreground)",
+              fontSize: "0.75rem",
+            }}
+          >
+            {timeAgo(event.createdAt)}
+          </Typography>
+        </Box>
         {isKudos && event.message && (
-          <blockquote className="activity-message" style={messageStyle}>
+          <Box
+            component="blockquote"
+            sx={{
+              mt: "0.75rem",
+              mb: 0,
+              mx: 0,
+              border: `1px solid color-mix(in srgb, ${messageAccent} 18%, var(--border))`,
+              borderRadius: "0.75rem",
+              p: "0.75rem 0.85rem",
+              color: "color-mix(in srgb, var(--foreground) 88%, transparent)",
+              bgcolor: `color-mix(in srgb, ${messageBg} 70%, var(--surface))`,
+              fontSize: "0.875rem",
+              fontStyle: "italic",
+              "&::before": {
+                content: '"“"',
+                color: messageAccent,
+                fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+                fontSize: "1.25rem",
+                fontStyle: "normal",
+                fontWeight: 800,
+                lineHeight: 0,
+              },
+            }}
+          >
             <span>{event.message}</span>
-          </blockquote>
+          </Box>
         )}
         {goal && !isKudos && (
-          <span className="activity-goal-detail">{goal.description}</span>
+          <Typography
+            component="span"
+            sx={{
+              display: "block",
+              mt: "0.5rem",
+              color: "var(--muted-foreground)",
+              fontSize: "0.75rem",
+            }}
+          >
+            {goal.description}
+          </Typography>
         )}
-      </div>
-    </li>
+      </Box>
+    </Box>
   );
 }
 
 function iconFor(type: ActivityEvent["type"]): {
   node: ReactNode;
-  className: string;
+  color: string;
+  bg: string;
+  border: string;
 } {
   switch (type) {
     case "kudos_sent":
-      return { node: <HeartOutlined />, className: "accent" };
+      return {
+        node: <FavoriteBorderRounded />,
+        color: "var(--accent2)",
+        border: "color-mix(in oklch, var(--accent2) 30%, transparent)",
+        bg: "color-mix(in oklch, var(--accent2) 10%, var(--background))",
+      };
     case "goal_created":
-      return { node: <AimOutlined />, className: "" };
+      return {
+        node: <TrackChangesRounded />,
+        color: "var(--foreground)",
+        border: "var(--border)",
+        bg: "var(--background)",
+      };
     case "goal_progressed":
-      return { node: <StarOutlined />, className: "doing" };
+      return {
+        node: <StarBorderRounded />,
+        color: "var(--progress-doing)",
+        border: "color-mix(in oklch, var(--progress-doing) 30%, transparent)",
+        bg: "var(--progress-doing-soft)",
+      };
     case "goal_completed":
-      return { node: <TrophyOutlined />, className: "done" };
+      return {
+        node: <EmojiEventsRounded />,
+        color: "var(--progress-done)",
+        border: "color-mix(in oklch, var(--progress-done) 30%, transparent)",
+        bg: "var(--progress-done-soft)",
+      };
     case "goal_approved":
-      return { node: <CheckCircleOutlined />, className: "done" };
+      return {
+        node: <CheckCircleRounded />,
+        color: "var(--progress-done)",
+        border: "color-mix(in oklch, var(--progress-done) 30%, transparent)",
+        bg: "var(--progress-done-soft)",
+      };
     case "manual_updated":
-      return { node: <ReadOutlined />, className: "" };
+      return {
+        node: <MenuBookRounded />,
+        color: "var(--foreground)",
+        border: "var(--border)",
+        bg: "var(--background)",
+      };
     case "joined":
-      return { node: <UserAddOutlined />, className: "accent" };
+      return {
+        node: <PersonAddAltRounded />,
+        color: "var(--accent2)",
+        border: "color-mix(in oklch, var(--accent2) 30%, transparent)",
+        bg: "color-mix(in oklch, var(--accent2) 10%, var(--background))",
+      };
   }
 }
 
@@ -131,7 +270,10 @@ function phrase(
           {talentName && (
             <>
               {" "}
-              for <em className="display-italic">{talentName}</em>
+              for{" "}
+              <Box component="em" sx={{ fontStyle: "italic" }}>
+                {talentName}
+              </Box>
             </>
           )}
         </>
@@ -143,7 +285,10 @@ function phrase(
           {talentName && (
             <>
               {" "}
-              linked to <em className="display-italic">{talentName}</em>
+              linked to{" "}
+              <Box component="em" sx={{ fontStyle: "italic" }}>
+                {talentName}
+              </Box>
             </>
           )}
         </>
@@ -161,7 +306,10 @@ function phrase(
           {talentName && (
             <>
               {" "}
-              for <em className="display-italic">{talentName}</em>
+              for{" "}
+              <Box component="em" sx={{ fontStyle: "italic" }}>
+                {talentName}
+              </Box>
             </>
           )}
         </>

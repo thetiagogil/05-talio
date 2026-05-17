@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { Button } from "antd";
+import AddRounded from "@mui/icons-material/AddRounded";
+import { Box, Button, Typography } from "@mui/material";
 import {
   closestCorners,
   DndContext,
@@ -9,7 +10,6 @@ import {
   useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
-import { PlusOutlined } from "@ant-design/icons";
 import { PROGRESS_COLUMNS } from "../../../lib/constants/talentConstants";
 import { useCurrentUser } from "../../../services/authService";
 import {
@@ -63,24 +63,42 @@ export function GoalsBoard() {
   }
 
   return (
-    <section className="goals-board">
-      <div className="goals-toolbar">
-        <p>Set growth goals tied to your top talents.</p>
+    <Box component="section" sx={{ display: "grid", gap: "1.5rem" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: { xs: "flex-start", sm: "center" },
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: "space-between",
+          gap: "1rem",
+        }}
+      >
+        <Typography
+          sx={{ color: "var(--muted-foreground)", fontSize: "0.875rem" }}
+        >
+          Set growth goals tied to your top talents.
+        </Typography>
         <Button
-          icon={<PlusOutlined />}
-          type="primary"
+          startIcon={<AddRounded />}
+          variant="contained"
           onClick={() => setEditing("new")}
         >
           New goal
         </Button>
-      </div>
+      </Box>
 
       <DndContext
         collisionDetection={closestCorners}
         sensors={sensors}
         onDragEnd={handleDragEnd}
       >
-        <div className="goals-columns">
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" },
+            gap: "1rem",
+          }}
+        >
           {PROGRESS_COLUMNS.map((column) => {
             const items = myGoals.filter((goal) => goal.progress === column);
             const visible =
@@ -100,7 +118,7 @@ export function GoalsBoard() {
               />
             );
           })}
-        </div>
+        </Box>
       </DndContext>
 
       {editing !== null && (
@@ -112,6 +130,6 @@ export function GoalsBoard() {
           onClose={() => setEditing(null)}
         />
       )}
-    </section>
+    </Box>
   );
 }

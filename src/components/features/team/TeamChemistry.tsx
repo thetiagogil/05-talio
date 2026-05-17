@@ -1,6 +1,6 @@
-import { useMemo } from "react";
-import { Card } from "antd";
-import { HeartOutlined, StarOutlined } from "@ant-design/icons";
+import { useMemo, type ReactNode } from "react";
+import { FavoriteBorderRounded, StarBorderRounded } from "@mui/icons-material";
+import { Box, Card, Typography } from "@mui/material";
 import { AvatarBubble } from "../../common/AvatarBubble";
 import { DOMAINS } from "../../../lib/constants/talentConstants";
 import { domainStyle } from "../../../lib/utils/styleUtils";
@@ -58,8 +58,21 @@ export function TeamChemistry() {
   }, [kudos, users]);
 
   return (
-    <div className="chemistry-page">
-      <div className="chemistry-hero-grid">
+    <Box
+      sx={{
+        display: "grid",
+        width: "min(100%, 64rem)",
+        mx: "auto",
+        gap: "1.5rem",
+      }}
+    >
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" },
+          gap: "1rem",
+        }}
+      >
         <ChemistryDomainCard
           eyebrow="Team superpower"
           title={strongest.domain}
@@ -70,61 +83,133 @@ export function TeamChemistry() {
           title={weakest.domain}
           text={`Only ${weakest.count} top-3 talents here. Worth pairing intentionally on these efforts.`}
         />
-      </div>
+      </Box>
 
-      <Card className="panel-card">
-        <div className="card-title-with-icon">
-          <HeartOutlined />
-          <h3>Most appreciated</h3>
-        </div>
-        <p>Teammates who've received the most kudos.</p>
-        <div className="appreciation-list">
+      <Card sx={{ p: "1.5rem", boxShadow: "none" }}>
+        <PanelTitle icon={<FavoriteBorderRounded />}>
+          Most appreciated
+        </PanelTitle>
+        <PanelDescription>
+          Teammates who've received the most kudos.
+        </PanelDescription>
+        <Box sx={{ display: "grid", gap: "0.5rem", mt: "1rem" }}>
           {topReceivers.length === 0 ? (
-            <span>No kudos sent yet.</span>
+            <Typography
+              component="span"
+              sx={{ color: "var(--muted-foreground)" }}
+            >
+              No kudos sent yet.
+            </Typography>
           ) : (
             topReceivers.map(({ user, count }, index) => (
-              <div className="appreciation-row" key={user.id}>
-                <small>{index + 1}</small>
+              <Box
+                key={user.id}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                  border: "1px solid var(--border)",
+                  borderRadius: "0.625rem",
+                  p: "0.75rem",
+                  bgcolor: "var(--background)",
+                }}
+              >
+                <Typography
+                  component="small"
+                  sx={{
+                    width: "1.25rem",
+                    color: "var(--muted-foreground)",
+                    fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  }}
+                >
+                  {index + 1}
+                </Typography>
                 <AvatarBubble value={user.avatar} size={32} />
-                <span>
+                <Box component="span" sx={{ display: "grid", flex: 1 }}>
                   <strong>
                     {user.name}
                     {user.id === currentUser?.id && <em> (me)</em>}
                   </strong>
-                  <small>{user.role}</small>
-                </span>
-                <b>
-                  <HeartOutlined /> {count}
-                </b>
-              </div>
+                  <Box
+                    component="small"
+                    sx={{ color: "var(--muted-foreground)" }}
+                  >
+                    {user.role}
+                  </Box>
+                </Box>
+                <Box
+                  component="b"
+                  sx={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.25rem",
+                    borderRadius: 999,
+                    px: "0.75rem",
+                    py: "0.25rem",
+                    color: "var(--accent2)",
+                    bgcolor:
+                      "color-mix(in oklch, var(--accent2) 10%, transparent)",
+                  }}
+                >
+                  <FavoriteBorderRounded fontSize="small" /> {count}
+                </Box>
+              </Box>
             ))
           )}
-        </div>
+        </Box>
       </Card>
 
-      <Card className="panel-card">
-        <div className="card-title-with-icon">
-          <StarOutlined />
-          <h3>Pairings to try</h3>
-        </div>
-        <p>Complementary teammates worth working with.</p>
-        <div className="pairings-grid">
+      <Card sx={{ p: "1.5rem", boxShadow: "none" }}>
+        <PanelTitle icon={<StarBorderRounded />}>Pairings to try</PanelTitle>
+        <PanelDescription>
+          Complementary teammates worth working with.
+        </PanelDescription>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" },
+            gap: "0.5rem",
+            mt: "1rem",
+          }}
+        >
           {pairings(users, talents).map(({ first, second, reason }) => (
-            <div className="pairing-card" key={`${first.id}-${second.id}`}>
-              <div>
+            <Box
+              key={`${first.id}-${second.id}`}
+              sx={{
+                border: "1px solid var(--border)",
+                borderRadius: "0.875rem",
+                p: "1rem",
+                bgcolor: "var(--background)",
+              }}
+            >
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+              >
                 <AvatarBubble value={first.avatar} size={32} />
                 <span>+</span>
                 <AvatarBubble value={second.avatar} size={32} />
-              </div>
-              <strong>
+              </Box>
+              <Typography
+                component="strong"
+                sx={{ display: "block", mt: "0.75rem" }}
+              >
                 {first.name} &amp; {second.name}
-              </strong>
-              <p>{reason}</p>
-            </div>
+              </Typography>
+              <Typography
+                sx={{
+                  mt: "0.35rem",
+                  color: "var(--muted-foreground)",
+                  fontSize: "0.75rem",
+                  lineHeight: 1.55,
+                }}
+              >
+                {reason}
+              </Typography>
+            </Box>
           ))}
-        </div>
+        </Box>
       </Card>
-    </div>
+    </Box>
   );
 }
 
@@ -140,11 +225,87 @@ function ChemistryDomainCard({
   const style = domainStyle(title);
 
   return (
-    <Card className="chemistry-domain-card" style={{ background: style.soft }}>
-      <p>{eyebrow}</p>
-      <h3 style={{ color: style.text }}>{title}</h3>
-      <span>{text}</span>
+    <Card
+      sx={{
+        p: "1.5rem",
+        borderRadius: "0.875rem",
+        bgcolor: style.soft,
+        boxShadow: "none",
+      }}
+    >
+      <Typography
+        sx={{
+          color: "var(--accent2)",
+          fontSize: "0.75rem",
+          fontWeight: 800,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+        }}
+      >
+        {eyebrow}
+      </Typography>
+      <Typography
+        component="h3"
+        sx={{
+          mt: "0.5rem",
+          color: style.text,
+          fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+          fontSize: "2rem",
+          fontWeight: 600,
+        }}
+      >
+        {title}
+      </Typography>
+      <Typography
+        component="span"
+        sx={{ display: "block", mt: "0.5rem", lineHeight: 1.55 }}
+      >
+        {text}
+      </Typography>
     </Card>
+  );
+}
+
+function PanelTitle({
+  children,
+  icon,
+}: {
+  children: ReactNode;
+  icon: ReactNode;
+}) {
+  return (
+    <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+      <Box
+        sx={{ color: "var(--accent2)", fontSize: "1.2rem", display: "flex" }}
+      >
+        {icon}
+      </Box>
+      <Typography
+        component="h3"
+        sx={{
+          color: "var(--foreground)",
+          fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+          fontSize: "1.25rem",
+          fontWeight: 700,
+        }}
+      >
+        {children}
+      </Typography>
+    </Box>
+  );
+}
+
+function PanelDescription({ children }: { children: ReactNode }) {
+  return (
+    <Typography
+      sx={{
+        mt: "0.25rem",
+        color: "var(--muted-foreground)",
+        fontSize: "0.875rem",
+      }}
+    >
+      {children}
+    </Typography>
   );
 }
 

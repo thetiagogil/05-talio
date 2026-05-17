@@ -1,7 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, Button, Form, Input } from "antd";
-import { ArrowRightOutlined, StarOutlined } from "@ant-design/icons";
+import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
+import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
+import {
+  Alert,
+  Box,
+  Button,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
 import {
   continueWithTestUser,
   loginByEmail,
@@ -13,15 +21,31 @@ export function LoginPage() {
   const user = useCurrentUser();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) navigate(nextRoute(user), { replace: true });
   }, [navigate, user]);
 
-  function handleEmailLogin(values: { email: string }) {
+  function handleEmailLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setError(null);
+    setEmailError(null);
 
-    const nextUser = loginByEmail(values.email);
+    const nextEmail = email.trim();
+
+    if (!nextEmail) {
+      setEmailError("Enter your work email.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) {
+      setEmailError("Enter a valid email address.");
+      return;
+    }
+
+    const nextUser = loginByEmail(nextEmail);
 
     if (!nextUser) {
       setError("We couldn't find that email. Try the test user below.");
@@ -37,96 +61,241 @@ export function LoginPage() {
   }
 
   return (
-    <main className="login-page">
-      <aside className="login-hero">
-        <div className="login-brand">
-          <img className="login-brand-mark" src="/favicon.svg" alt="Talio" />
-          <strong>Talio</strong>
-        </div>
+    <Box
+      component="main"
+      sx={{
+        display: "grid",
+        minHeight: "100vh",
+        gridTemplateColumns: { xs: "1fr", md: "1.1fr 1fr" },
+      }}
+    >
+      <Box
+        component="aside"
+        sx={{
+          position: "relative",
+          display: "flex",
+          minHeight: { xs: "38rem", sm: "44rem", md: "100vh" },
+          flexDirection: "column",
+          justifyContent: "space-between",
+          overflow: "hidden",
+          p: { xs: "2rem", md: "3.5rem" },
+          color: "var(--foreground)",
+          background:
+            "linear-gradient(135deg, var(--surface) 0, var(--accent) 52%, color-mix(in srgb, var(--domain-strategic-soft) 55%, var(--surface)) 100%)",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <Box
+            component="img"
+            src="/favicon.svg"
+            alt="Talio"
+            sx={{
+              display: "block",
+              width: "2.25rem",
+              height: "2.25rem",
+              borderRadius: 999,
+            }}
+          />
+          <Typography
+            component="strong"
+            sx={{
+              fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+              fontWeight: 700,
+            }}
+          >
+            Talio
+          </Typography>
+        </Box>
 
-        <section className="login-hero-copy">
-          <p className="login-pill">
-            <StarOutlined />
+        <Box component="section" sx={{ maxWidth: "35rem" }}>
+          <Typography
+            component="p"
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              mb: "1.5rem",
+              borderRadius: 999,
+              px: "0.75rem",
+              py: "0.25rem",
+              color: "var(--accent-foreground)",
+              bgcolor: "var(--accent)",
+              boxShadow:
+                "0 0 0 1px color-mix(in srgb, var(--primary) 18%, transparent)",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+            }}
+          >
+            <StarBorderRounded fontSize="small" />
             Built for people-first teams
-          </p>
-          <h1>
+          </Typography>
+          <Typography
+            component="h1"
+            sx={{
+              maxWidth: "42rem",
+              fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+              fontSize: "clamp(2.4rem, 5vw, 4rem)",
+              fontWeight: 800,
+              lineHeight: 1.04,
+            }}
+          >
             Know your strengths.
             <br />
             Grow with your team.
-          </h1>
-          <p>
+          </Typography>
+          <Typography
+            sx={{
+              maxWidth: "27rem",
+              mt: "1.25rem",
+              color: "var(--muted-foreground)",
+              fontSize: "1.125rem",
+              lineHeight: 1.65,
+            }}
+          >
             Discover what makes you tick, share how you work best, and find
             common ground with the people around you.
-          </p>
-          <div className="login-domains">
-            <span>Executing</span>
-            <span>Influencing</span>
-            <span>Relationships</span>
-            <span>Strategy</span>
-          </div>
-        </section>
-
-        <p className="login-footer">&copy; Talio &middot; People team app</p>
-      </aside>
-
-      <section className="login-panel">
-        <div className="login-form-wrap">
-          <h2>Welcome back</h2>
-          <p>Sign in with your work email to continue.</p>
-
-          <Form
-            className="login-form"
-            layout="vertical"
-            requiredMark={false}
-            onFinish={handleEmailLogin}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "0.75rem",
+              mt: "2.5rem",
+            }}
           >
-            <Form.Item
+            {["Executing", "Influencing", "Relationships", "Strategy"].map(
+              (label) => (
+                <Box
+                  component="span"
+                  key={label}
+                  sx={{
+                    borderRadius: 999,
+                    px: "0.9rem",
+                    py: "0.45rem",
+                    bgcolor: "var(--surface)",
+                    boxShadow: "0 0 0 1px var(--border)",
+                    fontSize: "0.75rem",
+                    fontWeight: 600,
+                  }}
+                >
+                  {label}
+                </Box>
+              ),
+            )}
+          </Box>
+        </Box>
+
+        <Typography
+          sx={{ color: "var(--muted-foreground)", fontSize: "0.75rem" }}
+        >
+          &copy; Talio &middot; People team app
+        </Typography>
+      </Box>
+
+      <Box
+        component="section"
+        sx={{
+          display: "grid",
+          placeItems: "center",
+          p: { xs: "2rem 1rem", md: "3rem" },
+          bgcolor: "var(--background)",
+        }}
+      >
+        <Box sx={{ width: "min(100%, 24rem)" }}>
+          <Typography
+            component="h2"
+            sx={{
+              fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+              fontSize: "1.875rem",
+              fontWeight: 800,
+            }}
+          >
+            Welcome back
+          </Typography>
+          <Typography
+            sx={{
+              mt: "0.5rem",
+              color: "var(--muted-foreground)",
+              fontSize: "0.875rem",
+            }}
+          >
+            Sign in with your work email to continue.
+          </Typography>
+
+          <Box component="form" sx={{ mt: "2rem" }} onSubmit={handleEmailLogin}>
+            <TextField
+              fullWidth
               label="Work email"
-              name="email"
-              rules={[
-                { required: true, message: "Enter your work email." },
-                { type: "email", message: "Enter a valid email address." },
-              ]}
-            >
-              <Input size="large" placeholder="you@talents.app" />
-            </Form.Item>
+              placeholder="you@talents.app"
+              value={email}
+              error={Boolean(emailError)}
+              helperText={emailError}
+              onChange={(event) => setEmail(event.target.value)}
+              sx={{ mb: "1rem" }}
+            />
 
             {error && (
               <Alert
-                className="login-error"
-                message={error}
-                showIcon
-                type="error"
-              />
+                severity="error"
+                sx={{ mb: "0.75rem", borderRadius: "0.625rem" }}
+              >
+                {error}
+              </Alert>
             )}
 
-            <Button block htmlType="submit" size="large" type="primary">
-              Continue <ArrowRightOutlined />
+            <Button
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+              endIcon={<ArrowForwardRounded />}
+            >
+              Continue
             </Button>
-          </Form>
+          </Box>
 
-          <div className="login-divider">
-            <span />
+          <Divider
+            textAlign="center"
+            sx={{
+              my: "1.5rem",
+              color: "var(--muted-foreground)",
+              borderColor: "var(--border)",
+              "&::before, &::after": { borderColor: "var(--border)" },
+              "& .MuiDivider-wrapper": {
+                px: "0.75rem",
+                color: "var(--muted-foreground)",
+                fontSize: "0.75rem",
+              },
+            }}
+          >
             or
-            <span />
-          </div>
+          </Divider>
 
           <Button
-            block
+            fullWidth
             size="large"
-            className="test-user-button"
+            variant="outlined"
             onClick={handleTestLogin}
+            sx={{ borderStyle: "dashed" }}
           >
             Continue with test user
           </Button>
 
-          <p className="login-tip">
+          <Typography
+            sx={{
+              mt: "2rem",
+              color: "var(--muted-foreground)",
+              fontSize: "0.75rem",
+              lineHeight: 1.6,
+              "& code": { color: "var(--foreground)", fontSize: "0.72rem" },
+            }}
+          >
             Tip: try <code>sofia@talents.app</code>,{" "}
             <code>marcus@talents.app</code>, or any seeded teammate.
-          </p>
-        </div>
-      </section>
-    </main>
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

@@ -1,6 +1,15 @@
 import { useMemo, useState } from "react";
-import { Button, Input, Modal, Select } from "antd";
-import { HeartOutlined, SendOutlined } from "@ant-design/icons";
+import { FavoriteBorderRounded, SendRounded } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 import { useCurrentUser } from "../../../services/authService";
 import { sendKudos, useTalents } from "../../../services/workspaceService";
 import type { User } from "../../../types/talents";
@@ -14,7 +23,10 @@ export function KudosButton({ to }: KudosButtonProps) {
 
   return (
     <>
-      <Button icon={<HeartOutlined />} onClick={() => setOpen(true)}>
+      <Button
+        startIcon={<FavoriteBorderRounded />}
+        onClick={() => setOpen(true)}
+      >
         Send kudos
       </Button>
       <KudosModal open={open} to={to} onClose={() => setOpen(false)} />
@@ -60,48 +72,45 @@ function KudosModal({
   }
 
   return (
-    <Modal
-      className="rounded-modal"
-      footer={[
-        <Button key="cancel" type="text" onClick={onClose}>
-          Cancel
-        </Button>,
-        <Button
-          disabled={!message.trim()}
-          icon={<SendOutlined />}
-          key="send"
-          type="primary"
-          onClick={submit}
-        >
-          Send kudos
-        </Button>,
-      ]}
-      open={open}
-      title={`Send kudos to ${to.name}`}
-      onCancel={onClose}
-    >
-      <div className="kudos-form">
-        <label>
-          <span>Talent you noticed</span>
-          <Select
-            options={theirTalents.map((talent) => ({
-              label: talent?.label,
-              value: talent?.id,
-            }))}
-            value={talentId}
-            onChange={setTalentId}
-          />
-        </label>
-        <label>
-          <span>Your message</span>
-          <Input.TextArea
+    <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
+      <DialogTitle>{`Send kudos to ${to.name}`}</DialogTitle>
+      <DialogContent>
+        <Box sx={{ display: "grid", gap: "1rem", pt: "0.25rem" }}>
+          <TextField
+            select
+            label="Talent you noticed"
+            value={talentId ?? ""}
+            onChange={(event) => setTalentId(Number(event.target.value))}
+          >
+            {theirTalents.map((talent) => (
+              <MenuItem key={talent?.id} value={talent?.id}>
+                {talent?.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            multiline
+            label="Your message"
             rows={4}
             placeholder="Be specific. What did they do? What did it unlock?"
             value={message}
             onChange={(event) => setMessage(event.target.value)}
           />
-        </label>
-      </div>
-    </Modal>
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="text" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button
+          disabled={!message.trim()}
+          startIcon={<SendRounded />}
+          variant="contained"
+          onClick={submit}
+        >
+          Send kudos
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

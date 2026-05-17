@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Button, Input, Modal } from "antd";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 import { AVATAR_OPTIONS } from "../../../data/avatars";
 import { useCurrentUser } from "../../../services/authService";
 import { updateUser } from "../../../services/workspaceService";
@@ -27,47 +35,84 @@ export function EditProfileModal({ open, onClose }: EditProfileModalProps) {
   }
 
   return (
-    <Modal
-      className="rounded-modal"
-      footer={[
-        <Button key="cancel" type="text" onClick={onClose}>
-          Cancel
-        </Button>,
-        <Button key="save" type="primary" onClick={save}>
-          Save
-        </Button>,
-      ]}
-      open={open}
-      title="Edit profile"
-      onCancel={onClose}
-    >
-      <div className="edit-profile-form">
-        <label>
-          <span>Display name</span>
-          <Input
+    <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
+      <DialogTitle>Edit profile</DialogTitle>
+      <DialogContent>
+        <Box sx={{ display: "grid", gap: "1rem", pt: "0.25rem" }}>
+          <TextField
+            label="Display name"
             value={name}
             onChange={(event) => setName(event.target.value)}
           />
-        </label>
 
-        <div>
-          <span>Avatar</span>
-          <div className="avatar-grid compact">
-            {AVATAR_OPTIONS.map((option) => (
-              <button
-                className={
-                  avatar === option ? "avatar-option active" : "avatar-option"
-                }
-                key={option}
-                type="button"
-                onClick={() => setAvatar(option)}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </Modal>
+          <Box>
+            <Box
+              component="span"
+              sx={{
+                display: "block",
+                mb: "0.5rem",
+                color: "var(--foreground)",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+              }}
+            >
+              Avatar
+            </Box>
+            <Box
+              sx={{
+                display: "grid",
+                width: "100%",
+                gridTemplateColumns: "repeat(8, 1fr)",
+                gap: "0.5rem",
+                "@media (max-width: 620px)": {
+                  gridTemplateColumns: "repeat(4, 1fr)",
+                },
+              }}
+            >
+              {AVATAR_OPTIONS.map((option) => (
+                <Box
+                  component="button"
+                  key={option}
+                  type="button"
+                  onClick={() => setAvatar(option)}
+                  sx={{
+                    position: "relative",
+                    display: "grid",
+                    aspectRatio: "1",
+                    placeItems: "center",
+                    border: "2px solid",
+                    borderColor:
+                      avatar === option ? "var(--primary)" : "var(--border)",
+                    borderRadius: "0.75rem",
+                    color: "var(--foreground)",
+                    bgcolor:
+                      avatar === option
+                        ? "color-mix(in oklch, var(--primary) 5%, var(--card))"
+                        : "var(--card)",
+                    boxShadow:
+                      avatar === option
+                        ? "0 0 0 4px color-mix(in oklch, var(--primary) 15%, transparent)"
+                        : "none",
+                    fontSize: "1.5rem",
+                    cursor: "pointer",
+                    "&:hover": { boxShadow: "var(--shadow-card)" },
+                  }}
+                >
+                  {option}
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="text" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant="contained" onClick={save}>
+          Save
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

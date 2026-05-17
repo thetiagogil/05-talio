@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Button, Card, Input } from "antd";
-import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
+import { CheckRounded, CloseRounded, EditRounded } from "@mui/icons-material";
+import { Box, Button, Card, TextField, Typography } from "@mui/material";
 import { useCurrentUser } from "../../../services/authService";
 import { updateManual } from "../../../services/workspaceService";
 import type { Manual } from "../../../types/talents";
@@ -52,7 +52,7 @@ export function ManualEditor({
   if (!manual) return null;
 
   return (
-    <div className="manual-stack">
+    <Box sx={{ display: "grid", gap: "1.5rem" }}>
       {prompts.map((prompt) => (
         <ManualCard
           key={prompt.key}
@@ -63,7 +63,7 @@ export function ManualEditor({
           value={manual[prompt.key]}
         />
       ))}
-    </div>
+    </Box>
   );
 }
 
@@ -97,14 +97,34 @@ function ManualCard({
   }
 
   return (
-    <Card className={editing ? "manual-card editing" : "manual-card"}>
-      <div className="manual-card-head">
-        <h3>{question}</h3>
+    <Card
+      sx={{
+        p: "1.25rem",
+        boxShadow: editing ? "var(--shadow-card)" : "none",
+        outline: editing
+          ? "1px solid color-mix(in oklch, var(--primary) 20%, transparent)"
+          : "none",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          gap: "1rem",
+        }}
+      >
+        <Typography
+          component="h3"
+          sx={{ color: "var(--foreground)", fontSize: "1rem", fontWeight: 800 }}
+        >
+          {question}
+        </Typography>
         {!readOnly && !editing && (
           <Button
-            icon={<EditOutlined />}
             size="small"
-            type="text"
+            startIcon={<EditRounded />}
+            variant="text"
             onClick={() => {
               setDraft(value);
               setEditing(true);
@@ -113,29 +133,51 @@ function ManualCard({
             {empty ? "Add" : "Edit"}
           </Button>
         )}
-      </div>
+      </Box>
 
       {editing ? (
-        <div className="manual-edit-area">
-          <Input.TextArea
+        <Box sx={{ display: "grid", gap: "0.75rem", mt: "0.75rem" }}>
+          <TextField
+            multiline
             rows={4}
             placeholder={placeholder}
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
           />
-          <div>
-            <Button icon={<CloseOutlined />} type="text" onClick={cancel}>
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}
+          >
+            <Button
+              startIcon={<CloseRounded />}
+              variant="text"
+              onClick={cancel}
+            >
               Cancel
             </Button>
-            <Button icon={<CheckOutlined />} type="primary" onClick={save}>
+            <Button
+              startIcon={<CheckRounded />}
+              variant="contained"
+              onClick={save}
+            >
               Save
             </Button>
-          </div>
-        </div>
+          </Box>
+        </Box>
       ) : (
-        <p className={empty ? "manual-empty" : undefined}>
+        <Typography
+          sx={{
+            mt: "0.75rem",
+            color: empty
+              ? "var(--muted-foreground)"
+              : "color-mix(in oklch, var(--foreground) 88%, transparent)",
+            fontSize: "0.875rem",
+            fontStyle: empty ? "italic" : "normal",
+            lineHeight: 1.7,
+            whiteSpace: "pre-wrap",
+          }}
+        >
           {value || (readOnly ? "No answer yet." : placeholder)}
-        </p>
+        </Typography>
       )}
     </Card>
   );

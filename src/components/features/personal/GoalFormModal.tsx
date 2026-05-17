@@ -1,6 +1,15 @@
 import { useState } from "react";
-import { Button, Input, Modal, Select } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 import { PROGRESS_COLUMNS } from "../../../lib/constants/talentConstants";
 import { useCurrentUser } from "../../../services/authService";
 import {
@@ -59,76 +68,73 @@ export function GoalFormModal({
   }
 
   return (
-    <Modal
-      className="rounded-modal"
-      footer={
-        <div className="goal-modal-footer">
-          {goal ? (
-            <Button
-              danger
-              icon={<DeleteOutlined />}
-              type="text"
-              onClick={remove}
-            >
-              Delete
-            </Button>
-          ) : (
-            <span />
-          )}
-          <div>
-            <Button type="text" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-              disabled={!description.trim() || !talentId}
-              type="primary"
-              onClick={save}
-            >
-              Save
-            </Button>
-          </div>
-        </div>
-      }
-      open={open}
-      title={goal ? "Edit goal" : "New goal"}
-      onCancel={onClose}
-    >
-      <div className="goal-form">
-        <label>
-          <span>Talent</span>
-          <Select
-            options={myTalents.map((talent) => ({
-              label: talent.label,
-              value: talent.id,
-            }))}
+    <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
+      <DialogTitle>{goal ? "Edit goal" : "New goal"}</DialogTitle>
+      <DialogContent>
+        <Box sx={{ display: "grid", gap: "1rem", pt: "0.25rem" }}>
+          <TextField
+            select
+            label="Talent"
             placeholder="Pick a talent"
-            value={talentId}
-            onChange={setTalentId}
-          />
-        </label>
+            value={talentId ?? ""}
+            onChange={(event) => setTalentId(Number(event.target.value))}
+          >
+            {myTalents.map((talent) => (
+              <MenuItem key={talent.id} value={talent.id}>
+                {talent.label}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <label>
-          <span>Progress</span>
-          <Select
-            options={PROGRESS_COLUMNS.map((column) => ({
-              label: column,
-              value: column,
-            }))}
+          <TextField
+            select
+            label="Progress"
             value={progress}
-            onChange={(value) => setProgress(value)}
-          />
-        </label>
+            onChange={(event) => setProgress(event.target.value as Progress)}
+          >
+            {PROGRESS_COLUMNS.map((column) => (
+              <MenuItem key={column} value={column}>
+                {column}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <label>
-          <span>Goal description</span>
-          <Input.TextArea
+          <TextField
+            multiline
+            label="Goal description"
             rows={4}
             placeholder="What do you want to grow toward?"
             value={description}
             onChange={(event) => setDescription(event.target.value)}
           />
-        </label>
-      </div>
-    </Modal>
+        </Box>
+      </DialogContent>
+      <DialogActions sx={{ justifyContent: "space-between" }}>
+        {goal ? (
+          <Button
+            color="error"
+            startIcon={<DeleteOutlineRounded />}
+            variant="text"
+            onClick={remove}
+          >
+            Delete
+          </Button>
+        ) : (
+          <Box />
+        )}
+        <Box sx={{ display: "flex", gap: "0.5rem" }}>
+          <Button variant="text" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button
+            disabled={!description.trim() || !talentId}
+            variant="contained"
+            onClick={save}
+          >
+            Save
+          </Button>
+        </Box>
+      </DialogActions>
+    </Dialog>
   );
 }

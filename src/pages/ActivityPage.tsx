@@ -1,12 +1,12 @@
 import { useMemo, type ReactNode } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import {
-  BookOutlined,
-  HeartOutlined,
-  StarOutlined,
-  TrophyOutlined,
-} from "@ant-design/icons";
-import { Card } from "antd";
+  ArticleRounded,
+  EmojiEventsRounded,
+  FavoriteBorderRounded,
+  StarBorderRounded,
+} from "@mui/icons-material";
+import { Box, Card, Typography } from "@mui/material";
 import { ActivityFeed } from "../components/features/activity/ActivityFeed";
 import { AppShell } from "../components/layout/AppShell";
 import { PageHeader } from "../components/layout/PageHeader";
@@ -89,38 +89,55 @@ export function ActivityPage() {
         onTabChange={(nextTab) => navigate(`/activity/${nextTab}`)}
       />
 
-      <div className="page-content">
-        <div className="activity-page">
-          <div className="activity-stats">
+      <Box sx={{ p: { xs: "2rem 1rem", md: "2rem" } }}>
+        <Box
+          sx={{
+            display: "grid",
+            width: "min(100%, 56rem)",
+            mx: "auto",
+            gap: "1.5rem",
+          }}
+        >
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(2, 1fr)",
+                lg: "repeat(4, 1fr)",
+              },
+              gap: "0.75rem",
+            }}
+          >
             <ActivityStat
-              className="accent"
-              icon={<HeartOutlined />}
+              tone="accent"
+              icon={<FavoriteBorderRounded />}
               label="Kudos this week"
               value={stats.kudos}
             />
             <ActivityStat
-              className="done"
-              icon={<TrophyOutlined />}
+              tone="done"
+              icon={<EmojiEventsRounded />}
               label="Goals completed"
               value={stats.goalsCompleted}
             />
             <ActivityStat
-              className="relationship"
-              icon={<BookOutlined />}
+              tone="relationship"
+              icon={<ArticleRounded />}
               label="Manual updates"
               value={stats.manuals}
             />
             <ActivityStat
-              className="strategic"
-              icon={<StarOutlined />}
+              tone="strategic"
+              icon={<StarBorderRounded />}
               label="Teammates active"
               value={`${stats.active}/${users.length}`}
             />
-          </div>
+          </Box>
 
           <ActivityFeed filter={filter} />
-        </div>
-      </div>
+        </Box>
+      </Box>
     </AppShell>
   );
 }
@@ -129,20 +146,74 @@ function ActivityStat({
   icon,
   label,
   value,
-  className,
+  tone,
 }: {
   icon: ReactNode;
   label: string;
   value: string | number;
-  className: string;
+  tone: "accent" | "done" | "relationship" | "strategic";
 }) {
+  const styles = {
+    accent: {
+      color: "var(--accent2)",
+      bg: "color-mix(in oklch, var(--accent2) 10%, transparent)",
+    },
+    done: {
+      color: "var(--progress-done)",
+      bg: "var(--progress-done-soft)",
+    },
+    relationship: {
+      color: "var(--domain-relationship)",
+      bg: "var(--domain-relationship-soft)",
+    },
+    strategic: {
+      color: "var(--domain-strategic)",
+      bg: "var(--domain-strategic-soft)",
+    },
+  }[tone];
+
   return (
-    <Card className="activity-stat">
-      <span className={`activity-stat-icon ${className}`}>{icon}</span>
-      <span className="activity-stat-copy">
-        <strong>{value}</strong>
-        <small>{label}</small>
-      </span>
+    <Card sx={{ p: "1rem", borderRadius: "0.875rem", boxShadow: "none" }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+        <Box
+          component="span"
+          sx={{
+            display: "grid",
+            width: "2rem",
+            height: "2rem",
+            flex: "none",
+            placeItems: "center",
+            borderRadius: "0.75rem",
+            color: styles.color,
+            bgcolor: styles.bg,
+          }}
+        >
+          {icon}
+        </Box>
+        <Box
+          component="span"
+          sx={{ display: "grid", gap: "0.25rem", minWidth: 0 }}
+        >
+          <Typography
+            component="strong"
+            sx={{
+              display: "block",
+              fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+              fontSize: "1.5rem",
+              fontWeight: 600,
+              lineHeight: 1,
+            }}
+          >
+            {value}
+          </Typography>
+          <Typography
+            component="small"
+            sx={{ color: "var(--muted-foreground)", lineHeight: 1.25 }}
+          >
+            {label}
+          </Typography>
+        </Box>
+      </Box>
     </Card>
   );
 }

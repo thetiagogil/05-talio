@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { Button, Card, Tabs } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
+import { Box, Button, Card, Tab, Tabs, Typography } from "@mui/material";
 import { AvatarBubble } from "../../common/AvatarBubble";
 import { TalentRow } from "../../common/TalentRow";
 import { useCurrentUser } from "../../../services/authService";
@@ -30,63 +30,136 @@ export function PersonDetail({ user, onBack }: PersonDetailProps) {
   const hasManual = Object.values(user.manual).some((value) => value.trim());
 
   return (
-    <div className="person-detail">
+    <Box sx={{ display: "grid", gap: "1.5rem" }}>
       <Button
-        className="person-back-button"
-        icon={<ArrowLeftOutlined />}
-        type="text"
+        startIcon={<ArrowBackRounded />}
+        variant="text"
         onClick={onBack}
+        sx={{ justifySelf: "start", width: "auto" }}
       >
         Back to team
       </Button>
 
-      <Card className="person-card">
-        <div className="person-hero">
-          <div>
+      <Card sx={{ overflow: "hidden", boxShadow: "none" }}>
+        <Box
+          sx={{
+            position: "relative",
+            display: "flex",
+            alignItems: { xs: "flex-start", sm: "center" },
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            gap: "1.25rem",
+            overflow: "hidden",
+            borderBottom: "1px solid var(--border)",
+            p: "2rem",
+            color: "var(--foreground)",
+            bgcolor: "var(--surface)",
+            background:
+              "linear-gradient(135deg, var(--surface) 0, var(--accent) 56%, color-mix(in srgb, var(--domain-strategic-soft) 55%, var(--surface)) 100%)",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
             <AvatarBubble value={user.avatar} size={80} />
-            <span>
-              <p>{user.role}</p>
-              <h2>
+            <Box component="span">
+              <Typography
+                sx={{
+                  color: "var(--muted-foreground)",
+                  fontSize: "0.75rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                }}
+              >
+                {user.role}
+              </Typography>
+              <Typography
+                component="h2"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  mt: "0.5rem",
+                  fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+                  fontSize: "clamp(2.2rem, 5vw, 3rem)",
+                  fontWeight: 500,
+                  lineHeight: 1,
+                }}
+              >
                 {user.name}
-                {user.id === currentUser?.id && <em>me</em>}
-              </h2>
-            </span>
-          </div>
+                {user.id === currentUser?.id && (
+                  <Box
+                    component="em"
+                    sx={{
+                      borderRadius: 999,
+                      px: "0.4rem",
+                      py: "0.1rem",
+                      color: "var(--primary)",
+                      bgcolor:
+                        "color-mix(in oklch, var(--primary) 15%, transparent)",
+                      fontSize: "0.625rem",
+                      fontStyle: "normal",
+                      fontWeight: 800,
+                    }}
+                  >
+                    me
+                  </Box>
+                )}
+              </Typography>
+            </Box>
+          </Box>
           {user.id !== currentUser?.id && <KudosButton to={user} />}
-        </div>
+        </Box>
 
         <Tabs
-          activeKey={tab}
-          className="person-tabs"
-          items={[
-            { key: "profile", label: "Profile" },
-            {
-              key: "manual",
-              label: hasManual ? (
+          value={tab}
+          onChange={(_, value) => setTab(value as PersonTab)}
+          sx={{
+            borderBottom: "1px solid var(--border)",
+            px: "1.5rem",
+            "& .MuiTabs-indicator": { bgcolor: "var(--primary)" },
+          }}
+        >
+          <Tab label="Profile" value="profile" />
+          <Tab
+            disabled={!hasManual}
+            label={
+              hasManual ? (
                 "Manual of me"
               ) : (
-                <span className="disabled-tab-label">
-                  Manual of me <small>Empty</small>
-                </span>
-              ),
-              disabled: !hasManual,
-            },
-          ]}
-          onChange={(value) => setTab(value as PersonTab)}
-        />
+                <Box component="span">
+                  Manual of me{" "}
+                  <Box
+                    component="small"
+                    sx={{
+                      ml: "0.4rem",
+                      borderRadius: 999,
+                      px: "0.35rem",
+                      py: "0.1rem",
+                      bgcolor: "var(--muted)",
+                      fontSize: "0.6rem",
+                    }}
+                  >
+                    Empty
+                  </Box>
+                </Box>
+              )
+            }
+            value="manual"
+          />
+        </Tabs>
 
-        <div className="person-tab-content">
+        <Box sx={{ p: "1.5rem" }}>
           {tab === "profile" ? (
-            <div className="talent-stack">
+            <Box sx={{ display: "grid", gap: "0.5rem" }}>
               {userTalents.map((talent, index) => (
                 <TalentRow key={talent.id} rank={index + 1} talent={talent} />
               ))}
-            </div>
+            </Box>
           ) : (
             <ManualEditor readOnly manual={user.manual} />
           )}
-        </div>
+        </Box>
       </Card>
-    </div>
+    </Box>
   );
 }

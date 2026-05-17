@@ -1,10 +1,17 @@
-import { useMemo } from "react";
-import { Badge, Button, Popover } from "antd";
+import { useMemo, useState } from "react";
 import {
-  BellOutlined,
-  CheckCircleOutlined,
-  CheckOutlined,
-} from "@ant-design/icons";
+  CheckCircleRounded,
+  CheckRounded,
+  NotificationsNoneRounded,
+} from "@mui/icons-material";
+import {
+  Badge,
+  Box,
+  Button,
+  IconButton,
+  Popover,
+  Typography,
+} from "@mui/material";
 import {
   approveGoal,
   markNotificationsRead,
@@ -26,6 +33,7 @@ export function NotificationMenu() {
   const users = useUsers();
   const talents = useTalents();
   const readAt = useNotificationsReadAt();
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const notifications = useMemo(() => {
     if (!me) return [];
@@ -58,30 +66,66 @@ export function NotificationMenu() {
     approvalRequests.length;
 
   return (
-    <Popover
-      arrow={false}
-      placement="bottomRight"
-      trigger="click"
-      overlayClassName="notification-popover"
-      onOpenChange={(open) => {
-        if (open) markNotificationsRead();
-      }}
-      content={
-        <div className="notifications-panel">
-          <div className="notifications-header">
-            <h3>Notifications</h3>
+    <>
+      <Badge badgeContent={unread}>
+        <IconButton
+          aria-label="Notifications"
+          onClick={(event) => {
+            setAnchorEl(event.currentTarget);
+            markNotificationsRead();
+          }}
+          sx={{
+            color: "var(--foreground)",
+            "&:hover": { color: "var(--primary)", bgcolor: "transparent" },
+          }}
+        >
+          <NotificationsNoneRounded />
+        </IconButton>
+      </Badge>
+      <Popover
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Box sx={{ width: "min(24rem, calc(100vw - 2rem))" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              borderBottom: "1px solid var(--border)",
+              px: "1rem",
+              py: "0.75rem",
+            }}
+          >
+            <Typography
+              component="h3"
+              sx={{ fontSize: "1rem", fontWeight: 800 }}
+            >
+              Notifications
+            </Typography>
             <Button
-              type="text"
               size="small"
-              icon={<CheckOutlined />}
+              startIcon={<CheckRounded />}
+              variant="text"
               onClick={markNotificationsRead}
             >
               Mark read
             </Button>
-          </div>
-          <div className="notifications-list">
+          </Box>
+          <Box sx={{ maxHeight: "26rem", overflowY: "auto", p: "0.5rem" }}>
             {approvalRequests.length === 0 && notifications.length === 0 && (
-              <p className="notifications-empty">You're all caught up.</p>
+              <Typography
+                sx={{
+                  p: "1.5rem",
+                  color: "var(--muted-foreground)",
+                  textAlign: "center",
+                }}
+              >
+                You're all caught up.
+              </Typography>
             )}
 
             {approvalRequests.map((goal) => {
@@ -91,50 +135,61 @@ export function NotificationMenu() {
               );
 
               return (
-                <div
+                <Box
                   key={`request-${goal.id}`}
-                  className="notification-request"
+                  sx={{
+                    display: "grid",
+                    gap: "0.5rem",
+                    m: "0.25rem",
+                    borderRadius: "0.75rem",
+                    p: "0.75rem",
+                    bgcolor:
+                      "color-mix(in oklch, var(--accent2) 10%, transparent)",
+                    boxShadow:
+                      "0 0 0 1px color-mix(in oklch, var(--accent2) 20%, transparent)",
+                  }}
                 >
-                  <p>
+                  <Typography sx={{ fontSize: "0.875rem", lineHeight: 1.45 }}>
                     <strong>{owner?.name}</strong> asked you to approve a goal
                     {talent && (
                       <>
                         {" "}
-                        for <em className="display-italic">{talent.label}</em>
+                        for{" "}
+                        <Box component="em" sx={{ fontStyle: "italic" }}>
+                          {talent.label}
+                        </Box>
                       </>
                     )}
                     .
-                  </p>
-                  <span>"{goal.description}"</span>
+                  </Typography>
+                  <Typography
+                    component="span"
+                    sx={{
+                      color: "var(--muted-foreground)",
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    "{goal.description}"
+                  </Typography>
                   <Button
-                    type="primary"
                     size="small"
-                    icon={<CheckCircleOutlined />}
+                    startIcon={<CheckCircleRounded />}
+                    variant="contained"
                     onClick={() => approveGoal(goal.id, me.id)}
                   >
                     Approve goal
                   </Button>
-                </div>
+                </Box>
               );
             })}
 
             {notifications.map((event) => (
               <NotificationRow key={event.id} event={event} />
             ))}
-          </div>
-        </div>
-      }
-    >
-      <Badge count={unread} size="small" offset={[-2, 4]}>
-        <Button
-          aria-label="Notifications"
-          className="topbar-icon-button"
-          shape="circle"
-          type="text"
-          icon={<BellOutlined />}
-        />
-      </Badge>
-    </Popover>
+          </Box>
+        </Box>
+      </Popover>
+    </>
   );
 }
 
@@ -143,18 +198,39 @@ function NotificationRow({ event }: { event: ActivityEvent }) {
   const actor = users.find((user) => user.id === event.actorId);
 
   return (
-    <div className="notification-row">
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: "0.75rem",
+        borderRadius: "0.75rem",
+        p: "0.75rem",
+        "&:hover": {
+          bgcolor: "color-mix(in oklch, var(--muted) 40%, transparent)",
+        },
+      }}
+    >
       <AvatarBubble value={actor?.avatar} size={32} />
-      <div>
-        <p>
+      <Box sx={{ display: "grid", minWidth: 0, gap: "0.12rem" }}>
+        <Typography sx={{ fontSize: "0.875rem", lineHeight: 1.45 }}>
           <strong>{actor?.name}</strong> {notificationBrief(event)}
-        </p>
+        </Typography>
         {event.type === "kudos_sent" && event.message && (
-          <span>"{event.message}"</span>
+          <Typography
+            component="span"
+            sx={{ color: "var(--muted-foreground)", fontSize: "0.75rem" }}
+          >
+            "{event.message}"
+          </Typography>
         )}
-        <time>{timeAgo(event.createdAt)}</time>
-      </div>
-    </div>
+        <Typography
+          component="time"
+          sx={{ color: "var(--muted-foreground)", fontSize: "0.75rem" }}
+        >
+          {timeAgo(event.createdAt)}
+        </Typography>
+      </Box>
+    </Box>
   );
 }
 

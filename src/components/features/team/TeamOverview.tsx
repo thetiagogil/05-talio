@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { Button, Drawer } from "antd";
-import { FilterOutlined } from "@ant-design/icons";
+import TuneRounded from "@mui/icons-material/TuneRounded";
+import { Box, Button, Drawer, Typography } from "@mui/material";
 import { useCurrentUser } from "../../../services/authService";
 import { useTalents, useUsers } from "../../../services/workspaceService";
 import type { User } from "../../../types/talents";
@@ -83,31 +83,60 @@ export function TeamOverview({ mode }: TeamOverviewProps) {
   }
 
   return (
-    <div className="team-overview-grid">
-      <div className="team-mobile-toolbar">
-        <Button icon={<FilterOutlined />} onClick={() => setFilterOpen(true)}>
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", lg: "20rem 1fr" },
+        gap: "1.5rem",
+      }}
+    >
+      <Box
+        sx={{
+          display: { xs: "flex", lg: "none" },
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Button startIcon={<TuneRounded />} onClick={() => setFilterOpen(true)}>
           {mode === "compare" ? "Choose people" : "Browse team"}
         </Button>
         {(selectedUserId || compareIds.length > 0) && (
-          <Button type="text" onClick={resetSelection}>
+          <Button variant="text" onClick={resetSelection}>
             Reset
           </Button>
         )}
-      </div>
+      </Box>
 
-      <div className="team-desktop-panel">{panel}</div>
+      <Box
+        sx={{
+          display: { xs: "none", lg: "block" },
+          position: "sticky",
+          top: "1.5rem",
+          alignSelf: "start",
+        }}
+      >
+        {panel}
+      </Box>
 
       <Drawer
-        className="team-filter-drawer"
         open={filterOpen}
-        placement="right"
-        title={mode === "compare" ? "Choose people" : "Browse team"}
+        anchor="right"
         onClose={() => setFilterOpen(false)}
+        slotProps={{ paper: { sx: { width: "20rem", p: "1rem" } } }}
       >
+        <Typography
+          sx={{
+            mb: "1rem",
+            fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+            fontWeight: 800,
+          }}
+        >
+          {mode === "compare" ? "Choose people" : "Browse team"}
+        </Typography>
         {panel}
       </Drawer>
 
-      <section className="team-main-panel">
+      <Box component="section" sx={{ minWidth: 0 }}>
         {mode === "compare" ? (
           <ComparePanel
             selected={compareUsers}
@@ -123,7 +152,7 @@ export function TeamOverview({ mode }: TeamOverviewProps) {
         ) : (
           <DefaultOverview />
         )}
-      </section>
-    </div>
+      </Box>
+    </Box>
   );
 }

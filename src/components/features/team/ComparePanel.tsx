@@ -1,6 +1,16 @@
-import { useMemo } from "react";
-import { Button, Card, Table } from "antd";
-import { CloseOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useMemo, type ReactNode } from "react";
+import { CloseRounded, DeleteOutlineRounded } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Card,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import { AvatarBubble } from "../../common/AvatarBubble";
 import { DomainTag } from "../../common/DomainTag";
 import { EmptyState } from "../../common/EmptyState";
@@ -71,7 +81,7 @@ export function ComparePanel({
   if (selected.length === 0) {
     return (
       <EmptyState
-        className="large-empty"
+        large
         title="No one selected yet"
         description="Pick up to 5 teammates to compare strengths and overlaps."
       />
@@ -79,83 +89,120 @@ export function ComparePanel({
   }
 
   return (
-    <div className="compare-panel">
-      <Card className="compare-chips-card">
-        <div className="compare-chips">
+    <Box sx={{ display: "grid", gap: "1.5rem" }}>
+      <Card sx={{ p: "0.75rem", boxShadow: "none" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}
+        >
           {selected.map((user, index) => (
-            <span
-              className="compare-chip"
+            <Box
+              component="button"
+              type="button"
               key={user.id}
-              style={{
-                background: `${palette[index]}22`,
+              aria-label={`Remove ${user.name} from comparison`}
+              onClick={() => onRemove(user.id)}
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                border: 0,
+                borderRadius: 999,
+                px: "0.75rem",
+                py: "0.25rem",
+                bgcolor: `${palette[index]}22`,
                 color: palette[index],
+                cursor: "pointer",
+                fontFamily: "inherit",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                "&:hover": {
+                  bgcolor: `${palette[index]}33`,
+                },
               }}
             >
               <AvatarBubble value={user.avatar} size={24} />
               {user.name}
-              <button type="button" onClick={() => onRemove(user.id)}>
-                <CloseOutlined />
-              </button>
-            </span>
+              <CloseRounded sx={{ fontSize: "1rem" }} />
+            </Box>
           ))}
           <Button
-            className="compare-clear"
-            icon={<DeleteOutlined />}
             size="small"
-            type="text"
+            startIcon={<DeleteOutlineRounded />}
+            variant="text"
             onClick={onClear}
+            sx={{ ml: "auto" }}
           >
             Clear all
           </Button>
-        </div>
+        </Box>
       </Card>
 
-      <Card className="panel-card compare-radar-card">
-        <h3>Domain comparison</h3>
-        <p>Weighted strength by talent rank.</p>
+      <Card
+        sx={{ display: "grid", gap: "0.25rem", p: "1.5rem", boxShadow: "none" }}
+      >
+        <PanelTitle>Domain comparison</PanelTitle>
+        <PanelDescription>Weighted strength by talent rank.</PanelDescription>
         <RadarPlot data={radarData} users={selected} />
       </Card>
 
-      <Card className="panel-card">
-        <h3>Combined top talents</h3>
-        <p>What this group brings, needs, and is motivated by.</p>
-        <Table
-          className="combined-talents-table"
-          dataSource={combinedTalents}
-          pagination={false}
-          columns={[
-            {
-              title: "Talent",
-              dataIndex: "talent",
-              render: (talent: Talent, row: CombinedTalentRow) => (
-                <div className="combined-talent-cell">
-                  <DomainTag
-                    compact
-                    domain={talent.category}
-                    label={talent.label}
-                  />
-                  <span>
-                    {row.count} of {selected.length}
-                  </span>
-                </div>
-              ),
-            },
-            {
-              title: "Brings",
-              dataIndex: ["talent", "details", "bring"],
-            },
-            {
-              title: "Needs",
-              dataIndex: ["talent", "details", "need"],
-            },
-            {
-              title: "Motivated by",
-              dataIndex: ["talent", "details", "motivate"],
-            },
-          ]}
-        />
+      <Card sx={{ p: "1.5rem", boxShadow: "none" }}>
+        <PanelTitle>Combined top talents</PanelTitle>
+        <PanelDescription>
+          What this group brings, needs, and is motivated by.
+        </PanelDescription>
+        <Box sx={{ mt: "1rem", overflowX: "auto" }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Talent</TableCell>
+                <TableCell>Brings</TableCell>
+                <TableCell>Needs</TableCell>
+                <TableCell>Motivated by</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {combinedTalents.map((row) => (
+                <TableRow key={row.key}>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        gap: "0.4rem",
+                      }}
+                    >
+                      <DomainTag
+                        compact
+                        domain={row.talent.category}
+                        label={row.talent.label}
+                      />
+                      <Box
+                        component="span"
+                        sx={{
+                          color: "var(--muted-foreground)",
+                          fontSize: "0.75rem",
+                        }}
+                      >
+                        {row.count} of {selected.length}
+                      </Box>
+                    </Box>
+                  </TableCell>
+                  <TableCell>{row.talent.details.bring}</TableCell>
+                  <TableCell>{row.talent.details.need}</TableCell>
+                  <TableCell>{row.talent.details.motivate}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
       </Card>
-    </div>
+    </Box>
   );
 }
 
@@ -170,9 +217,9 @@ function RadarPlot({
   }[];
   users: User[];
 }) {
-  const size = 320;
+  const size = 300;
   const center = size / 2;
-  const radius = 108;
+  const radius = 100;
   const maxScore = Math.max(
     1,
     ...data.flatMap((row) => row.values.map((value) => value.score)),
@@ -198,8 +245,17 @@ function RadarPlot({
   }
 
   return (
-    <div className="radar-wrap">
-      <svg aria-label="Domain comparison chart" viewBox={`0 0 ${size} ${size}`}>
+    <Box sx={{ display: "grid", justifyItems: "center", mt: "1rem" }}>
+      <Box
+        component="svg"
+        aria-label="Domain comparison chart"
+        viewBox={`0 0 ${size} ${size}`}
+        sx={{
+          display: "block",
+          width: "min(100%, 18.75rem)",
+          height: "auto",
+        }}
+      >
         {[0.25, 0.5, 0.75, 1].map((scale) => {
           const points = data
             .map((_, index) => {
@@ -208,7 +264,15 @@ function RadarPlot({
             })
             .join(" ");
 
-          return <polygon className="radar-grid" key={scale} points={points} />;
+          return (
+            <polygon
+              fill="none"
+              key={scale}
+              points={points}
+              stroke="var(--border)"
+              strokeWidth="1"
+            />
+          );
         })}
 
         {data.map((row, index) => {
@@ -218,13 +282,21 @@ function RadarPlot({
           return (
             <g key={row.domain}>
               <line
-                className="radar-axis"
                 x1={center}
                 y1={center}
                 x2={axis.x}
                 y2={axis.y}
+                stroke="var(--border)"
+                strokeWidth="1"
               />
-              <text className="radar-label" x={label.x} y={label.y}>
+              <text
+                dominantBaseline="middle"
+                fill="var(--muted-foreground)"
+                fontSize="0.75rem"
+                textAnchor="middle"
+                x={label.x}
+                y={label.y}
+              >
                 {row.label}
               </text>
             </g>
@@ -244,26 +316,46 @@ function RadarPlot({
 
           return (
             <polygon
-              className="radar-user"
+              fill={palette[userIndex]}
               key={user.id}
+              opacity="0.32"
               points={points}
-              style={{
-                fill: palette[userIndex],
-                stroke: palette[userIndex],
-              }}
+              stroke={palette[userIndex]}
+              strokeWidth="2"
             />
           );
         })}
-      </svg>
+      </Box>
+    </Box>
+  );
+}
 
-      <div className="radar-legend">
-        {users.map((user, index) => (
-          <span key={user.id}>
-            <i style={{ background: palette[index] }} />
-            {user.name}
-          </span>
-        ))}
-      </div>
-    </div>
+function PanelTitle({ children }: { children: ReactNode }) {
+  return (
+    <Typography
+      component="h3"
+      sx={{
+        color: "var(--foreground)",
+        fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+        fontSize: "1.25rem",
+        fontWeight: 700,
+      }}
+    >
+      {children}
+    </Typography>
+  );
+}
+
+function PanelDescription({ children }: { children: ReactNode }) {
+  return (
+    <Typography
+      sx={{
+        mt: "0.25rem",
+        color: "var(--muted-foreground)",
+        fontSize: "0.875rem",
+      }}
+    >
+      {children}
+    </Typography>
   );
 }

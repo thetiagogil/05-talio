@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { GoalsBoard } from "../components/features/personal/GoalsBoard";
 import { KudosTab } from "../components/features/personal/KudosTab";
@@ -36,20 +37,20 @@ export function PersonalPage() {
         onTabChange={(nextTab) => navigate(`/personal/${nextTab}`)}
       />
 
-      <div className="page-content">
+      <Box sx={{ p: { xs: "2rem 1rem", md: "2rem" } }}>
         {tab === "profile" && <ProfileTab />}
         {tab === "manual" && (
-          <div className="narrow-content">
+          <Box sx={{ width: "min(100%, 48rem)", mx: "auto" }}>
             <ManualEditor />
-          </div>
+          </Box>
         )}
         {tab === "goals" && (
-          <div className="wide-content">
+          <Box sx={{ width: "min(100%, 72rem)", mx: "auto" }}>
             <GoalsBoard />
-          </div>
+          </Box>
         )}
         {tab === "kudos" && <KudosTab />}
-      </div>
+      </Box>
     </AppShell>
   );
 }

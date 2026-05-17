@@ -1,24 +1,43 @@
 import type { ReactNode } from "react";
-import { Empty } from "antd";
+import { Box, Typography } from "@mui/material";
 
 type EmptyStateProps = {
   title?: string;
   description: ReactNode;
-  className?: string;
+  large?: boolean;
 };
 
-export function EmptyState({ title, description, className }: EmptyStateProps) {
+export function EmptyState({ title, description, large }: EmptyStateProps) {
   return (
-    <div className={className ? `empty-state ${className}` : "empty-state"}>
-      <Empty
-        image={Empty.PRESENTED_IMAGE_SIMPLE}
-        description={
-          <div>
-            {title && <div className="empty-state-title">{title}</div>}
-            <div>{description}</div>
-          </div>
-        }
-      />
-    </div>
+    <Box
+      sx={{
+        width: large ? "min(100%, 48rem)" : "auto",
+        mx: large ? "auto" : 0,
+        border: "2px dashed var(--border)",
+        borderRadius: "0.875rem",
+        p: large ? "4rem" : "1.5rem",
+        bgcolor: "var(--surface-2)",
+        textAlign: "center",
+      }}
+    >
+      {title && (
+        <Typography
+          sx={{
+            mb: "0.25rem",
+            color: "var(--foreground)",
+            fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+            fontSize: "1.25rem",
+            fontWeight: 800,
+          }}
+        >
+          {title}
+        </Typography>
+      )}
+      <Typography
+        sx={{ color: "var(--muted-foreground)", fontSize: "0.875rem" }}
+      >
+        {description}
+      </Typography>
+    </Box>
   );
 }
