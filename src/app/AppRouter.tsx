@@ -6,6 +6,7 @@ import { PersonalPage } from "@/pages/personal/PersonalPage";
 import { SetupPage } from "@/pages/setup/SetupPage";
 import { TeamPage } from "@/pages/team/TeamPage";
 import { useCurrentUser } from "@/features/auth/hooks/useAuth";
+import { ScrollToTop } from "./ScrollToTop";
 
 export function AppRouter() {
   const user = useCurrentUser();
@@ -17,6 +18,7 @@ export function AppRouter() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Navigate replace to={rootRoute} />} />
         <Route path="/login" element={<LoginPage />} />
