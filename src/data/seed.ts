@@ -1,6 +1,6 @@
-import { SEED_TALENTS } from "./talents";
-import { TEST_USER } from "../lib/constants/testUser";
-import type { ActivityEvent, Goal, Kudos, User } from "../types/talents";
+import { SEED_TALENTS } from "@/features/talents/data/talents";
+import { TEST_USER } from "@/features/auth/data/test-user";
+import type { ActivityEvent, Goal, Kudos, User } from "@/types/talents";
 
 const pick = (...ids: number[]) => ids;
 

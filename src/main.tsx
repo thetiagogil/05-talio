@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./main.css";
-import App from "./App.tsx";
-import { ensureWorkspaceSeed } from "./services/testDataService";
-import { applyThemeFromStorage } from "./services/themeService";
+import "@/styles/main.css";
+import App from "@/app/App";
+import { ensureWorkspaceSeed } from "@/lib/test-data";
+import { applyThemeFromStorage } from "@/theme/theme-storage";
 
 ensureWorkspaceSeed();
 applyThemeFromStorage();

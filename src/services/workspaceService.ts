@@ -1,6 +1,0 @@
-export * from "./activityService";
-export * from "./goalService";
-export * from "./kudosService";
-export * from "./notificationService";
-export * from "./themeService";
-export * from "./userService";
