@@ -1,5 +1,9 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  continueWithTestUser,
+  loginByEmail,
+  useCurrentUser,
+} from "@/features/auth/hooks/useAuth";
+import type { User } from "@/types/talents";
 import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
 import {
@@ -10,12 +14,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  continueWithTestUser,
-  loginByEmail,
-  useCurrentUser,
-} from "@/features/auth/hooks/useAuth";
-import type { User } from "@/types/talents";
+import { useEffect, useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function LoginScreen() {
   const user = useCurrentUser();
@@ -108,27 +108,6 @@ export function LoginScreen() {
         </Box>
 
         <Box component="section" sx={{ maxWidth: "35rem" }}>
-          <Typography
-            component="p"
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              mb: "1.5rem",
-              borderRadius: 999,
-              px: "0.75rem",
-              py: "0.25rem",
-              color: "var(--accent-foreground)",
-              bgcolor: "var(--accent)",
-              boxShadow:
-                "0 0 0 1px color-mix(in srgb, var(--primary) 18%, transparent)",
-              fontSize: "0.75rem",
-              fontWeight: 600,
-            }}
-          >
-            <StarBorderRounded fontSize="small" />
-            Built for people-first teams
-          </Typography>
           <Typography
             component="h1"
             sx={{
@@ -280,19 +259,6 @@ export function LoginScreen() {
           >
             Continue with test user
           </Button>
-
-          <Typography
-            sx={{
-              mt: "2rem",
-              color: "var(--muted-foreground)",
-              fontSize: "0.75rem",
-              lineHeight: 1.6,
-              "& code": { color: "var(--foreground)", fontSize: "0.72rem" },
-            }}
-          >
-            Tip: try <code>sofia@talents.app</code>,{" "}
-            <code>marcus@talents.app</code>, or any seeded teammate.
-          </Typography>
         </Box>
       </Box>
     </Box>
