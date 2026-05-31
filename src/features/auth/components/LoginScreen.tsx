@@ -5,7 +5,6 @@ import {
 } from "@/features/auth/hooks/useAuth";
 import type { User } from "@/types/talents";
 import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
-import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
 import {
   Alert,
   Box,
@@ -247,7 +246,7 @@ export function LoginScreen() {
               },
             }}
           >
-            or
+            OR
           </Divider>
 
           <Button
