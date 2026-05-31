@@ -1,23 +1,14 @@
 import {
-  DarkModeRounded,
-  LightModeRounded,
-  LogoutRounded,
+  DarkModeOutlined,
+  LightModeOutlined,
+  LogoutOutlined,
   MenuOpenRounded,
   MenuRounded,
 } from "@mui/icons-material";
-import {
-  Box,
-  Divider,
-  Drawer,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { Box, Drawer, IconButton, Typography } from "@mui/material";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NotificationMenu } from "@/features/notifications/components/NotificationMenu";
-import { AvatarBubble } from "@/features/users/components/AvatarBubble";
 import { STORAGE_KEYS } from "@/lib/constants/storageKeys";
 import { logout, useCurrentUser } from "@/features/auth/hooks/useAuth";
 import { toggleTheme, useAppTheme } from "@/theme/theme-storage";
@@ -32,7 +23,6 @@ export function AppShell({ children }: AppShellProps) {
   const theme = useAppTheme();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [accountAnchor, setAccountAnchor] = useState<HTMLElement | null>(null);
   const [collapsed, setCollapsed] = useState(() => {
     if (typeof window === "undefined") return false;
     return localStorage.getItem(STORAGE_KEYS.sidebarCollapsed) === "1";
@@ -61,7 +51,6 @@ export function AppShell({ children }: AppShellProps) {
 
   function handleLogout() {
     logout();
-    setAccountAnchor(null);
     navigate("/login", { replace: true });
   }
 
@@ -171,68 +160,22 @@ export function AppShell({ children }: AppShellProps) {
               "&:hover": { color: "var(--primary)", bgcolor: "transparent" },
             }}
           >
-            {theme === "light" ? <DarkModeRounded /> : <LightModeRounded />}
+            {theme === "light" ? <DarkModeOutlined /> : <LightModeOutlined />}
           </IconButton>
           <NotificationMenu />
-          <Box
-            component="button"
-            type="button"
-            onClick={(event) => setAccountAnchor(event.currentTarget)}
+          <IconButton
+            aria-label="Log out"
+            onClick={handleLogout}
             sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.55rem",
-              border: 0,
-              borderRadius: 999,
-              p: { xs: "0.25rem", md: "0.25rem 0.75rem 0.25rem 0.25rem" },
               color: "var(--foreground)",
-              bgcolor: "transparent",
-              cursor: "pointer",
-              "&:hover": { color: "var(--primary)", bgcolor: "transparent" },
+              "&:hover": {
+                color: "var(--primary)",
+                bgcolor: "transparent",
+              },
             }}
           >
-            <AvatarBubble value={user.avatar} size={36} />
-            <Box
-              sx={{ display: { xs: "none", md: "grid" }, textAlign: "left" }}
-            >
-              <Typography
-                component="strong"
-                sx={{ fontSize: "0.875rem", lineHeight: 1.1 }}
-              >
-                {user.name}
-              </Typography>
-              <Typography
-                component="small"
-                sx={{ color: "var(--muted-foreground)", fontSize: "0.75rem" }}
-              >
-                {user.role}
-              </Typography>
-            </Box>
-          </Box>
-          <Menu
-            anchorEl={accountAnchor}
-            open={Boolean(accountAnchor)}
-            onClose={() => setAccountAnchor(null)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-            transformOrigin={{ vertical: "top", horizontal: "right" }}
-          >
-            <Box sx={{ display: "grid", gap: "0.2rem", px: 2, py: 1 }}>
-              <Typography component="strong" sx={{ fontSize: "0.875rem" }}>
-                {user.name}
-              </Typography>
-              <Typography
-                component="span"
-                sx={{ color: "var(--muted-foreground)", fontSize: "0.75rem" }}
-              >
-                {user.email}
-              </Typography>
-            </Box>
-            <Divider />
-            <MenuItem onClick={handleLogout}>
-              <LogoutRounded fontSize="small" sx={{ mr: 1 }} />
-              Log out
-            </MenuItem>
-          </Menu>
+            <LogoutOutlined />
+          </IconButton>
         </Box>
       </Box>
 

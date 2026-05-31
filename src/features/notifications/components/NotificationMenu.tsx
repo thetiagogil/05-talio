@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import {
   CheckCircleRounded,
   CheckRounded,
-  NotificationsNoneRounded,
+  NotificationsNoneOutlined,
 } from "@mui/icons-material";
 import {
   Badge,
@@ -66,7 +66,33 @@ export function NotificationMenu() {
 
   return (
     <>
-      <Badge badgeContent={unread}>
+      <Badge
+        badgeContent={unread}
+        color="primary"
+        invisible={unread === 0}
+        overlap="circular"
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        sx={{
+          display: "inline-flex",
+          alignItems: "center",
+          "& .MuiBadge-badge": {
+            top: "0.35rem",
+            right: "0.35rem",
+            minWidth: "1rem",
+            height: "1rem",
+            px: "0.25rem",
+            border: "2px solid var(--surface)",
+            borderRadius: 999,
+            bgcolor: "var(--primary)",
+            color: "var(--primary-foreground)",
+            fontSize: "0.625rem",
+            fontWeight: 800,
+            lineHeight: 1,
+            transform: "scale(1) translate(35%, -35%)",
+            transformOrigin: "100% 0%",
+          },
+        }}
+      >
         <IconButton
           aria-label="Notifications"
           onClick={(event) => {
@@ -78,7 +104,7 @@ export function NotificationMenu() {
             "&:hover": { color: "var(--primary)", bgcolor: "transparent" },
           }}
         >
-          <NotificationsNoneRounded />
+          <NotificationsNoneOutlined />
         </IconButton>
       </Badge>
       <Popover
