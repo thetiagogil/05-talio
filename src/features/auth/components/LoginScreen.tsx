@@ -47,7 +47,7 @@ export function LoginScreen() {
     const nextUser = loginByEmail(nextEmail);
 
     if (!nextUser) {
-      setError("We couldn't find that email. Try the test user below.");
+      setError("We couldn't find that email. Try the demo account below.");
       return;
     }
 
@@ -256,7 +256,7 @@ export function LoginScreen() {
             onClick={handleTestLogin}
             sx={{ borderStyle: "dashed" }}
           >
-            Continue with test user
+            Continue with demo account
           </Button>
         </Box>
       </Box>
