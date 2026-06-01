@@ -3,7 +3,6 @@ import {
   GroupsRounded,
   MenuBookRounded,
   PersonRounded,
-  StarRounded,
 } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
@@ -106,24 +105,6 @@ export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
           >
             {item.label}
           </Box>
-          <StarRounded
-            sx={{
-              position: "absolute",
-              top: "50%",
-              right: "0.75rem",
-              width: "0.75rem",
-              overflow: "hidden",
-              color: "var(--accent2)",
-              fontSize: "0.75rem",
-              opacity:
-                !collapsed &&
-                location.pathname.startsWith(`/${item.to.split("/")[1]}`)
-                  ? 1
-                  : 0,
-              transform: "translateY(-50%)",
-              transition: "opacity 160ms ease",
-            }}
-          />
         </Box>
       ))}
     </Box>
