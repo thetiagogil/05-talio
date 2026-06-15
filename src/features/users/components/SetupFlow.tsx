@@ -39,6 +39,8 @@ export function SetupFlow() {
   if (!user) return null;
 
   const currentUser = user;
+  const canContinue = Boolean(role);
+  const canSubmit = Boolean(role && avatar);
 
   function submit() {
     if (!role || !avatar) return;
@@ -133,6 +135,7 @@ export function SetupFlow() {
                   <Box
                     component="button"
                     key={option}
+                    aria-pressed={active}
                     type="button"
                     onClick={() => setRole(option)}
                     sx={{
@@ -155,7 +158,15 @@ export function SetupFlow() {
                       cursor: "pointer",
                       transition:
                         "transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease",
-                      "&:hover": { boxShadow: "var(--shadow-card)" },
+                      "&:hover": {
+                        transform: "translateY(-1px)",
+                        boxShadow: "var(--shadow-card)",
+                      },
+                      "&:focus-visible": {
+                        outline:
+                          "3px solid color-mix(in oklch, var(--primary) 28%, transparent)",
+                        outlineOffset: "3px",
+                      },
                     }}
                   >
                     <Box
@@ -232,6 +243,8 @@ export function SetupFlow() {
                     <Box
                       component="button"
                       key={option}
+                      aria-label={`Choose avatar ${option}`}
+                      aria-pressed={active}
                       type="button"
                       onClick={() => setAvatar(option)}
                       sx={{
@@ -255,7 +268,15 @@ export function SetupFlow() {
                         cursor: "pointer",
                         transition:
                           "transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease",
-                        "&:hover": { boxShadow: "var(--shadow-card)" },
+                        "&:hover": {
+                          transform: "translateY(-1px)",
+                          boxShadow: "var(--shadow-card)",
+                        },
+                        "&:focus-visible": {
+                          outline:
+                            "3px solid color-mix(in oklch, var(--primary) 28%, transparent)",
+                          outlineOffset: "3px",
+                        },
                       }}
                     >
                       {option}
@@ -287,7 +308,7 @@ export function SetupFlow() {
 
           {step === 0 ? (
             <Button
-              disabled={!role}
+              disabled={!canContinue}
               size="large"
               variant="contained"
               endIcon={<ArrowForwardRounded />}
@@ -297,7 +318,7 @@ export function SetupFlow() {
             </Button>
           ) : (
             <Button
-              disabled={!avatar}
+              disabled={!canSubmit}
               size="large"
               variant="contained"
               endIcon={<CheckRounded />}

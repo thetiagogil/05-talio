@@ -75,6 +75,11 @@ export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
                 ? "var(--primary)"
                 : "var(--sidebar-accent)",
             },
+            "&:focus-visible": {
+              outline:
+                "3px solid color-mix(in oklch, var(--primary) 28%, transparent)",
+              outlineOffset: "3px",
+            },
           }}
         >
           <Box

@@ -8,7 +8,12 @@ import { useCurrentUser } from "@/features/auth/hooks/useAuth";
 import { useKudos } from "@/features/kudos/hooks/useKudos";
 import { useTalents } from "@/features/talents/hooks/useTalents";
 import { useUsers } from "@/features/users/hooks/useUsers";
-import type { Talent, User } from "@/types/talents";
+import { EmptyState } from "@/shared/components/ui/EmptyState";
+import {
+  getDomainTopThreeStats,
+  getTeamPairings,
+  getTopKudosReceivers,
+} from "@/features/team/lib/teamInsights";
 
 export function TeamChemistry() {
   const users = useUsers();
@@ -17,43 +22,21 @@ export function TeamChemistry() {
   const currentUser = useCurrentUser();
 
   const domainTopThree = useMemo(
-    () =>
-      DOMAINS.map((domain) => ({
-        domain,
-        count: users.reduce((sum, user) => {
-          const topThree = user.talents.slice(0, 3);
-          return (
-            sum +
-            topThree.filter(
-              (talentId) =>
-                talents.find((talent) => talent.id === talentId)?.category ===
-                domain,
-            ).length
-          );
-        }, 0),
-      })).sort((a, b) => a.count - b.count),
+    () => getDomainTopThreeStats(users, talents),
     [talents, users],
   );
 
   const weakest = domainTopThree[0];
   const strongest = domainTopThree[domainTopThree.length - 1];
 
-  const topReceivers = useMemo(() => {
-    const counts = new Map<string, number>();
-
-    kudos.forEach((item) => {
-      counts.set(item.toId, (counts.get(item.toId) ?? 0) + 1);
-    });
-
-    return Array.from(counts.entries())
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5)
-      .map(([id, count]) => ({
-        user: users.find((candidate) => candidate.id === id),
-        count,
-      }))
-      .filter((row): row is { user: User; count: number } => Boolean(row.user));
-  }, [kudos, users]);
+  const topReceivers = useMemo(
+    () => getTopKudosReceivers(kudos, users),
+    [kudos, users],
+  );
+  const pairings = useMemo(
+    () => getTeamPairings(users, talents),
+    [talents, users],
+  );
 
   return (
     <Box
@@ -170,41 +153,45 @@ export function TeamChemistry() {
             mt: "1rem",
           }}
         >
-          {pairings(users, talents).map(({ first, second, reason }) => (
-            <Box
-              key={`${first.id}-${second.id}`}
-              sx={{
-                border: "1px solid var(--border)",
-                borderRadius: "0.875rem",
-                p: "1rem",
-                bgcolor: "var(--background)",
-              }}
-            >
+          {pairings.length === 0 ? (
+            <EmptyState description="No complementary pairings are available yet." />
+          ) : (
+            pairings.map(({ first, second, reason }) => (
               <Box
-                sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-              >
-                <AvatarBubble value={first.avatar} size={32} />
-                <span>+</span>
-                <AvatarBubble value={second.avatar} size={32} />
-              </Box>
-              <Typography
-                component="strong"
-                sx={{ display: "block", mt: "0.75rem" }}
-              >
-                {first.name} &amp; {second.name}
-              </Typography>
-              <Typography
+                key={`${first.id}-${second.id}`}
                 sx={{
-                  mt: "0.35rem",
-                  color: "var(--muted-foreground)",
-                  fontSize: "0.75rem",
-                  lineHeight: 1.55,
+                  border: "1px solid var(--border)",
+                  borderRadius: "0.875rem",
+                  p: "1rem",
+                  bgcolor: "var(--background)",
                 }}
               >
-                {reason}
-              </Typography>
-            </Box>
-          ))}
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                >
+                  <AvatarBubble value={first.avatar} size={32} />
+                  <span>+</span>
+                  <AvatarBubble value={second.avatar} size={32} />
+                </Box>
+                <Typography
+                  component="strong"
+                  sx={{ display: "block", mt: "0.75rem" }}
+                >
+                  {first.name} &amp; {second.name}
+                </Typography>
+                <Typography
+                  sx={{
+                    mt: "0.35rem",
+                    color: "var(--muted-foreground)",
+                    fontSize: "0.75rem",
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {reason}
+                </Typography>
+              </Box>
+            ))
+          )}
         </Box>
       </Card>
     </Box>
@@ -305,43 +292,4 @@ function PanelDescription({ children }: { children: ReactNode }) {
       {children}
     </Typography>
   );
-}
-
-function pairings(users: User[], talents: Talent[]) {
-  const out: { first: User; second: User; reason: string }[] = [];
-
-  for (let i = 0; i < users.length && out.length < 4; i += 1) {
-    for (let j = i + 1; j < users.length && out.length < 4; j += 1) {
-      const first = users[i];
-      const second = users[j];
-      const firstDomains = new Set(
-        first.talents
-          .slice(0, 5)
-          .map((id) => talents.find((talent) => talent.id === id)?.category),
-      );
-      const secondDomains = new Set(
-        second.talents
-          .slice(0, 5)
-          .map((id) => talents.find((talent) => talent.id === id)?.category),
-      );
-      const overlap = [...firstDomains].filter(
-        (domain) => domain && secondDomains.has(domain),
-      );
-      const complement = [...firstDomains].filter(
-        (domain) => domain && !secondDomains.has(domain),
-      );
-
-      if (overlap.length === 1 && complement.length >= 2) {
-        out.push({
-          first,
-          second,
-          reason: `Shared ground in ${overlap[0]}, with complementary strengths in ${complement
-            .slice(0, 2)
-            .join(" & ")}.`,
-        });
-      }
-    }
-  }
-
-  return out;
 }

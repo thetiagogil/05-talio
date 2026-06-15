@@ -8,6 +8,7 @@ import { DraggableGoalCard } from "./DraggableGoalCard";
 type GoalColumnProps = {
   column: Progress;
   count: number;
+  emptyText: string;
   goals: Goal[];
   showApproved: boolean;
   onEdit: (goal: Goal) => void;
@@ -17,6 +18,7 @@ type GoalColumnProps = {
 export function GoalColumn({
   column,
   count,
+  emptyText,
   goals,
   showApproved,
   onEdit,
@@ -37,6 +39,7 @@ export function GoalColumn({
         borderColor: isOver ? "var(--primary)" : "var(--border)",
         borderRadius: "0.875rem",
         p: "0.75rem",
+        minHeight: "16rem",
         bgcolor: isOver
           ? "color-mix(in srgb, var(--primary) 8%, var(--surface-2))"
           : "var(--surface-2)",
@@ -100,7 +103,7 @@ export function GoalColumn({
 
       <Box sx={{ display: "grid", gap: "0.5rem" }}>
         {goals.length === 0 ? (
-          <EmptyState description="Nothing here yet" />
+          <EmptyState description={emptyText} />
         ) : (
           goals.map((goal) => {
             const locked = goal.progress === "Done" && goal.approved;

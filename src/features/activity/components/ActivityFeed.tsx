@@ -1,13 +1,4 @@
-import { useMemo, type ReactNode } from "react";
-import {
-  CheckCircleRounded,
-  EmojiEventsRounded,
-  FavoriteBorderRounded,
-  MenuBookRounded,
-  PersonAddAltRounded,
-  StarBorderRounded,
-  TrackChangesRounded,
-} from "@mui/icons-material";
+import { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { EmptyState } from "@/shared/components/ui/EmptyState";
 import { timeAgo } from "@/shared/utils/format";
@@ -17,6 +8,8 @@ import { useGoals } from "@/features/goals/hooks/useGoals";
 import { useTalents } from "@/features/talents/hooks/useTalents";
 import { useUsers } from "@/features/users/hooks/useUsers";
 import type { ActivityEvent } from "@/types/talents";
+import { ActivityIcon } from "@/features/activity/components/ActivityIcon";
+import { ActivityPhrase } from "@/features/activity/lib/activityPresentation";
 
 type ActivityFeedProps = {
   filter?: (event: ActivityEvent) => boolean;
@@ -82,7 +75,6 @@ function ActivityRow({ event }: { event: ActivityEvent }) {
     : goal
       ? talents.find((candidate) => candidate.id === goal.talentId)
       : null;
-  const icon = iconFor(event.type);
   const talentStyle = talent ? domainStyle(talent.category) : null;
   const isKudos = event.type === "kudos_sent";
   const messageAccent = talentStyle?.base ?? "var(--primary)";
@@ -98,24 +90,7 @@ function ActivityRow({ event }: { event: ActivityEvent }) {
         gap: "1rem",
       }}
     >
-      <Box
-        component="span"
-        sx={{
-          zIndex: 1,
-          display: "grid",
-          width: "2.25rem",
-          height: "2.25rem",
-          flex: "none",
-          placeItems: "center",
-          border: "1px solid",
-          borderColor: icon.border,
-          borderRadius: 999,
-          color: icon.color,
-          bgcolor: icon.bg,
-        }}
-      >
-        {icon.node}
-      </Box>
+      <ActivityIcon type={event.type} />
       <Box
         sx={{
           flex: 1,
@@ -137,7 +112,11 @@ function ActivityRow({ event }: { event: ActivityEvent }) {
         >
           <Typography sx={{ fontSize: "0.875rem", lineHeight: 1.6 }}>
             <strong>{actor?.name ?? "Someone"}</strong>{" "}
-            {phrase(event, target?.name, talent?.label)}
+            <ActivityPhrase
+              event={event}
+              talentName={talent?.label}
+              targetName={target?.name}
+            />
           </Typography>
           <Typography
             component="time"
@@ -165,7 +144,7 @@ function ActivityRow({ event }: { event: ActivityEvent }) {
               fontSize: "0.875rem",
               fontStyle: "italic",
               "&::before": {
-                content: '"“"',
+                content: '"\\201C"',
                 color: messageAccent,
                 fontFamily: "Plus Jakarta Sans, Inter, system-ui, sans-serif",
                 fontSize: "1.25rem",
@@ -194,133 +173,4 @@ function ActivityRow({ event }: { event: ActivityEvent }) {
       </Box>
     </Box>
   );
-}
-
-function iconFor(type: ActivityEvent["type"]): {
-  node: ReactNode;
-  color: string;
-  bg: string;
-  border: string;
-} {
-  switch (type) {
-    case "kudos_sent":
-      return {
-        node: <FavoriteBorderRounded />,
-        color: "var(--accent2)",
-        border: "color-mix(in oklch, var(--accent2) 30%, transparent)",
-        bg: "color-mix(in oklch, var(--accent2) 10%, var(--background))",
-      };
-    case "goal_created":
-      return {
-        node: <TrackChangesRounded />,
-        color: "var(--foreground)",
-        border: "var(--border)",
-        bg: "var(--background)",
-      };
-    case "goal_progressed":
-      return {
-        node: <StarBorderRounded />,
-        color: "var(--progress-doing)",
-        border: "color-mix(in oklch, var(--progress-doing) 30%, transparent)",
-        bg: "var(--progress-doing-soft)",
-      };
-    case "goal_completed":
-      return {
-        node: <EmojiEventsRounded />,
-        color: "var(--progress-done)",
-        border: "color-mix(in oklch, var(--progress-done) 30%, transparent)",
-        bg: "var(--progress-done-soft)",
-      };
-    case "goal_approved":
-      return {
-        node: <CheckCircleRounded />,
-        color: "var(--progress-done)",
-        border: "color-mix(in oklch, var(--progress-done) 30%, transparent)",
-        bg: "var(--progress-done-soft)",
-      };
-    case "manual_updated":
-      return {
-        node: <MenuBookRounded />,
-        color: "var(--foreground)",
-        border: "var(--border)",
-        bg: "var(--background)",
-      };
-    case "joined":
-      return {
-        node: <PersonAddAltRounded />,
-        color: "var(--accent2)",
-        border: "color-mix(in oklch, var(--accent2) 30%, transparent)",
-        bg: "color-mix(in oklch, var(--accent2) 10%, var(--background))",
-      };
-  }
-}
-
-function phrase(
-  event: ActivityEvent,
-  targetName?: string,
-  talentName?: string,
-) {
-  switch (event.type) {
-    case "kudos_sent":
-      return (
-        <>
-          sent kudos to <strong>{targetName}</strong>
-          {talentName && (
-            <>
-              {" "}
-              for{" "}
-              <Box component="em" sx={{ fontStyle: "italic" }}>
-                {talentName}
-              </Box>
-            </>
-          )}
-        </>
-      );
-    case "goal_created":
-      return (
-        <>
-          set a new goal
-          {talentName && (
-            <>
-              {" "}
-              linked to{" "}
-              <Box component="em" sx={{ fontStyle: "italic" }}>
-                {talentName}
-              </Box>
-            </>
-          )}
-        </>
-      );
-    case "goal_progressed":
-      return (
-        <>
-          moved a goal to <strong>{event.message}</strong>
-        </>
-      );
-    case "goal_completed":
-      return (
-        <>
-          completed a goal
-          {talentName && (
-            <>
-              {" "}
-              for{" "}
-              <Box component="em" sx={{ fontStyle: "italic" }}>
-                {talentName}
-              </Box>
-            </>
-          )}
-        </>
-      );
-    case "goal_approved":
-      return (
-        <>
-          approved <strong>{targetName}</strong>'s goal
-        </>
-      );
-    case "manual_updated":
-      return <>updated their Manual of Me</>;
-    case "joined":
-      return <>joined the team</>;
-  }
 }

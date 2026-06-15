@@ -9,14 +9,18 @@ import {
 } from "@mui/material";
 import KeyboardArrowDownRounded from "@mui/icons-material/KeyboardArrowDownRounded";
 import { useMemo, useState } from "react";
-import { DOMAINS } from "@/features/talents/constants";
 import { domainStyle } from "@/shared/utils/style-utils";
 import { useCurrentUser } from "@/features/auth/hooks/useAuth";
 import { useTalents } from "@/features/talents/hooks/useTalents";
 import { useUsers } from "@/features/users/hooks/useUsers";
-import type { Talent, User } from "@/types/talents";
+import type { User } from "@/types/talents";
 import { AvatarBubble } from "@/features/users/components/AvatarBubble";
 import { DomainTag } from "@/features/talents/components/DomainTag";
+import { EmptyState } from "@/shared/components/ui/EmptyState";
+import {
+  getTeamDomainStats,
+  getTeamTopTalents,
+} from "@/features/team/lib/teamInsights";
 
 export function DefaultOverview() {
   const users = useUsers();
@@ -25,45 +29,14 @@ export function DefaultOverview() {
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const domainStats = useMemo(
-    () =>
-      DOMAINS.map((domain) => {
-        const domainTalents = talents.filter(
-          (talent) => talent.category === domain,
-        );
-        const totalTalents = users.reduce(
-          (sum, user) =>
-            sum +
-            user.talents.filter((talentId) =>
-              domainTalents.some((talent) => talent.id === talentId),
-            ).length,
-          0,
-        );
-
-        return { domain, totalTalents };
-      }),
+    () => getTeamDomainStats(users, talents),
     [talents, users],
   );
 
-  const topTalents = useMemo(() => {
-    const counts = new Map<number, string[]>();
-
-    users.forEach((user) => {
-      user.talents.forEach((talentId) => {
-        counts.set(talentId, [...(counts.get(talentId) ?? []), user.id]);
-      });
-    });
-
-    return Array.from(counts.entries())
-      .map(([talentId, userIds]) => ({
-        talent: talents.find((candidate) => candidate.id === talentId),
-        userIds,
-      }))
-      .filter((row): row is { talent: Talent; userIds: string[] } =>
-        Boolean(row.talent),
-      )
-      .sort((a, b) => b.userIds.length - a.userIds.length)
-      .slice(0, 10);
-  }, [talents, users]);
+  const topTalents = useMemo(
+    () => getTeamTopTalents(users, talents),
+    [talents, users],
+  );
 
   return (
     <Box sx={{ display: "grid", gap: "2rem" }}>
@@ -194,207 +167,217 @@ export function DefaultOverview() {
         >
           Strengths that show up most across the team.
         </Typography>
-        <Box sx={{ display: "grid", gap: "0.75rem", mt: "0.75rem" }}>
-          {topTalents.map(({ talent, userIds }, index) => {
-            const people = userIds
-              .map((userId) =>
-                users.find((candidate) => candidate.id === userId),
-              )
-              .filter((user): user is User => Boolean(user));
-            const peopleLabel = `${people.length} ${
-              people.length === 1 ? "person" : "people"
-            }`;
+        {topTalents.length === 0 ? (
+          <Box sx={{ mt: "0.75rem" }}>
+            <EmptyState description="No team talents are available yet." />
+          </Box>
+        ) : (
+          <Box sx={{ display: "grid", gap: "0.75rem", mt: "0.75rem" }}>
+            {topTalents.map(({ talent, userIds }, index) => {
+              const people = userIds
+                .map((userId) =>
+                  users.find((candidate) => candidate.id === userId),
+                )
+                .filter((user): user is User => Boolean(user));
+              const peopleLabel = `${people.length} ${
+                people.length === 1 ? "person" : "people"
+              }`;
 
-            return (
-              <Accordion
-                disableGutters
-                expanded={expanded === String(talent.id)}
-                key={talent.id}
-                onChange={(_, nextExpanded) =>
-                  setExpanded(nextExpanded ? String(talent.id) : false)
-                }
-                sx={{
-                  overflow: "hidden",
-                  border: "1px solid var(--border)",
-                  borderRadius: "0.875rem !important",
-                  bgcolor: "var(--card)",
-                  boxShadow: "none",
-                  "&::before": { display: "none" },
-                }}
-              >
-                <AccordionSummary
-                  expandIcon={<KeyboardArrowDownRounded />}
+              return (
+                <Accordion
+                  disableGutters
+                  expanded={expanded === String(talent.id)}
+                  key={talent.id}
+                  onChange={(_, nextExpanded) =>
+                    setExpanded(nextExpanded ? String(talent.id) : false)
+                  }
                   sx={{
-                    alignItems: "center",
-                    p: "1rem",
-                    "& .MuiAccordionSummary-content": { m: 0, minWidth: 0 },
+                    overflow: "hidden",
+                    border: "1px solid var(--border)",
+                    borderRadius: "0.875rem !important",
+                    bgcolor: "var(--card)",
+                    boxShadow: "none",
+                    "&::before": { display: "none" },
                   }}
                 >
-                  <Box
+                  <AccordionSummary
+                    expandIcon={<KeyboardArrowDownRounded />}
                     sx={{
-                      display: "grid",
-                      width: "100%",
-                      gridTemplateColumns: {
-                        xs: "2rem minmax(0, 1fr)",
-                        sm: "2rem minmax(0, 1fr) auto",
-                      },
                       alignItems: "center",
-                      gap: "0.9rem",
+                      p: "1rem",
+                      "& .MuiAccordionSummary-content": { m: 0, minWidth: 0 },
                     }}
                   >
                     <Box
-                      component="span"
                       sx={{
                         display: "grid",
-                        width: "2rem",
-                        height: "2rem",
-                        placeItems: "center",
-                        borderRadius: "0.625rem",
-                        color: "var(--primary)",
-                        bgcolor: "var(--accent)",
-                        fontFamily:
-                          "Plus Jakarta Sans, Inter, system-ui, sans-serif",
-                        fontSize: "0.875rem",
-                        fontWeight: 800,
-                      }}
-                    >
-                      {index + 1}
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        minWidth: 0,
-                        alignItems: { xs: "flex-start", sm: "center" },
-                        flexDirection: { xs: "column", sm: "row" },
-                        gap: { xs: "0.35rem", sm: "0.6rem" },
-                      }}
-                    >
-                      <DomainTag
-                        compact
-                        domain={talent.category}
-                        label={talent.label}
-                      />
-                      <Typography
-                        sx={{
-                          maxWidth: "38rem",
-                          color: "var(--muted-foreground)",
-                          fontSize: "0.8125rem",
-                          lineHeight: 1.45,
-                        }}
-                      >
-                        {talent.description}
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
+                        width: "100%",
+                        gridTemplateColumns: {
+                          xs: "2rem minmax(0, 1fr)",
+                          sm: "2rem minmax(0, 1fr) auto",
+                        },
                         alignItems: "center",
-                        justifyContent: { xs: "flex-start", sm: "flex-end" },
-                        gridColumn: { xs: "2", sm: "auto" },
-                        gap: "0.75rem",
+                        gap: "0.9rem",
                       }}
                     >
                       <Box
                         component="span"
                         sx={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "0.35rem",
-                          flex: "none",
-                          color: "var(--muted-foreground)",
-                          fontSize: "0.75rem",
-                          whiteSpace: "nowrap",
+                          display: "grid",
+                          width: "2rem",
+                          height: "2rem",
+                          placeItems: "center",
+                          borderRadius: "0.625rem",
+                          color: "var(--primary)",
+                          bgcolor: "var(--accent)",
+                          fontFamily:
+                            "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+                          fontSize: "0.875rem",
+                          fontWeight: 800,
                         }}
                       >
-                        <GroupsRounded fontSize="small" /> {peopleLabel}
+                        {index + 1}
                       </Box>
-                    </Box>
-                  </Box>
-                </AccordionSummary>
-                <AccordionDetails
-                  sx={{ p: { xs: "0 1rem 1rem", sm: "0 1rem 1rem 3.75rem" } }}
-                >
-                  <Box sx={{ display: "grid", gap: "0.9rem" }}>
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gap: "0.2rem",
-                        borderRadius: "0.625rem",
-                        p: "0.75rem 0.85rem",
-                        bgcolor: "var(--surface-2)",
-                      }}
-                    >
-                      <Typography
-                        component="strong"
+                      <Box
                         sx={{
-                          color: "var(--muted-foreground)",
-                          fontSize: "0.65rem",
-                          letterSpacing: "0.08em",
-                          textTransform: "uppercase",
+                          display: "flex",
+                          minWidth: 0,
+                          alignItems: { xs: "flex-start", sm: "center" },
+                          flexDirection: { xs: "column", sm: "row" },
+                          gap: { xs: "0.35rem", sm: "0.6rem" },
                         }}
                       >
-                        Brings
-                      </Typography>
-                      <Typography
-                        component="span"
-                        sx={{ fontSize: "0.8125rem", lineHeight: 1.45 }}
+                        <DomainTag
+                          compact
+                          domain={talent.category}
+                          label={talent.label}
+                        />
+                        <Typography
+                          sx={{
+                            maxWidth: "38rem",
+                            color: "var(--muted-foreground)",
+                            fontSize: "0.8125rem",
+                            lineHeight: 1.45,
+                          }}
+                        >
+                          {talent.description}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: { xs: "flex-start", sm: "flex-end" },
+                          gridColumn: { xs: "2", sm: "auto" },
+                          gap: "0.75rem",
+                        }}
                       >
-                        {talent.details.bring}
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}
-                    >
-                      {people.map((user) => (
                         <Box
                           component="span"
-                          key={user.id}
                           sx={{
                             display: "inline-flex",
                             alignItems: "center",
-                            gap: "0.4rem",
-                            borderRadius: 999,
-                            px: "0.55rem",
-                            py: "0.25rem",
-                            bgcolor: "var(--muted)",
+                            gap: "0.35rem",
+                            flex: "none",
+                            color: "var(--muted-foreground)",
                             fontSize: "0.75rem",
+                            whiteSpace: "nowrap",
                           }}
                         >
-                          <AvatarBubble value={user.avatar} size={24} />
-                          <strong>{user.name}</strong>
-                          <Box
-                            component="small"
-                            sx={{ color: "var(--muted-foreground)" }}
-                          >
-                            {user.role}
-                          </Box>
-                          {user.id === currentUser?.id && (
-                            <Box
-                              component="em"
-                              sx={{
-                                borderRadius: 999,
-                                px: "0.4rem",
-                                py: "0.1rem",
-                                color: "var(--primary)",
-                                bgcolor:
-                                  "color-mix(in oklch, var(--primary) 15%, transparent)",
-                                fontSize: "0.625rem",
-                                fontStyle: "normal",
-                                fontWeight: 800,
-                              }}
-                            >
-                              me
-                            </Box>
-                          )}
+                          <GroupsRounded fontSize="small" /> {peopleLabel}
                         </Box>
-                      ))}
+                      </Box>
                     </Box>
-                  </Box>
-                </AccordionDetails>
-              </Accordion>
-            );
-          })}
-        </Box>
+                  </AccordionSummary>
+                  <AccordionDetails
+                    sx={{ p: { xs: "0 1rem 1rem", sm: "0 1rem 1rem 3.75rem" } }}
+                  >
+                    <Box sx={{ display: "grid", gap: "0.9rem" }}>
+                      <Box
+                        sx={{
+                          display: "grid",
+                          gap: "0.2rem",
+                          borderRadius: "0.625rem",
+                          p: "0.75rem 0.85rem",
+                          bgcolor: "var(--surface-2)",
+                        }}
+                      >
+                        <Typography
+                          component="strong"
+                          sx={{
+                            color: "var(--muted-foreground)",
+                            fontSize: "0.65rem",
+                            letterSpacing: "0.08em",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          Brings
+                        </Typography>
+                        <Typography
+                          component="span"
+                          sx={{ fontSize: "0.8125rem", lineHeight: 1.45 }}
+                        >
+                          {talent.details.bring}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: "0.4rem",
+                        }}
+                      >
+                        {people.map((user) => (
+                          <Box
+                            component="span"
+                            key={user.id}
+                            sx={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "0.4rem",
+                              borderRadius: 999,
+                              px: "0.55rem",
+                              py: "0.25rem",
+                              bgcolor: "var(--muted)",
+                              fontSize: "0.75rem",
+                            }}
+                          >
+                            <AvatarBubble value={user.avatar} size={24} />
+                            <strong>{user.name}</strong>
+                            <Box
+                              component="small"
+                              sx={{ color: "var(--muted-foreground)" }}
+                            >
+                              {user.role}
+                            </Box>
+                            {user.id === currentUser?.id && (
+                              <Box
+                                component="em"
+                                sx={{
+                                  borderRadius: 999,
+                                  px: "0.4rem",
+                                  py: "0.1rem",
+                                  color: "var(--primary)",
+                                  bgcolor:
+                                    "color-mix(in oklch, var(--primary) 15%, transparent)",
+                                  fontSize: "0.625rem",
+                                  fontStyle: "normal",
+                                  fontWeight: 800,
+                                }}
+                              >
+                                me
+                              </Box>
+                            )}
+                          </Box>
+                        ))}
+                      </Box>
+                    </Box>
+                  </AccordionDetails>
+                </Accordion>
+              );
+            })}
+          </Box>
+        )}
       </Box>
     </Box>
   );

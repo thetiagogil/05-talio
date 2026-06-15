@@ -23,6 +23,7 @@ export function GoalCard({ goal, onEdit }: GoalCardProps) {
 
   const style = domainStyle(talent.category);
   const locked = goal.progress === "Done" && goal.approved;
+  const approvalRequestCount = goal.approvalRequests?.length ?? 0;
 
   return (
     <Card
@@ -132,9 +133,9 @@ export function GoalCard({ goal, onEdit }: GoalCardProps) {
                 }}
               >
                 <StarBorderRounded fontSize="inherit" />
-                {(goal.approvalRequests?.length ?? 0) > 0
-                  ? `Asked ${goal.approvalRequests?.length}`
-                  : "Awaiting approval"}
+                {approvalRequestCount > 0
+                  ? `Approval requested (${approvalRequestCount})`
+                  : "Ready for approval"}
               </Box>
               <ApprovalRequestPopover goal={goal} />
             </>

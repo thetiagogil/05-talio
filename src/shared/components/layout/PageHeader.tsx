@@ -88,6 +88,7 @@ export function PageHeader({
 
         {tabs && (
           <Tabs
+            aria-label={`${title} sections`}
             value={activeTab}
             variant="scrollable"
             scrollButtons="auto"

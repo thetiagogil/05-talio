@@ -96,7 +96,7 @@ export function ResourceCard({ resource, matched }: ResourceCardProps) {
             fontWeight: 700,
           }}
         >
-          Supports
+          {matched.length > 0 ? "Matched to your talents" : "Supports"}
         </Typography>
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: "0.35rem" }}>
           {(matched.length > 0 ? matched : resource.tags.slice(0, 3)).map(

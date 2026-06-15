@@ -24,7 +24,9 @@ export function DraggableGoalCard({
   return (
     <Box
       ref={setNodeRef}
+      aria-label={locked ? "Approved goal" : "Drag goal"}
       sx={{
+        borderRadius: "0.75rem",
         transform: transform
           ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
           : undefined,
@@ -32,6 +34,11 @@ export function DraggableGoalCard({
         touchAction: "none",
         opacity: isDragging ? 0.82 : 1,
         zIndex: isDragging ? 5 : "auto",
+        "&:focus-visible": {
+          outline:
+            "3px solid color-mix(in oklch, var(--primary) 28%, transparent)",
+          outlineOffset: "3px",
+        },
       }}
       {...listeners}
       {...attributes}

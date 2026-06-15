@@ -94,12 +94,16 @@ export function NotificationMenu() {
         }}
       >
         <IconButton
-          aria-label="Notifications"
+          aria-label={
+            unread > 0 ? `${unread} unread notifications` : "Notifications"
+          }
           onClick={(event) => {
             setAnchorEl(event.currentTarget);
             markNotificationsRead();
           }}
           sx={{
+            width: "2.5rem",
+            height: "2.5rem",
             color: "var(--foreground)",
             "&:hover": { color: "var(--primary)", bgcolor: "transparent" },
           }}

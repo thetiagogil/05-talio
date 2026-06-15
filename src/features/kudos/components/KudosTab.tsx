@@ -124,7 +124,7 @@ export function KudosTab() {
               >
                 <AvatarBubble value={from?.avatar} size={40} />
                 <Box sx={{ display: "grid", minWidth: 0, flex: 1 }}>
-                  <strong>{from?.name}</strong>
+                  <strong>{from?.name ?? "A teammate"}</strong>
                   <Box
                     component="span"
                     sx={{

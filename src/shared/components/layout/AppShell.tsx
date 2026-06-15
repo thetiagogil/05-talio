@@ -153,9 +153,13 @@ export function AppShell({ children }: AppShellProps) {
           }}
         >
           <IconButton
-            aria-label="Toggle theme"
+            aria-label={
+              theme === "light" ? "Switch to dark mode" : "Switch to light mode"
+            }
             onClick={toggleTheme}
             sx={{
+              width: "2.5rem",
+              height: "2.5rem",
               color: "var(--foreground)",
               "&:hover": { color: "var(--primary)", bgcolor: "transparent" },
             }}
@@ -167,6 +171,8 @@ export function AppShell({ children }: AppShellProps) {
             aria-label="Log out"
             onClick={handleLogout}
             sx={{
+              width: "2.5rem",
+              height: "2.5rem",
               color: "var(--foreground)",
               "&:hover": {
                 color: "var(--primary)",

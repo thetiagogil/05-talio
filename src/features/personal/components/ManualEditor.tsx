@@ -84,9 +84,10 @@ function ManualCard({
   const [editing, setEditing] = useState(!value && !readOnly);
   const [draft, setDraft] = useState(value);
   const empty = !value.trim();
+  const dirty = draft !== value;
 
   function save() {
-    if (!currentUser) return;
+    if (!currentUser || !dirty) return;
     updateManual(currentUser.id, { [field]: draft.trim() });
     setEditing(false);
   }
@@ -138,7 +139,10 @@ function ManualCard({
       {editing ? (
         <Box sx={{ display: "grid", gap: "0.75rem", mt: "0.75rem" }}>
           <TextField
+            autoFocus
             multiline
+            aria-label={question}
+            minRows={4}
             rows={4}
             placeholder={placeholder}
             value={draft}
@@ -156,6 +160,7 @@ function ManualCard({
             </Button>
             <Button
               startIcon={<CheckRounded />}
+              disabled={!dirty}
               variant="contained"
               onClick={save}
             >

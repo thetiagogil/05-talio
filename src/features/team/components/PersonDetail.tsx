@@ -8,6 +8,7 @@ import { useTalents } from "@/features/talents/hooks/useTalents";
 import type { Talent, User } from "@/types/talents";
 import { ManualEditor } from "@/features/personal/components/ManualEditor";
 import { KudosButton } from "@/features/kudos/components/KudosButton";
+import { EmptyState } from "@/shared/components/ui/EmptyState";
 
 type PersonDetailProps = {
   user: User;
@@ -70,7 +71,7 @@ export function PersonDetail({ user, onBack }: PersonDetailProps) {
                   textTransform: "uppercase",
                 }}
               >
-                {user.role}
+                {user.role ?? "Team member"}
               </Typography>
               <Typography
                 component="h2"
@@ -150,11 +151,15 @@ export function PersonDetail({ user, onBack }: PersonDetailProps) {
 
         <Box sx={{ p: "1.5rem" }}>
           {tab === "profile" ? (
-            <Box sx={{ display: "grid", gap: "0.5rem" }}>
-              {userTalents.map((talent, index) => (
-                <TalentRow key={talent.id} rank={index + 1} talent={talent} />
-              ))}
-            </Box>
+            userTalents.length === 0 ? (
+              <EmptyState description="No talents have been added to this profile yet." />
+            ) : (
+              <Box sx={{ display: "grid", gap: "0.5rem" }}>
+                {userTalents.map((talent, index) => (
+                  <TalentRow key={talent.id} rank={index + 1} talent={talent} />
+                ))}
+              </Box>
+            )
           ) : (
             <ManualEditor readOnly manual={user.manual} />
           )}

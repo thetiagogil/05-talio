@@ -102,11 +102,13 @@ export function GoalsBoard() {
               column === "Done"
                 ? items.filter((goal) => showApproved || !goal.approved)
                 : items;
+            const hiddenApprovedCount = items.length - visible.length;
 
             return (
               <GoalColumn
                 column={column}
                 count={items.length}
+                emptyText={emptyGoalText(column, hiddenApprovedCount)}
                 goals={visible}
                 key={column}
                 showApproved={showApproved}
@@ -129,4 +131,21 @@ export function GoalsBoard() {
       )}
     </Box>
   );
+}
+
+function emptyGoalText(column: Progress, hiddenApprovedCount: number) {
+  if (hiddenApprovedCount > 0) {
+    return `${hiddenApprovedCount} approved ${
+      hiddenApprovedCount === 1 ? "goal is" : "goals are"
+    } hidden.`;
+  }
+
+  switch (column) {
+    case "To do":
+      return "No planned goals yet.";
+    case "Doing":
+      return "No active goals. Drag a goal here when work starts.";
+    case "Done":
+      return "No completed goals yet.";
+  }
 }

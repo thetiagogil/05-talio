@@ -14,9 +14,12 @@ import {
 import { AvatarBubble } from "@/features/users/components/AvatarBubble";
 import { DomainTag } from "@/features/talents/components/DomainTag";
 import { EmptyState } from "@/shared/components/ui/EmptyState";
-import { DOMAINS } from "@/features/talents/constants";
-import { shortDomain } from "@/shared/utils/style-utils";
-import type { Domain, Talent, User } from "@/types/talents";
+import type { Talent, User } from "@/types/talents";
+import {
+  getCombinedTopTalents,
+  getCompareRadarData,
+  type CompareRadarRow,
+} from "@/features/team/lib/teamInsights";
 
 const palette = ["#5b6cf6", "#ef8a4a", "#3eb6a3", "#c45cb0", "#f5b454"];
 
@@ -27,12 +30,6 @@ type ComparePanelProps = {
   onClear: () => void;
 };
 
-type CombinedTalentRow = {
-  key: number;
-  talent: Talent;
-  count: number;
-};
-
 export function ComparePanel({
   selected,
   talents,
@@ -40,43 +37,14 @@ export function ComparePanel({
   onClear,
 }: ComparePanelProps) {
   const radarData = useMemo(
-    () =>
-      DOMAINS.map((domain) => ({
-        domain,
-        label: shortDomain(domain),
-        values: selected.map((user) => ({
-          userId: user.id,
-          userName: user.name,
-          score: user.talents.reduce((sum, talentId, index) => {
-            const talent = talents.find(
-              (candidate) => candidate.id === talentId,
-            );
-            if (!talent || talent.category !== domain) return sum;
-            return sum + (10 - index);
-          }, 0),
-        })),
-      })),
+    () => getCompareRadarData(selected, talents),
     [selected, talents],
   );
 
-  const combinedTalents = useMemo<CombinedTalentRow[]>(() => {
-    const counts = new Map<number, number>();
-
-    selected.forEach((user) => {
-      user.talents.forEach((talentId) => {
-        counts.set(talentId, (counts.get(talentId) ?? 0) + 1);
-      });
-    });
-
-    return Array.from(counts.entries())
-      .sort((a, b) => b[1] - a[1] || a[0] - b[0])
-      .slice(0, 5)
-      .map(([id, count]) => {
-        const talent = talents.find((candidate) => candidate.id === id);
-        return talent ? { key: talent.id, talent, count } : null;
-      })
-      .filter((item): item is CombinedTalentRow => Boolean(item));
-  }, [selected, talents]);
+  const combinedTalents = useMemo(
+    () => getCombinedTopTalents(selected, talents),
+    [selected, talents],
+  );
 
   if (selected.length === 0) {
     return (
@@ -155,52 +123,58 @@ export function ComparePanel({
         <PanelDescription>
           What this group brings, needs, and is motivated by.
         </PanelDescription>
-        <Box sx={{ mt: "1rem", overflowX: "auto" }}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Talent</TableCell>
-                <TableCell>Brings</TableCell>
-                <TableCell>Needs</TableCell>
-                <TableCell>Motivated by</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {combinedTalents.map((row) => (
-                <TableRow key={row.key}>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        alignItems: "center",
-                        gap: "0.4rem",
-                      }}
-                    >
-                      <DomainTag
-                        compact
-                        domain={row.talent.category}
-                        label={row.talent.label}
-                      />
+        {combinedTalents.length === 0 ? (
+          <Box sx={{ mt: "1rem" }}>
+            <EmptyState description="No shared top talents were found for this group." />
+          </Box>
+        ) : (
+          <Box sx={{ mt: "1rem", overflowX: "auto" }}>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Talent</TableCell>
+                  <TableCell>Brings</TableCell>
+                  <TableCell>Needs</TableCell>
+                  <TableCell>Motivated by</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {combinedTalents.map((row) => (
+                  <TableRow key={row.key}>
+                    <TableCell>
                       <Box
-                        component="span"
                         sx={{
-                          color: "var(--muted-foreground)",
-                          fontSize: "0.75rem",
+                          display: "flex",
+                          flexWrap: "wrap",
+                          alignItems: "center",
+                          gap: "0.4rem",
                         }}
                       >
-                        {row.count} of {selected.length}
+                        <DomainTag
+                          compact
+                          domain={row.talent.category}
+                          label={row.talent.label}
+                        />
+                        <Box
+                          component="span"
+                          sx={{
+                            color: "var(--muted-foreground)",
+                            fontSize: "0.75rem",
+                          }}
+                        >
+                          {row.count} of {selected.length}
+                        </Box>
                       </Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell>{row.talent.details.bring}</TableCell>
-                  <TableCell>{row.talent.details.need}</TableCell>
-                  <TableCell>{row.talent.details.motivate}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
+                    </TableCell>
+                    <TableCell>{row.talent.details.bring}</TableCell>
+                    <TableCell>{row.talent.details.need}</TableCell>
+                    <TableCell>{row.talent.details.motivate}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+        )}
       </Card>
     </Box>
   );
@@ -210,16 +184,12 @@ function RadarPlot({
   data,
   users,
 }: {
-  data: {
-    domain: Domain;
-    label: string;
-    values: { userId: string; userName: string; score: number }[];
-  }[];
+  data: CompareRadarRow[];
   users: User[];
 }) {
-  const size = 300;
+  const size = 340;
   const center = size / 2;
-  const radius = 100;
+  const radius = 118;
   const maxScore = Math.max(
     1,
     ...data.flatMap((row) => row.values.map((value) => value.score)),
@@ -249,13 +219,15 @@ function RadarPlot({
       <Box
         component="svg"
         aria-label="Domain comparison chart"
+        role="img"
         viewBox={`0 0 ${size} ${size}`}
         sx={{
           display: "block",
-          width: "min(100%, 18.75rem)",
+          width: "min(100%, 24rem)",
           height: "auto",
         }}
       >
+        <title>Domain comparison chart</title>
         {[0.25, 0.5, 0.75, 1].map((scale) => {
           const points = data
             .map((_, index) => {

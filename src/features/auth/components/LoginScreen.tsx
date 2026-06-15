@@ -16,6 +16,8 @@ import {
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export function LoginScreen() {
   const user = useCurrentUser();
   const navigate = useNavigate();
@@ -39,7 +41,7 @@ export function LoginScreen() {
       return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) {
+    if (!emailPattern.test(nextEmail)) {
       setEmailError("Enter a valid email address.");
       return;
     }
@@ -200,15 +202,28 @@ export function LoginScreen() {
             Sign in with your work email to continue.
           </Typography>
 
-          <Box component="form" sx={{ mt: "2rem" }} onSubmit={handleEmailLogin}>
+          <Box
+            component="form"
+            noValidate
+            sx={{ mt: "2rem" }}
+            onSubmit={handleEmailLogin}
+          >
             <TextField
+              autoComplete="email"
               fullWidth
+              inputMode="email"
               label="Work email"
               placeholder="you@talents.app"
+              required
+              type="email"
               value={email}
               error={Boolean(emailError)}
               helperText={emailError}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                setEmailError(null);
+                setError(null);
+              }}
               sx={{ mb: "1rem" }}
             />
 
@@ -223,6 +238,7 @@ export function LoginScreen() {
 
             <Button
               fullWidth
+              disabled={!email.trim()}
               size="large"
               type="submit"
               variant="contained"
@@ -246,10 +262,11 @@ export function LoginScreen() {
               },
             }}
           >
-            OR
+            or
           </Divider>
 
           <Button
+            endIcon={<ArrowForwardRounded />}
             fullWidth
             size="large"
             variant="outlined"
