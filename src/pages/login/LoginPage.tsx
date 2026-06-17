@@ -1,5 +1,5 @@
 import { LoginScreen } from "@/features/auth/components/LoginScreen";
 
-export function LoginPage() {
+export const LoginPage = () => {
   return <LoginScreen />;
-}
+};

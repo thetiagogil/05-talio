@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
-export function createTalioTheme(mode: "light" | "dark") {
+export const createTalioTheme = (mode: "light" | "dark") => {
   return createTheme({
     palette: {
       mode,
@@ -152,4 +152,4 @@ export function createTalioTheme(mode: "light" | "dark") {
       },
     },
   });
-}
+};

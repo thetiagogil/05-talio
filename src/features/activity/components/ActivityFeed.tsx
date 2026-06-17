@@ -16,10 +16,10 @@ type ActivityFeedProps = {
   emptyText?: string;
 };
 
-export function ActivityFeed({
+export const ActivityFeed = ({
   filter,
   emptyText = "Nothing yet - activity will show up here.",
-}: ActivityFeedProps) {
+}: ActivityFeedProps) => {
   const events = useActivity();
 
   const list = useMemo(() => {
@@ -57,7 +57,7 @@ export function ActivityFeed({
       ))}
     </Box>
   );
-}
+};
 
 function ActivityRow({ event }: { event: ActivityEvent }) {
   const users = useUsers();

@@ -11,7 +11,7 @@ import { useKudos } from "@/features/kudos/hooks/useKudos";
 import { useTalents } from "@/features/talents/hooks/useTalents";
 import { useUsers } from "@/features/users/hooks/useUsers";
 
-export function KudosTab() {
+export const KudosTab = () => {
   const user = useCurrentUser();
   const kudos = useKudos();
   const users = useUsers();
@@ -171,4 +171,4 @@ export function KudosTab() {
       </Box>
     </Box>
   );
-}
+};

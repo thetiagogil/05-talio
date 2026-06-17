@@ -26,12 +26,12 @@ type GoalFormModalProps = {
   onClose: () => void;
 };
 
-export function GoalFormModal({
+export const GoalFormModal = ({
   goal,
   myTalents,
   open,
   onClose,
-}: GoalFormModalProps) {
+}: GoalFormModalProps) => {
   const user = useCurrentUser();
   const [talentId, setTalentId] = useState<number | null>(
     goal?.talentId ?? myTalents[0]?.id ?? null,
@@ -137,4 +137,4 @@ export function GoalFormModal({
       </DialogActions>
     </Dialog>
   );
-}
+};

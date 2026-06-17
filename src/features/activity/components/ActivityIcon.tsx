@@ -22,7 +22,7 @@ type ActivityIconStyle = {
   border: string;
 };
 
-export function ActivityIcon({ type }: ActivityIconProps) {
+export const ActivityIcon = ({ type }: ActivityIconProps) => {
   const icon = iconForActivityType(type);
 
   return (
@@ -45,7 +45,7 @@ export function ActivityIcon({ type }: ActivityIconProps) {
       {icon.node}
     </Box>
   );
-}
+};
 
 function iconForActivityType(type: ActivityEvent["type"]): ActivityIconStyle {
   switch (type) {

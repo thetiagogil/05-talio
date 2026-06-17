@@ -7,7 +7,7 @@ type EmptyStateProps = {
   large?: boolean;
 };
 
-export function EmptyState({ title, description, large }: EmptyStateProps) {
+export const EmptyState = ({ title, description, large }: EmptyStateProps) => {
   return (
     <Box
       sx={{
@@ -42,4 +42,4 @@ export function EmptyState({ title, description, large }: EmptyStateProps) {
       </Typography>
     </Box>
   );
-}
+};

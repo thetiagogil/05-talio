@@ -18,7 +18,7 @@ import type { Goal, Progress, Talent } from "@/types/talents";
 import { GoalColumn } from "./GoalColumn";
 import { GoalFormModal } from "./GoalFormModal";
 
-export function GoalsBoard() {
+export const GoalsBoard = () => {
   const user = useCurrentUser();
   const goals = useGoals();
   const talents = useTalents();
@@ -131,7 +131,7 @@ export function GoalsBoard() {
       )}
     </Box>
   );
-}
+};
 
 function emptyGoalText(column: Progress, hiddenApprovedCount: number) {
   if (hiddenApprovedCount > 0) {

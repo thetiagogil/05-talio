@@ -15,7 +15,7 @@ type GoalCardProps = {
   onEdit: () => void;
 };
 
-export function GoalCard({ goal, onEdit }: GoalCardProps) {
+export const GoalCard = ({ goal, onEdit }: GoalCardProps) => {
   const talents = useTalents();
   const talent = talents.find((candidate) => candidate.id === goal.talentId);
 
@@ -144,4 +144,4 @@ export function GoalCard({ goal, onEdit }: GoalCardProps) {
       )}
     </Card>
   );
-}
+};

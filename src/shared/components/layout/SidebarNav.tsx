@@ -19,7 +19,10 @@ type SidebarNavProps = {
   onNavigate?: () => void;
 };
 
-export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
+export const SidebarNav = ({
+  collapsed = false,
+  onNavigate,
+}: SidebarNavProps) => {
   const location = useLocation();
 
   return (
@@ -114,4 +117,4 @@ export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
       ))}
     </Box>
   );
-}
+};

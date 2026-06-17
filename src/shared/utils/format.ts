@@ -1,4 +1,4 @@
-export function timeAgo(timestamp: number): string {
+export const timeAgo = (timestamp: number): string => {
   const diff = Date.now() - timestamp;
   const seconds = Math.floor(diff / 1000);
 
@@ -17,4 +17,4 @@ export function timeAgo(timestamp: number): string {
   if (weeks < 5) return `${weeks}w ago`;
 
   return `${Math.floor(days / 30)}mo ago`;
-}
+};

@@ -8,7 +8,11 @@ type DomainTagProps = {
   compact?: boolean;
 };
 
-export function DomainTag({ domain, label = domain, compact }: DomainTagProps) {
+export const DomainTag = ({
+  domain,
+  label = domain,
+  compact,
+}: DomainTagProps) => {
   const style = domainStyle(domain);
 
   return (
@@ -41,4 +45,4 @@ export function DomainTag({ domain, label = domain, compact }: DomainTagProps) {
       {label}
     </Box>
   );
-}
+};

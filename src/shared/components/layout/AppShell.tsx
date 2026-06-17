@@ -18,7 +18,7 @@ type AppShellProps = {
   children: ReactNode;
 };
 
-export function AppShell({ children }: AppShellProps) {
+export const AppShell = ({ children }: AppShellProps) => {
   const user = useCurrentUser();
   const theme = useAppTheme();
   const navigate = useNavigate();
@@ -258,4 +258,4 @@ export function AppShell({ children }: AppShellProps) {
       </Box>
     </Box>
   );
-}
+};

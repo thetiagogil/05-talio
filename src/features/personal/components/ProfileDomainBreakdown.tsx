@@ -8,10 +8,10 @@ type ProfileDomainBreakdownProps = {
   totalTalents: number;
 };
 
-export function ProfileDomainBreakdown({
+export const ProfileDomainBreakdown = ({
   items,
   totalTalents,
-}: ProfileDomainBreakdownProps) {
+}: ProfileDomainBreakdownProps) => {
   return (
     <Card sx={{ p: "1.5rem", boxShadow: "none" }}>
       <PanelEyebrow>Domain breakdown</PanelEyebrow>
@@ -87,7 +87,7 @@ export function ProfileDomainBreakdown({
       )}
     </Card>
   );
-}
+};
 
 export function PanelEyebrow({ children }: { children: string }) {
   return (

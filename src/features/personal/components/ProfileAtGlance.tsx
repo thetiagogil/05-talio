@@ -13,7 +13,7 @@ type ProfileAtGlanceProps = {
   stats: ProfileGlanceStats;
 };
 
-export function ProfileAtGlance({ stats }: ProfileAtGlanceProps) {
+export const ProfileAtGlance = ({ stats }: ProfileAtGlanceProps) => {
   return (
     <Card sx={{ p: "1.5rem", boxShadow: "none" }}>
       <PanelEyebrow>At a glance</PanelEyebrow>
@@ -41,7 +41,7 @@ export function ProfileAtGlance({ stats }: ProfileAtGlanceProps) {
       </Box>
     </Card>
   );
-}
+};
 
 function AtGlanceRow({
   icon,

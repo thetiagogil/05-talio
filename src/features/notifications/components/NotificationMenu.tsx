@@ -1,9 +1,5 @@
 import { useMemo, useState } from "react";
-import {
-  CheckCircleRounded,
-  CheckRounded,
-  NotificationsNoneOutlined,
-} from "@mui/icons-material";
+import { CheckRounded, NotificationsNoneOutlined } from "@mui/icons-material";
 import {
   Badge,
   Box,
@@ -12,20 +8,24 @@ import {
   Popover,
   Typography,
 } from "@mui/material";
-import { approveGoal, useGoals } from "@/features/goals/hooks/useGoals";
 import { useActivity } from "@/features/activity/hooks/useActivity";
+import { useCurrentUser } from "@/features/auth/hooks/useAuth";
+import { useGoals } from "@/features/goals/hooks/useGoals";
 import {
   markNotificationsRead,
   useNotificationsReadAt,
 } from "@/features/notifications/hooks/useNotifications";
+import { ApprovalRequestCard } from "@/features/notifications/components/ApprovalRequestCard";
+import { NotificationRow } from "@/features/notifications/components/NotificationRow";
+import {
+  getApprovalRequests,
+  getUnreadNotificationCount,
+  getUserNotifications,
+} from "@/features/notifications/lib/notification-selectors";
 import { useTalents } from "@/features/talents/hooks/useTalents";
 import { useUsers } from "@/features/users/hooks/useUsers";
-import { timeAgo } from "@/shared/utils/format";
-import { useCurrentUser } from "@/features/auth/hooks/useAuth";
-import type { ActivityEvent } from "@/types/talents";
-import { AvatarBubble } from "@/features/users/components/AvatarBubble";
 
-export function NotificationMenu() {
+export const NotificationMenu = () => {
   const me = useCurrentUser();
   const events = useActivity();
   const goals = useGoals();
@@ -37,32 +37,22 @@ export function NotificationMenu() {
   const notifications = useMemo(() => {
     if (!me) return [];
 
-    return events
-      .filter(
-        (event) =>
-          (event.targetId === me.id && event.actorId !== me.id) ||
-          (event.type === "joined" && event.actorId !== me.id),
-      )
-      .sort((a, b) => b.createdAt - a.createdAt)
-      .slice(0, 30);
+    return getUserNotifications(events, me.id);
   }, [events, me]);
 
   const approvalRequests = useMemo(() => {
     if (!me) return [];
 
-    return goals.filter(
-      (goal) =>
-        goal.progress === "Done" &&
-        !goal.approved &&
-        (goal.approvalRequests ?? []).includes(me.id),
-    );
+    return getApprovalRequests(goals, me.id);
   }, [goals, me]);
 
   if (!me) return null;
 
-  const unread =
-    notifications.filter((event) => event.createdAt > readAt).length +
-    approvalRequests.length;
+  const unread = getUnreadNotificationCount(
+    notifications,
+    approvalRequests.length,
+    readAt,
+  );
 
   return (
     <>
@@ -164,114 +154,26 @@ export function NotificationMenu() {
               );
 
               return (
-                <Box
+                <ApprovalRequestCard
+                  approverId={me.id}
+                  goal={goal}
                   key={`request-${goal.id}`}
-                  sx={{
-                    display: "grid",
-                    gap: "0.5rem",
-                    m: "0.25rem",
-                    borderRadius: "0.75rem",
-                    p: "0.75rem",
-                    bgcolor:
-                      "color-mix(in oklch, var(--accent2) 10%, transparent)",
-                    boxShadow:
-                      "0 0 0 1px color-mix(in oklch, var(--accent2) 20%, transparent)",
-                  }}
-                >
-                  <Typography sx={{ fontSize: "0.875rem", lineHeight: 1.45 }}>
-                    <strong>{owner?.name}</strong> asked you to approve a goal
-                    {talent && (
-                      <>
-                        {" "}
-                        for{" "}
-                        <Box component="em" sx={{ fontStyle: "italic" }}>
-                          {talent.label}
-                        </Box>
-                      </>
-                    )}
-                    .
-                  </Typography>
-                  <Typography
-                    component="span"
-                    sx={{
-                      color: "var(--muted-foreground)",
-                      fontSize: "0.75rem",
-                    }}
-                  >
-                    "{goal.description}"
-                  </Typography>
-                  <Button
-                    size="small"
-                    startIcon={<CheckCircleRounded />}
-                    variant="contained"
-                    onClick={() => approveGoal(goal.id, me.id)}
-                  >
-                    Approve goal
-                  </Button>
-                </Box>
+                  owner={owner}
+                  talent={talent}
+                />
               );
             })}
 
-            {notifications.map((event) => (
-              <NotificationRow key={event.id} event={event} />
-            ))}
+            {notifications.map((event) => {
+              const actor = users.find((user) => user.id === event.actorId);
+
+              return (
+                <NotificationRow actor={actor} event={event} key={event.id} />
+              );
+            })}
           </Box>
         </Box>
       </Popover>
     </>
   );
-}
-
-function NotificationRow({ event }: { event: ActivityEvent }) {
-  const users = useUsers();
-  const actor = users.find((user) => user.id === event.actorId);
-
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        gap: "0.75rem",
-        borderRadius: "0.75rem",
-        p: "0.75rem",
-        "&:hover": {
-          bgcolor: "color-mix(in oklch, var(--muted) 40%, transparent)",
-        },
-      }}
-    >
-      <AvatarBubble value={actor?.avatar} size={32} />
-      <Box sx={{ display: "grid", minWidth: 0, gap: "0.12rem" }}>
-        <Typography sx={{ fontSize: "0.875rem", lineHeight: 1.45 }}>
-          <strong>{actor?.name}</strong> {notificationBrief(event)}
-        </Typography>
-        {event.type === "kudos_sent" && event.message && (
-          <Typography
-            component="span"
-            sx={{ color: "var(--muted-foreground)", fontSize: "0.75rem" }}
-          >
-            "{event.message}"
-          </Typography>
-        )}
-        <Typography
-          component="time"
-          sx={{ color: "var(--muted-foreground)", fontSize: "0.75rem" }}
-        >
-          {timeAgo(event.createdAt)}
-        </Typography>
-      </Box>
-    </Box>
-  );
-}
-
-function notificationBrief(event: ActivityEvent) {
-  switch (event.type) {
-    case "kudos_sent":
-      return "sent you kudos";
-    case "goal_approved":
-      return "approved your goal";
-    case "joined":
-      return "joined the team";
-    default:
-      return "shared an update";
-  }
-}
+};

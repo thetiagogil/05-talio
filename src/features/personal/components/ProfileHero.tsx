@@ -11,13 +11,13 @@ type ProfileHeroProps = {
   onEdit: () => void;
 };
 
-export function ProfileHero({
+export const ProfileHero = ({
   dominantDomain,
   kudosCount,
   leadingTalentLabel,
   user,
   onEdit,
-}: ProfileHeroProps) {
+}: ProfileHeroProps) => {
   return (
     <Box
       component="section"
@@ -134,7 +134,7 @@ export function ProfileHero({
       </Box>
     </Box>
   );
-}
+};
 
 function ProfileSummary({
   dominantDomain,

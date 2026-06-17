@@ -16,7 +16,7 @@ const teamTabs: { id: TeamTab; label: string }[] = [
 const isTeamTab = (tab: string | undefined): tab is TeamTab =>
   teamTabs.some((item) => item.id === tab);
 
-export function TeamPage() {
+export const TeamPage = () => {
   const { tab } = useParams();
   const navigate = useNavigate();
 
@@ -43,4 +43,4 @@ export function TeamPage() {
       </Box>
     </AppShell>
   );
-}
+};

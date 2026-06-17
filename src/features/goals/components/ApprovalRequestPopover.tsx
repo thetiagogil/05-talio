@@ -10,7 +10,9 @@ type ApprovalRequestPopoverProps = {
   goal: Goal;
 };
 
-export function ApprovalRequestPopover({ goal }: ApprovalRequestPopoverProps) {
+export const ApprovalRequestPopover = ({
+  goal,
+}: ApprovalRequestPopoverProps) => {
   const users = useUsers();
   const teammates = users.filter((user) => user.id !== goal.userId);
   const [open, setOpen] = useState(false);
@@ -129,4 +131,4 @@ export function ApprovalRequestPopover({ goal }: ApprovalRequestPopoverProps) {
       </Popover>
     </>
   );
-}
+};

@@ -29,71 +29,73 @@ export type PersonalProfileViewModel = {
   stats: ProfileGlanceStats;
 };
 
-export function usePersonalProfileViewModel(): PersonalProfileViewModel | null {
-  const user = useCurrentUser();
-  const talents = useTalents();
-  const goals = useGoals();
-  const kudos = useKudos();
+export const usePersonalProfileViewModel =
+  (): PersonalProfileViewModel | null => {
+    const user = useCurrentUser();
+    const talents = useTalents();
+    const goals = useGoals();
+    const kudos = useKudos();
 
-  const userTalents = useMemo(
-    () =>
-      (user?.talents ?? [])
-        .map((id) => talents.find((talent) => talent.id === id))
-        .filter((talent): talent is Talent => Boolean(talent)),
-    [talents, user?.talents],
-  );
-
-  const myGoals = useMemo(
-    () => goals.filter((goal) => goal.userId === user?.id),
-    [goals, user?.id],
-  );
-
-  const myKudos = useMemo(
-    () => kudos.filter((item) => item.toId === user?.id),
-    [kudos, user?.id],
-  );
-
-  const domainBreakdown = useMemo(
-    () =>
-      DOMAINS.map((domain) => {
-        const count = userTalents.filter(
-          (talent) => talent.category === domain,
-        ).length;
-
-        return {
-          domain,
-          count,
-          percent: (count / Math.max(userTalents.length, 1)) * 100,
-        };
-      }),
-    [userTalents],
-  );
-
-  const dominantDomainItem =
-    domainBreakdown.reduce<ProfileDomainBreakdownItem | null>(
-      (current, item) =>
-        !current || item.count > current.count ? item : current,
-      null,
+    const userTalents = useMemo(
+      () =>
+        (user?.talents ?? [])
+          .map((id) => talents.find((talent) => talent.id === id))
+          .filter((talent): talent is Talent => Boolean(talent)),
+      [talents, user?.talents],
     );
-  const dominantDomain =
-    dominantDomainItem && dominantDomainItem.count > 0
-      ? dominantDomainItem.domain
-      : null;
 
-  if (!user) return null;
+    const myGoals = useMemo(
+      () => goals.filter((goal) => goal.userId === user?.id),
+      [goals, user?.id],
+    );
 
-  return {
-    user,
-    userTalents,
-    goals: myGoals,
-    domainBreakdown,
-    dominantDomain,
-    leadingTalentLabel: userTalents[0]?.label ?? null,
-    stats: {
-      todoGoals: myGoals.filter((goal) => goal.progress === "To do").length,
-      activeGoals: myGoals.filter((goal) => goal.progress === "Doing").length,
-      completedGoals: myGoals.filter((goal) => goal.progress === "Done").length,
-      kudosReceived: myKudos.length,
-    },
+    const myKudos = useMemo(
+      () => kudos.filter((item) => item.toId === user?.id),
+      [kudos, user?.id],
+    );
+
+    const domainBreakdown = useMemo(
+      () =>
+        DOMAINS.map((domain) => {
+          const count = userTalents.filter(
+            (talent) => talent.category === domain,
+          ).length;
+
+          return {
+            domain,
+            count,
+            percent: (count / Math.max(userTalents.length, 1)) * 100,
+          };
+        }),
+      [userTalents],
+    );
+
+    const dominantDomainItem =
+      domainBreakdown.reduce<ProfileDomainBreakdownItem | null>(
+        (current, item) =>
+          !current || item.count > current.count ? item : current,
+        null,
+      );
+    const dominantDomain =
+      dominantDomainItem && dominantDomainItem.count > 0
+        ? dominantDomainItem.domain
+        : null;
+
+    if (!user) return null;
+
+    return {
+      user,
+      userTalents,
+      goals: myGoals,
+      domainBreakdown,
+      dominantDomain,
+      leadingTalentLabel: userTalents[0]?.label ?? null,
+      stats: {
+        todoGoals: myGoals.filter((goal) => goal.progress === "To do").length,
+        activeGoals: myGoals.filter((goal) => goal.progress === "Doing").length,
+        completedGoals: myGoals.filter((goal) => goal.progress === "Done")
+          .length,
+        kudosReceived: myKudos.length,
+      },
+    };
   };
-}

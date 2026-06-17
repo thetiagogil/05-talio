@@ -8,7 +8,7 @@ type AvatarBubbleProps = {
   sx?: SxProps<Theme>;
 };
 
-export function AvatarBubble({ value, size = 40, sx }: AvatarBubbleProps) {
+export const AvatarBubble = ({ value, size = 40, sx }: AvatarBubbleProps) => {
   return (
     <Avatar
       sx={[
@@ -30,4 +30,4 @@ export function AvatarBubble({ value, size = 40, sx }: AvatarBubbleProps) {
       </Box>
     </Avatar>
   );
-}
+};

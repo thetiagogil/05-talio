@@ -40,10 +40,10 @@ export type TeamPairing = {
   reason: string;
 };
 
-export function getTeamDomainStats(
+export const getTeamDomainStats = (
   users: User[],
   talents: Talent[],
-): TeamDomainStat[] {
+): TeamDomainStat[] => {
   const talentById = new Map(talents.map((talent) => [talent.id, talent]));
 
   return DOMAINS.map((domain) => {
@@ -58,12 +58,12 @@ export function getTeamDomainStats(
 
     return { domain, totalTalents };
   });
-}
+};
 
-export function getTeamTopTalents(
+export const getTeamTopTalents = (
   users: User[],
   talents: Talent[],
-): TeamTopTalent[] {
+): TeamTopTalent[] => {
   const talentById = new Map(talents.map((talent) => [talent.id, talent]));
   const counts = new Map<number, string[]>();
 
@@ -81,12 +81,12 @@ export function getTeamTopTalents(
     .filter((row): row is TeamTopTalent => Boolean(row))
     .sort((a, b) => b.userIds.length - a.userIds.length)
     .slice(0, 10);
-}
+};
 
-export function getCompareRadarData(
+export const getCompareRadarData = (
   selected: User[],
   talents: Talent[],
-): CompareRadarRow[] {
+): CompareRadarRow[] => {
   const talentById = new Map(talents.map((talent) => [talent.id, talent]));
 
   return DOMAINS.map((domain) => ({
@@ -102,12 +102,12 @@ export function getCompareRadarData(
       }, 0),
     })),
   }));
-}
+};
 
-export function getCombinedTopTalents(
+export const getCombinedTopTalents = (
   selected: User[],
   talents: Talent[],
-): CombinedTalentRow[] {
+): CombinedTalentRow[] => {
   const talentById = new Map(talents.map((talent) => [talent.id, talent]));
   const counts = new Map<number, number>();
 
@@ -125,12 +125,12 @@ export function getCombinedTopTalents(
       return talent ? { key: talent.id, talent, count } : null;
     })
     .filter((item): item is CombinedTalentRow => Boolean(item));
-}
+};
 
-export function getDomainTopThreeStats(
+export const getDomainTopThreeStats = (
   users: User[],
   talents: Talent[],
-): DomainTopThreeStat[] {
+): DomainTopThreeStat[] => {
   const talentById = new Map(talents.map((talent) => [talent.id, talent]));
 
   return DOMAINS.map((domain) => ({
@@ -145,12 +145,12 @@ export function getDomainTopThreeStats(
       );
     }, 0),
   })).sort((a, b) => a.count - b.count);
-}
+};
 
-export function getTopKudosReceivers(
+export const getTopKudosReceivers = (
   kudos: Kudos[],
   users: User[],
-): TopKudosReceiver[] {
+): TopKudosReceiver[] => {
   const userById = new Map(users.map((user) => [user.id, user]));
   const counts = new Map<string, number>();
 
@@ -166,12 +166,12 @@ export function getTopKudosReceivers(
       return user ? { user, count } : null;
     })
     .filter((row): row is TopKudosReceiver => Boolean(row));
-}
+};
 
-export function getTeamPairings(
+export const getTeamPairings = (
   users: User[],
   talents: Talent[],
-): TeamPairing[] {
+): TeamPairing[] => {
   const talentById = new Map(talents.map((talent) => [talent.id, talent]));
   const out: TeamPairing[] = [];
 
@@ -211,4 +211,4 @@ export function getTeamPairings(
   }
 
   return out;
-}
+};

@@ -9,11 +9,11 @@ type DraggableGoalCardProps = {
   onEdit: () => void;
 };
 
-export function DraggableGoalCard({
+export const DraggableGoalCard = ({
   goal,
   locked,
   onEdit,
-}: DraggableGoalCardProps) {
+}: DraggableGoalCardProps) => {
   const { attributes, isDragging, listeners, setNodeRef, transform } =
     useDraggable({
       id: `goal-${goal.id}`,
@@ -46,4 +46,4 @@ export function DraggableGoalCard({
       <GoalCard goal={goal} onEdit={onEdit} />
     </Box>
   );
-}
+};

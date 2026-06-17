@@ -13,7 +13,7 @@ export type ProgressStyle = {
   text: string;
 };
 
-export function domainStyle(domain: Domain): DomainStyle {
+export const domainStyle = (domain: Domain): DomainStyle => {
   switch (domain) {
     case "Executing":
       return {
@@ -44,9 +44,9 @@ export function domainStyle(domain: Domain): DomainStyle {
         border: "var(--domain-strategic)",
       };
   }
-}
+};
 
-export function progressStyle(progress: Progress): ProgressStyle {
+export const progressStyle = (progress: Progress): ProgressStyle => {
   switch (progress) {
     case "To do":
       return {
@@ -67,10 +67,10 @@ export function progressStyle(progress: Progress): ProgressStyle {
         text: "var(--progress-done)",
       };
   }
-}
+};
 
-export function shortDomain(domain: Domain): string {
+export const shortDomain = (domain: Domain): string => {
   if (domain === "Relationship Building") return "Relationships";
   if (domain === "Strategic Thinking") return "Strategy";
   return domain;
-}
+};

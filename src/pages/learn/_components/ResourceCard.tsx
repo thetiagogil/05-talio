@@ -9,7 +9,7 @@ type ResourceCardProps = {
   matched: string[];
 };
 
-export function ResourceCard({ resource, matched }: ResourceCardProps) {
+export const ResourceCard = ({ resource, matched }: ResourceCardProps) => {
   const style = domainStyle(resource.domain);
 
   return (
@@ -121,4 +121,4 @@ export function ResourceCard({ resource, matched }: ResourceCardProps) {
       </Box>
     </Card>
   );
-}
+};

@@ -10,7 +10,7 @@ type TalentRowProps = {
   defaultOpen?: boolean;
 };
 
-export function TalentRow({ rank, talent, defaultOpen }: TalentRowProps) {
+export const TalentRow = ({ rank, talent, defaultOpen }: TalentRowProps) => {
   const [open, setOpen] = useState(Boolean(defaultOpen));
   const style = domainStyle(talent.category);
 
@@ -130,7 +130,7 @@ export function TalentRow({ rank, talent, defaultOpen }: TalentRowProps) {
       </Collapse>
     </Card>
   );
-}
+};
 
 function TalentDetail({ label, value }: { label: string; value: string }) {
   return (

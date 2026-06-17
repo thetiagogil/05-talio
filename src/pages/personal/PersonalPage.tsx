@@ -19,7 +19,7 @@ const personalTabs: { id: PersonalTab; label: string }[] = [
 const isPersonalTab = (tab: string | undefined): tab is PersonalTab =>
   personalTabs.some((item) => item.id === tab);
 
-export function PersonalPage() {
+export const PersonalPage = () => {
   const { tab } = useParams();
   const navigate = useNavigate();
 
@@ -53,4 +53,4 @@ export function PersonalPage() {
       </Box>
     </AppShell>
   );
-}
+};

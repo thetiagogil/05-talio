@@ -22,7 +22,7 @@ export type SeedState = {
   activity: ActivityEvent[];
 };
 
-export function createSeedState(): SeedState {
+export const createSeedState = (): SeedState => {
   const now = Date.now();
   const day = 86400000;
 
@@ -298,7 +298,7 @@ export function createSeedState(): SeedState {
     kudos,
     activity,
   };
-}
+};
 
 function emptyManual() {
   return {

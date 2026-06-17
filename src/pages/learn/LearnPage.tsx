@@ -3,7 +3,7 @@ import { LearnResources } from "./_components/LearnResources";
 import { AppShell } from "@/shared/components/layout/AppShell";
 import { PageHeader } from "@/shared/components/layout/PageHeader";
 
-export function LearnPage() {
+export const LearnPage = () => {
   return (
     <AppShell>
       <PageHeader
@@ -16,4 +16,4 @@ export function LearnPage() {
       </Box>
     </AppShell>
   );
-}
+};

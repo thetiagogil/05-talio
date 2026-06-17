@@ -14,7 +14,7 @@ type TeamOverviewProps = {
   mode: "overview" | "compare";
 };
 
-export function TeamOverview({ mode }: TeamOverviewProps) {
+export const TeamOverview = ({ mode }: TeamOverviewProps) => {
   const currentUser = useCurrentUser();
   const users = useUsers();
   const talents = useTalents();
@@ -156,4 +156,4 @@ export function TeamOverview({ mode }: TeamOverviewProps) {
       </Box>
     </Box>
   );
-}
+};

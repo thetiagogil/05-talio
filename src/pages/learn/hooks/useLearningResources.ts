@@ -9,7 +9,7 @@ export type LearningFilter = Domain | "All" | "For me";
 
 export const learningFilterOptions = ["For me", "All", ...DOMAINS] as const;
 
-export function useLearningResources() {
+export const useLearningResources = () => {
   const currentUser = useCurrentUser();
   const talents = useTalents();
   const [filter, setFilter] = useState<LearningFilter>("For me");
@@ -82,7 +82,7 @@ export function useLearningResources() {
     resources,
     setFilter,
   };
-}
+};
 
 function getResourceMatches(
   resource: LearningResource,

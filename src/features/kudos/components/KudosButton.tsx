@@ -19,7 +19,7 @@ type KudosButtonProps = {
   to: User;
 };
 
-export function KudosButton({ to }: KudosButtonProps) {
+export const KudosButton = ({ to }: KudosButtonProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -33,7 +33,7 @@ export function KudosButton({ to }: KudosButtonProps) {
       <KudosModal open={open} to={to} onClose={() => setOpen(false)} />
     </>
   );
-}
+};
 
 function KudosModal({
   open,

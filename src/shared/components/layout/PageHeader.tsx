@@ -17,7 +17,7 @@ type PageHeaderProps = {
   right?: ReactNode;
 };
 
-export function PageHeader({
+export const PageHeader = ({
   eyebrow,
   title,
   description,
@@ -25,7 +25,7 @@ export function PageHeader({
   activeTab,
   onTabChange,
   right,
-}: PageHeaderProps) {
+}: PageHeaderProps) => {
   return (
     <Box
       component="header"
@@ -115,4 +115,4 @@ export function PageHeader({
       </Box>
     </Box>
   );
-}
+};

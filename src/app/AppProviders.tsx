@@ -7,7 +7,7 @@ type AppProvidersProps = {
   children: ReactNode;
 };
 
-export function AppProviders({ children }: AppProvidersProps) {
+export const AppProviders = ({ children }: AppProvidersProps) => {
   const appTheme = useAppTheme();
   const theme = useMemo(() => createTalioTheme(appTheme), [appTheme]);
 
@@ -17,4 +17,4 @@ export function AppProviders({ children }: AppProvidersProps) {
       {children}
     </ThemeProvider>
   );
-}
+};

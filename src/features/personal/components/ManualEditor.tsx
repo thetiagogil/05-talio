@@ -42,10 +42,10 @@ type ManualEditorProps = {
   manual?: Manual;
 };
 
-export function ManualEditor({
+export const ManualEditor = ({
   readOnly = false,
   manual: manualProp,
-}: ManualEditorProps) {
+}: ManualEditorProps) => {
   const currentUser = useCurrentUser();
   const manual = manualProp ?? currentUser?.manual;
 
@@ -65,7 +65,7 @@ export function ManualEditor({
       ))}
     </Box>
   );
-}
+};
 
 function ManualCard({
   field,

@@ -17,7 +17,7 @@ const activityTabs: { id: ActivityTab; label: string }[] = [
 const isActivityTab = (tab: string | undefined): tab is ActivityTab =>
   activityTabs.some((item) => item.id === tab);
 
-export function ActivityPage() {
+export const ActivityPage = () => {
   const { tab } = useParams();
   const navigate = useNavigate();
 
@@ -40,4 +40,4 @@ export function ActivityPage() {
       </Box>
     </AppShell>
   );
-}
+};

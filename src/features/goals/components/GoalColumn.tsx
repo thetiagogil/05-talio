@@ -15,7 +15,7 @@ type GoalColumnProps = {
   onShowApprovedChange: (checked: boolean) => void;
 };
 
-export function GoalColumn({
+export const GoalColumn = ({
   column,
   count,
   emptyText,
@@ -23,7 +23,7 @@ export function GoalColumn({
   showApproved,
   onEdit,
   onShowApprovedChange,
-}: GoalColumnProps) {
+}: GoalColumnProps) => {
   const style = progressStyle(column);
   const { isOver, setNodeRef } = useDroppable({
     id: `column-${column}`,
@@ -121,4 +121,4 @@ export function GoalColumn({
       </Box>
     </Box>
   );
-}
+};

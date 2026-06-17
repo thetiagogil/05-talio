@@ -17,7 +17,7 @@ type EditProfileModalProps = {
   onClose: () => void;
 };
 
-export function EditProfileModal({ open, onClose }: EditProfileModalProps) {
+export const EditProfileModal = ({ open, onClose }: EditProfileModalProps) => {
   const user = useCurrentUser();
   const [name, setName] = useState(user?.name ?? "");
   const [avatar, setAvatar] = useState(user?.avatar ?? "");
@@ -115,4 +115,4 @@ export function EditProfileModal({ open, onClose }: EditProfileModalProps) {
       </DialogActions>
     </Dialog>
   );
-}
+};

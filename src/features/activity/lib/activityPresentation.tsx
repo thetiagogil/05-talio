@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import type { ActivityEvent } from "@/types/talents";
 
-export function ActivityPhrase({
+export const ActivityPhrase = ({
   event,
   talentName,
   targetName,
@@ -9,7 +9,7 @@ export function ActivityPhrase({
   event: ActivityEvent;
   talentName?: string;
   targetName?: string;
-}) {
+}) => {
   switch (event.type) {
     case "kudos_sent":
       return (
@@ -49,7 +49,7 @@ export function ActivityPhrase({
     case "joined":
       return <>joined the team</>;
   }
-}
+};
 
 function TalentName({ label, prefix }: { label: string; prefix: string }) {
   return (

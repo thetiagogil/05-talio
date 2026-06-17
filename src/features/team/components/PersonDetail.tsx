@@ -17,7 +17,7 @@ type PersonDetailProps = {
 
 type PersonTab = "profile" | "manual";
 
-export function PersonDetail({ user, onBack }: PersonDetailProps) {
+export const PersonDetail = ({ user, onBack }: PersonDetailProps) => {
   const currentUser = useCurrentUser();
   const talents = useTalents();
   const [tab, setTab] = useState<PersonTab>("profile");
@@ -167,4 +167,4 @@ export function PersonDetail({ user, onBack }: PersonDetailProps) {
       </Card>
     </Box>
   );
-}
+};

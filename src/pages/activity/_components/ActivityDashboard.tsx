@@ -14,7 +14,7 @@ type ActivityDashboardProps = {
   activeTab: ActivityTab;
 };
 
-export function ActivityDashboard({ activeTab }: ActivityDashboardProps) {
+export const ActivityDashboard = ({ activeTab }: ActivityDashboardProps) => {
   const { filterActivity, stats } = useActivityPageModel(activeTab);
 
   return (
@@ -66,4 +66,4 @@ export function ActivityDashboard({ activeTab }: ActivityDashboardProps) {
       <ActivityFeed filter={filterActivity} />
     </Box>
   );
-}
+};

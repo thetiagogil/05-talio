@@ -3,7 +3,7 @@ import { ResourceCard } from "./ResourceCard";
 import { useLearningResources } from "../hooks/useLearningResources";
 import { EmptyState } from "@/shared/components/ui/EmptyState";
 
-export function LearnResources() {
+export const LearnResources = () => {
   const {
     filter,
     filterCounts,
@@ -84,4 +84,4 @@ export function LearnResources() {
       )}
     </Box>
   );
-}
+};

@@ -8,7 +8,12 @@ type ActivityStatProps = {
   tone: "accent" | "done" | "relationship" | "strategic";
 };
 
-export function ActivityStat({ icon, label, value, tone }: ActivityStatProps) {
+export const ActivityStat = ({
+  icon,
+  label,
+  value,
+  tone,
+}: ActivityStatProps) => {
   const styles = {
     accent: {
       color: "var(--accent2)",
@@ -72,4 +77,4 @@ export function ActivityStat({ icon, label, value, tone }: ActivityStatProps) {
       </Box>
     </Card>
   );
-}
+};

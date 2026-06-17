@@ -7,7 +7,7 @@ import { ProfileDomainBreakdown } from "./ProfileDomainBreakdown";
 import { ProfileHero } from "./ProfileHero";
 import { ProfileTalentList } from "./ProfileTalentList";
 
-export function ProfileTab() {
+export const ProfileTab = () => {
   const profile = usePersonalProfileViewModel();
   const [editing, setEditing] = useState(false);
 
@@ -60,4 +60,4 @@ export function ProfileTab() {
       {editing && <EditProfileModal open onClose={() => setEditing(false)} />}
     </Box>
   );
-}
+};

@@ -7,7 +7,7 @@ type ProfileTalentListProps = {
   talents: Talent[];
 };
 
-export function ProfileTalentList({ talents }: ProfileTalentListProps) {
+export const ProfileTalentList = ({ talents }: ProfileTalentListProps) => {
   return (
     <Box component="section">
       <Box
@@ -45,4 +45,4 @@ export function ProfileTalentList({ talents }: ProfileTalentListProps) {
       )}
     </Box>
   );
-}
+};

@@ -1,5 +1,5 @@
 import { SetupFlow } from "@/features/users/components/SetupFlow";
 
-export function SetupPage() {
+export const SetupPage = () => {
   return <SetupFlow />;
-}
+};

@@ -8,7 +8,7 @@ import type { ActivityTab } from "../ActivityPage";
 
 const weekStart = Date.now() - 7 * 86400000;
 
-export function useActivityPageModel(activeTab: ActivityTab) {
+export const useActivityPageModel = (activeTab: ActivityTab) => {
   const currentUser = useCurrentUser();
   const events = useActivity();
   const users = useUsers();
@@ -56,4 +56,4 @@ export function useActivityPageModel(activeTab: ActivityTab) {
   );
 
   return { filterActivity, stats };
-}
+};
