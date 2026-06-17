@@ -132,7 +132,7 @@ export const TalentRow = ({ rank, talent, defaultOpen }: TalentRowProps) => {
   );
 };
 
-function TalentDetail({ label, value }: { label: string; value: string }) {
+const TalentDetail = ({ label, value }: { label: string; value: string }) => {
   return (
     <Box
       sx={{
@@ -157,4 +157,4 @@ function TalentDetail({ label, value }: { label: string; value: string }) {
       </Box>
     </Box>
   );
-}
+};

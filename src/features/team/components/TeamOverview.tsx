@@ -39,22 +39,7 @@ export const TeamOverview = ({ mode }: TeamOverviewProps) => {
     .map((id) => users.find((user) => user.id === id))
     .filter((user): user is User => Boolean(user));
 
-  const panel = (
-    <SearchPanel
-      compareIds={compareIds}
-      currentUserId={currentUser?.id}
-      mode={mode}
-      query={query}
-      selectedUserId={selectedUserId}
-      users={filteredUsers}
-      warning={mode === "compare" ? warning : null}
-      onPick={pickPerson}
-      onQueryChange={setQuery}
-      onToggleCompare={toggleCompare}
-    />
-  );
-
-  function toggleCompare(id: string) {
+  const toggleCompare = (id: string) => {
     if (compareIds.includes(id)) {
       setCompareIds((current) =>
         current.filter((candidate) => candidate !== id),
@@ -70,18 +55,33 @@ export const TeamOverview = ({ mode }: TeamOverviewProps) => {
 
     setCompareIds((current) => [...current, id]);
     setWarning(null);
-  }
+  };
 
-  function pickPerson(id: string) {
+  const pickPerson = (id: string) => {
     setSelectedUserId(id);
     setFilterOpen(false);
-  }
+  };
 
-  function resetSelection() {
+  const resetSelection = () => {
     setSelectedUserId(null);
     setCompareIds([]);
     setWarning(null);
-  }
+  };
+
+  const panel = (
+    <SearchPanel
+      compareIds={compareIds}
+      currentUserId={currentUser?.id}
+      mode={mode}
+      query={query}
+      selectedUserId={selectedUserId}
+      users={filteredUsers}
+      warning={mode === "compare" ? warning : null}
+      onPick={pickPerson}
+      onQueryChange={setQuery}
+      onToggleCompare={toggleCompare}
+    />
+  );
 
   return (
     <Box

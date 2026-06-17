@@ -41,18 +41,18 @@ export const AppShell = ({ children }: AppShellProps) => {
 
   if (!user || !user.role || !user.avatar) return null;
 
-  function handleCollapsedChange() {
+  const handleCollapsedChange = () => {
     setCollapsed((current) => {
       const next = !current;
       localStorage.setItem(STORAGE_KEYS.sidebarCollapsed, next ? "1" : "0");
       return next;
     });
-  }
+  };
 
-  function handleLogout() {
+  const handleLogout = () => {
     logout();
     navigate("/login", { replace: true });
-  }
+  };
 
   return (
     <Box

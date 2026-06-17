@@ -51,7 +51,7 @@ export const ActivityPhrase = ({
   }
 };
 
-function TalentName({ label, prefix }: { label: string; prefix: string }) {
+const TalentName = ({ label, prefix }: { label: string; prefix: string }) => {
   return (
     <>
       {" "}
@@ -61,4 +61,4 @@ function TalentName({ label, prefix }: { label: string; prefix: string }) {
       </Box>
     </>
   );
-}
+};

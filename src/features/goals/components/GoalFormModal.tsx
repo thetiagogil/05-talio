@@ -39,7 +39,7 @@ export const GoalFormModal = ({
   const [progress, setProgress] = useState<Progress>(goal?.progress ?? "To do");
   const [description, setDescription] = useState(goal?.description ?? "");
 
-  function save() {
+  const save = () => {
     if (!user || !talentId || !description.trim()) return;
 
     if (goal) {
@@ -59,13 +59,13 @@ export const GoalFormModal = ({
     }
 
     onClose();
-  }
+  };
 
-  function remove() {
+  const remove = () => {
     if (!goal) return;
     deleteGoal(goal.id);
     onClose();
-  }
+  };
 
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>

@@ -67,7 +67,7 @@ export const ManualEditor = ({
   );
 };
 
-function ManualCard({
+const ManualCard = ({
   field,
   question,
   placeholder,
@@ -79,23 +79,23 @@ function ManualCard({
   placeholder: string;
   readOnly: boolean;
   value: string;
-}) {
+}) => {
   const currentUser = useCurrentUser();
   const [editing, setEditing] = useState(!value && !readOnly);
   const [draft, setDraft] = useState(value);
   const empty = !value.trim();
   const dirty = draft !== value;
 
-  function save() {
+  const save = () => {
     if (!currentUser || !dirty) return;
     updateManual(currentUser.id, { [field]: draft.trim() });
     setEditing(false);
-  }
+  };
 
-  function cancel() {
+  const cancel = () => {
     setDraft(value);
     setEditing(false);
-  }
+  };
 
   return (
     <Card
@@ -186,4 +186,4 @@ function ManualCard({
       )}
     </Card>
   );
-}
+};

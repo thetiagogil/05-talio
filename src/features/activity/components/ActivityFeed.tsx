@@ -59,7 +59,7 @@ export const ActivityFeed = ({
   );
 };
 
-function ActivityRow({ event }: { event: ActivityEvent }) {
+const ActivityRow = ({ event }: { event: ActivityEvent }) => {
   const users = useUsers();
   const goals = useGoals();
   const talents = useTalents();
@@ -173,4 +173,4 @@ function ActivityRow({ event }: { event: ActivityEvent }) {
       </Box>
     </Box>
   );
-}
+};

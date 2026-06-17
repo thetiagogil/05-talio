@@ -136,13 +136,13 @@ export const ProfileHero = ({
   );
 };
 
-function ProfileSummary({
+const ProfileSummary = ({
   dominantDomain,
   leadingTalentLabel,
 }: {
   dominantDomain: Domain | null;
   leadingTalentLabel: string | null;
-}) {
+}) => {
   if (!leadingTalentLabel) {
     return <>Add your talents to unlock a stronger profile summary.</>;
   }
@@ -164,9 +164,9 @@ function ProfileSummary({
       )}
     </>
   );
-}
+};
 
-function ProfileStat({ value, label }: { value: number; label: string }) {
+const ProfileStat = ({ value, label }: { value: number; label: string }) => {
   return (
     <Box
       sx={{
@@ -206,4 +206,4 @@ function ProfileStat({ value, label }: { value: number; label: string }) {
       </Typography>
     </Box>
   );
-}
+};

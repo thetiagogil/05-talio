@@ -46,7 +46,7 @@ export const GoalsBoard = () => {
 
   if (!user) return null;
 
-  function handleDragEnd(event: DragEndEvent) {
+  const handleDragEnd = (event: DragEndEvent) => {
     const goalId = event.active.data.current?.goalId as number | undefined;
     const progress = event.over?.data.current?.progress as Progress | undefined;
 
@@ -57,7 +57,7 @@ export const GoalsBoard = () => {
     if (goal.progress === "Done" && goal.approved) return;
 
     updateGoal(goal.id, { progress });
-  }
+  };
 
   return (
     <Box component="section" sx={{ display: "grid", gap: "1.5rem" }}>
@@ -133,7 +133,7 @@ export const GoalsBoard = () => {
   );
 };
 
-function emptyGoalText(column: Progress, hiddenApprovedCount: number) {
+const emptyGoalText = (column: Progress, hiddenApprovedCount: number) => {
   if (hiddenApprovedCount > 0) {
     return `${hiddenApprovedCount} approved ${
       hiddenApprovedCount === 1 ? "goal is" : "goals are"
@@ -148,4 +148,4 @@ function emptyGoalText(column: Progress, hiddenApprovedCount: number) {
     case "Done":
       return "No completed goals yet.";
   }
-}
+};

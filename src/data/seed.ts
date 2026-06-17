@@ -300,7 +300,7 @@ export const createSeedState = (): SeedState => {
   };
 };
 
-function emptyManual() {
+const emptyManual = () => {
   return {
     about: "",
     needs: "",
@@ -308,4 +308,4 @@ function emptyManual() {
     happiness: "",
     passions: "",
   };
-}
+};

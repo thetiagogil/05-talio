@@ -43,7 +43,7 @@ export const ProfileAtGlance = ({ stats }: ProfileAtGlanceProps) => {
   );
 };
 
-function AtGlanceRow({
+const AtGlanceRow = ({
   icon,
   label,
   value,
@@ -51,7 +51,7 @@ function AtGlanceRow({
   icon: ReactNode;
   label: string;
   value: number;
-}) {
+}) => {
   return (
     <Box
       sx={{
@@ -83,4 +83,4 @@ function AtGlanceRow({
       </Box>
     </Box>
   );
-}
+};

@@ -35,7 +35,7 @@ export const KudosButton = ({ to }: KudosButtonProps) => {
   );
 };
 
-function KudosModal({
+const KudosModal = ({
   open,
   to,
   onClose,
@@ -43,7 +43,7 @@ function KudosModal({
   open: boolean;
   to: User;
   onClose: () => void;
-}) {
+}) => {
   const currentUser = useCurrentUser();
   const talents = useTalents();
   const [message, setMessage] = useState("");
@@ -58,7 +58,7 @@ function KudosModal({
     theirTalents[0]?.id ?? null,
   );
 
-  function submit() {
+  const submit = () => {
     if (!currentUser || !talentId || !message.trim()) return;
 
     sendKudos({
@@ -70,7 +70,7 @@ function KudosModal({
 
     setMessage("");
     onClose();
-  }
+  };
 
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
@@ -114,4 +114,4 @@ function KudosModal({
       </DialogActions>
     </Dialog>
   );
-}
+};

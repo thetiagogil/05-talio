@@ -89,7 +89,7 @@ export const ProfileDomainBreakdown = ({
   );
 };
 
-export function PanelEyebrow({ children }: { children: string }) {
+export const PanelEyebrow = ({ children }: { children: string }) => {
   return (
     <Typography
       component="h3"
@@ -104,4 +104,4 @@ export function PanelEyebrow({ children }: { children: string }) {
       {children}
     </Typography>
   );
-}
+};

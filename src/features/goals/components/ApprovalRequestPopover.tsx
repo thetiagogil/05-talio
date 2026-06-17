@@ -21,7 +21,7 @@ export const ApprovalRequestPopover = ({
     new Set(goal.approvalRequests ?? []),
   );
 
-  function toggle(id: string) {
+  const toggle = (id: string) => {
     setSelected((current) => {
       const next = new Set(current);
 
@@ -30,19 +30,19 @@ export const ApprovalRequestPopover = ({
 
       return next;
     });
-  }
+  };
 
-  function save() {
+  const save = () => {
     requestApproval(goal.id, Array.from(selected));
     setOpen(false);
     setAnchorEl(null);
-  }
+  };
 
-  function handleOpenChange(nextOpen: boolean) {
+  const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) setSelected(new Set(goal.approvalRequests ?? []));
     setOpen(nextOpen);
     if (!nextOpen) setAnchorEl(null);
-  }
+  };
 
   return (
     <>

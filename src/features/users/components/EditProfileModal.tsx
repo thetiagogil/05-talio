@@ -26,13 +26,13 @@ export const EditProfileModal = ({ open, onClose }: EditProfileModalProps) => {
 
   const currentUser = user;
 
-  function save() {
+  const save = () => {
     updateUser(currentUser.id, {
       name: name.trim() || currentUser.name,
       avatar,
     });
     onClose();
-  }
+  };
 
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>

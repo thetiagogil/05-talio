@@ -47,7 +47,9 @@ export const ActivityIcon = ({ type }: ActivityIconProps) => {
   );
 };
 
-function iconForActivityType(type: ActivityEvent["type"]): ActivityIconStyle {
+const iconForActivityType = (
+  type: ActivityEvent["type"],
+): ActivityIconStyle => {
   switch (type) {
     case "kudos_sent":
       return {
@@ -99,4 +101,4 @@ function iconForActivityType(type: ActivityEvent["type"]): ActivityIconStyle {
         bg: "color-mix(in oklch, var(--accent2) 10%, var(--background))",
       };
   }
-}
+};

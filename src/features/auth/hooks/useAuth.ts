@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { TEST_USER } from "@/features/auth/data/test-user";
+import { useUsers } from "@/features/users/hooks/useUsers";
 import { STORAGE_KEYS } from "@/lib/constants/storageKeys";
 import type { User } from "@/types/talents";
 import { ensureWorkspaceSeed } from "@/lib/test-data";
@@ -62,9 +63,12 @@ export const useCurrentUserId = () =>
   useSyncExternalStore(subscribeStorage, getSessionUserId, () => emptySession);
 
 export const useCurrentUser = () => {
-  const session = useCurrentUserId();
-  void session;
-  return getCurrentUser();
+  const userId = useCurrentUserId();
+  const users = useUsers();
+
+  if (!userId) return null;
+
+  return users.find((user) => user.id === userId) ?? null;
 };
 
 export const useAuth = () => {

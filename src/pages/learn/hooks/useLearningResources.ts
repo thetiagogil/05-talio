@@ -84,9 +84,9 @@ export const useLearningResources = () => {
   };
 };
 
-function getResourceMatches(
+const getResourceMatches = (
   resource: LearningResource,
   talentLabels: Set<string>,
-) {
+) => {
   return resource.tags.filter((tag) => talentLabels.has(tag));
-}
+};
